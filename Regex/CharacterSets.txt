@@ -1,0 +1,5 @@
+lives(2) - lived(5) => 7 - /live[sd]/
+virtue - virtues => 14 - /virtue[^s]/
+Match the number and period on all numbered paragraph => 4 - /\d\./
+
+16-character word start with 'c' => 1 - /c[\w][\w][\w][\w][\w][\w][\w]/ <=> /c\w\w\w\w\w\w\w\w\w\w\w\w\w\w\w/
