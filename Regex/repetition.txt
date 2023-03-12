@@ -1,0 +1,13 @@
+// Self doing
+1. self, himself, itself, myself, yourself, thyself => /[y]?[hot]?[iemuh]?[mrty]?self/ - 64 matches
+2. virtue and virtues => /virtue[s]?/ - 18
+3. Use quantified repetition to find the word that starts with T and has 12 letters =>
+/\WT\w{11}/ - 3
+4. Match all text inside quotation marks, but nothing is not inside them =>
+/"[\w ,.]*"/ - 13
+
+//Solution
+1. /\w*self/
+2. virtue[s]?
+3. /T\w{11}/ - Capital T - Case sensitive - Match whole word options
+4. Lazy expression: /"(.|\n)+?"/
