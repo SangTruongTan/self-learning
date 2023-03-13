@@ -1,0 +1,27 @@
+Naming Covention in C++
+* Class: PascalCase
+- Noun
+- Upper case letters as word separators
+- First character in the class name must be in upper case
+
+* Attribute: PascalCase
+- Private attribute: prepended with "mPascalCase"
+- Pointer attribute: prepended with "pPascalCase"
+- Reference attribute: prepended with "rPascalCase"
+- Static variable: prepended with "sPascalCase"
+
+* Method
+- Begin with verb: get/set
+- camelCase or snake_case
+
+* Constant
+- Constants should be all capital letters with '_' separators: MAX_INT, TWO_PI
+
+* Pointer and Reference
+- Pointer variable should prepended with 'p' and place the asterisk '*' close to the variable: int *pInt;
+- Reference variable should be prepended with 'r': int &rInt;
+
+* File Naming
+- snake_case
+- PascalCase
+- kebab-case
