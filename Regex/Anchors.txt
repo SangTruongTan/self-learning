@@ -1,0 +1,14 @@
+Self-Reliance
+
+Challenge:
+1. How many paragraphs start with "I" as in "I read"?
+=> /^I\b/ - 4 times
+2. How many paragraphs end with a question mark?
+=> /\?$/ - 1 time
+3. Match all words with exactly 15 letters, including hyphenated words
+=> /\b[\w-]{15}\b/ or /\b[\w\-]{15}\b/ - 3 words
+
+Solution:
+1. /^I\b/ - 4 times
+2. /\?$/ - 1 time
+3. /\b[\w\-]{15}\b/ - 3 words
