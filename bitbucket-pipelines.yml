@@ -11,6 +11,8 @@ pipelines:
   default:
      - step:
         script:
+        - apt-get update && apt-get -y install cmake
+        - cd ./Cpp/Learning-Cpp/build/
         - ls
-        - cmake .
+        - cmake ..
         - cmake --build . --target all
