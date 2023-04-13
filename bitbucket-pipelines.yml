@@ -11,6 +11,7 @@ pipelines:
   default:
      - step:
         script:
+        - echo "*** Automated CI/CD ***"
         - apt-get update && apt-get -y install cmake
         - export CMAKE_FILES="$(find -name "CMakeLists.txt" | head -n 1)"
         - export CMAKE_BUILD_PATH="$(dirname ${CMAKE_FILES})/build"
