@@ -1,0 +1,16 @@
+Sample Input
+
+6
+1 3 0 5 5 8
+1 1 6 2 4 1
+Sample Output
+
+CalculateMaxWorkshops should return 4.
+
+Explanation
+
+The first line denotes n, the number of workshops.
+The next line contains n space-separated integers where the ith integer is the ith workshop's start time.
+The next line contains n space-separated integers where the ith integer is the ith workshop's duration.
+
+The student can attend the workshops 0, 1, 3 and 5 without overlap, so CalculateMaxWorkshops returns 4 to main (which then prints 4 to stdout).
