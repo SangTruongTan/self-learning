@@ -1,0 +1,14 @@
+@startuml Text Alignment
+' Align Text to the right side
+skinparam sequenceMessageAlign right
+Bob -> Alice : Request
+Alice -> Bob : Resonse to you, Bob
+
+' Text of response message below the arrow
+skinparam sequenceMessageAlign left
+skinparam responseMessageBelowArrow true
+Bob -> Alice : hello
+Bob -> Alice : hello again
+Alice -> Bob : okay
+Alice -> Bob : okay again
+@enduml
