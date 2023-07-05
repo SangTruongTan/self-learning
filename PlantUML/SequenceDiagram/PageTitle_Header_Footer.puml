@@ -1,0 +1,14 @@
+@startuml Page Title, Header and Footer
+skin rose
+scale 2
+/'
+The title keyword is used to add a title to the page.
+Pages can display headers and footers using header and footer.
+'/
+header Page header
+footer Page %page% of %lastpage%
+title Page Title, Header and Footer
+
+Alice -> Bob : Message 1
+Alice <- Bob : Message 2
+@enduml

@@ -1,0 +1,11 @@
+@startuml Several Notes Aligned At The Same Level
+skin rose
+scale 2
+/'
+You can make several notes aligned at the same level, with the syntax /:
+'/
+note over Bob: Note from Bob
+/ note over Alice: Note from Alice
+Bob -> Alice : Hello
+
+@enduml
