@@ -1,0 +1,11 @@
+@startuml Delay
+/'
+You can use ... to indicate a delay in the diagram.
+And it is also possible to put a message with this delay.
+'/
+Alice -> Bob: Authentication Request
+...
+Bob --> Alice: Authentication Response
+...5 minutes later...
+Bob --> Alice: Good Bye !
+@enduml

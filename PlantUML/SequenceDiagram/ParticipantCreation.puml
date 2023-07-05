@@ -1,0 +1,19 @@
+@startuml Participant Creation
+skin rose
+scale 2
+/'
+You can use the create keyword just before the first reception of a message to
+emphasize the fact that this message is actually creating this new object.
+'/
+Bob -> Alice : hello
+
+create Other
+Alice -> Other : new
+
+create control String
+Alice -> String
+note right : You can also put notes!
+
+Alice --> Bob : ok
+
+@enduml

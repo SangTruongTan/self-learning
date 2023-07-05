@@ -1,0 +1,17 @@
+@startuml Lifeline Activation and Destruction
+skin rose
+scale 2
+/'
+Autoactivation is possible and works with the return keywords:
+'/
+autoactivate on
+alice -> bob : hello
+bob -> bob : self call
+bill -> bob #red : hello from thread 2
+bob -> george ** : create
+return done in thread 2
+return rc
+bob -> george !! : delete
+return success
+
+@enduml

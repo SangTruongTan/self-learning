@@ -1,0 +1,21 @@
+@startuml Shortcut syntax for activation, deactivation, creation
+/'
+Immediately after specifying the target participant,
+the following syntax can be used:
+++ Activate the target (optionally a color may follow this)
+-- Deactivate the source
+** Create an instance of the target
+!! Destroy an instance of the target
+'/
+alice -> bob ++ : hello
+bob -> bob ++ : self call
+bob -> bib ++  #005500 : hello
+bob -> george ** : create
+return done
+return rc
+bob -> george ++ : initate
+bob <- george -- : delete
+
+bob -> george !! : destroy
+return success
+@enduml
