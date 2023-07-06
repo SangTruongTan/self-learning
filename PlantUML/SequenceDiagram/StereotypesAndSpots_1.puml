@@ -1,0 +1,14 @@
+@startuml Stereotypes And Spots
+skin rose
+scale 2
+/'
+It is possible to add stereotypes to participants using << and >>.
+In the stereotype, you can add a spotted character in
+a colored circle using the syntax (X,color).
+'/
+participant "Famous Bob" as Bob << Generated >>
+participant Alice << (C,#ADD1B2) Testable >>
+
+Bob->Alice: First message
+
+@enduml

@@ -1,0 +1,14 @@
+@startuml Slanted or Odd Arrows
+!pragma teoz true
+A ->(50) C: Starts\nwhen 'B' sends
+& B ->(25) C: \nBut B's message\n arrives before A's
+
+...
+
+S1 ->(30) S2: msg 1\n
+& S2 ->(30) S1: msg 2
+
+note left S1: msg\nS2 to S1
+& note right S2: msg\nS1 to S2
+
+@enduml

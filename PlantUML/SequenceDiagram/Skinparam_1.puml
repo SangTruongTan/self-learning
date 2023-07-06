@@ -1,0 +1,37 @@
+@startuml Skin Param
+/'
+You can use the skinparam command to change colors and fonts for the drawing.
+You can use this command:
+In the diagram definition, like any other commands,
+In an included file,
+In a configuration file, provided in the command line or the ANT task.
+You can also change other rendering parameter, as seen in the following examples:
+'/
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 20
+skinparam maxmessagesize 60
+skinparam sequenceParticipant underline
+
+actor User
+participant "First Class" as A
+participant "Second Class" as B
+participant "Last Class" as C
+
+User -> A: DoWork
+activate A
+
+A -> B: Create Request
+activate B
+
+B -> C: DoWork
+activate C
+C --> B: WorkDone
+destroy C
+
+B --> A: Request Created
+deactivate B
+
+A --> User: Done
+deactivate A
+
+@enduml
