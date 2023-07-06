@@ -1,0 +1,41 @@
+@startuml Using Notes
+skin rose
+scale 2
+/'
+You can use the note left of , note right of , note top of ,
+note bottom of keywords to define notes related to a single object.
+'/
+[Component] as C
+note top of C: A top there
+
+note bottom of C
+    A bottom note can also
+    be on several lines.
+end note
+
+note left of C
+    A left note can also
+    be on several lines.
+end note
+
+note right of C
+    A right note can also
+    be on several lines.
+end note
+
+/'
+A note can be also defined alone with the note keywords,
+then linked to other objects using the .. symbol or
+whatever arrow symbol (-, --, ...).
+'/
+[Component1] as B
+
+note as N
+    A floating note can also
+    be on several lines.
+end note
+
+B .. N
+
+
+@enduml

@@ -1,0 +1,10 @@
+@startuml Basic Example
+skin rose
+scale 2
+/'
+Links between elements are made using combinations of
+dotted line (..), straight line (--), and arrows (-->) symbols.
+'/
+DataAcess - [First Component]
+[First Component] ..> HTTP : use
+@enduml

@@ -1,0 +1,20 @@
+@startuml Components
+[First Component]
+[Another Component] as Comp2
+component Comp3
+component [Last\ncomponent] as Comp4
+
+/'
+Note that component names starting with $ cannot be hidden or removed later,
+because hide and remove command will consider the name a $tag instead of
+a component name. To later remove such component they must have an alias
+or must be tagged.
+'/
+component [$C1]
+component [$C2] $C2
+component [$C2] as dollarC2
+remove $C1
+remove $C2
+remove dollarC2
+
+@enduml

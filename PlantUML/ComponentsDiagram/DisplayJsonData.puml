@@ -1,0 +1,11 @@
+@startuml Display JSON Data on Component Diagram
+allowmixing
+component Component
+() Interface
+
+json JSON {
+    "fruit":"Apple",
+    "size":"Large",
+    "color":["Red", "Green"]
+}
+@enduml
