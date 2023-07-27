@@ -1,0 +1,24 @@
+@startuml Lifeline Activation and Destruction
+skin rose
+scale 2
+/'
+Nested lifeline can be used, and it is possible to add a color on the lifeline.
+'/
+participant User
+
+User -> A: DoWork
+activate A #FFBBBB
+
+A -> A: Internal call
+activate A #DarkSalmon
+
+A -> B: << createRequest >>
+activate B
+
+B --> A: RequestCreated
+deactivate B
+deactivate A
+A -> User: Done
+deactivate A
+
+@enduml

@@ -1,0 +1,47 @@
+@startuml Incoming And Outgoing Messages
+skin rose
+scale 2
+
+/'
+You can use incoming or outgoing arrows if you want to focus on a part of the diagram.
+Use square brackets to denote the left "[" or the right "]" side of the diagram.
+'/
+[-> A: DoWork
+
+activate A
+
+A -> A: Internal call
+activate A
+
+A ->] : << createRequest >>
+
+A<--] : RequestCreated
+deactivate A
+[<- A: Done
+deactivate A
+
+...
+/'
+You can also have the following syntax:
+'/
+participant Alice
+participant Bob #lightblue
+Alice -> Bob
+Bob -> Carol
+...
+[-> Bob
+[o-> Bob
+[o->o Bob
+[x-> Bob
+...
+[<- Bob
+[x<- Bob
+...
+Bob ->]
+Bob ->o]
+Bob o->o]
+Bob ->x]
+...
+Bob <-]
+Bob x<-]
+@enduml

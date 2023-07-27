@@ -1,0 +1,17 @@
+@startuml Divider Or Separator
+skin rose
+scale 2
+/'
+If you want, you can split a diagram using == separator
+to divide your diagram into logical steps.
+'/
+== Initialization ==
+
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+== Repetition ==
+
+Alice -> Bob: Another authentication Request
+Alice <-- Bob: another authentication Response
+@enduml

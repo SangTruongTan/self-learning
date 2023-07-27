@@ -1,0 +1,13 @@
+@startuml Note Over All Participants
+skin rose
+scale 2
+/'
+You can directly make a note over all participants, with the syntax:
+note across: note_description
+'/
+Alice -> Bob : Hello
+Alice -> Bill : Hello
+note across
+This is a note
+endnote
+@enduml

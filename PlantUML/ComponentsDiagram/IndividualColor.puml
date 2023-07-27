@@ -1,0 +1,7 @@
+@startuml Individual Color
+/'
+You can specify a color after component definition.
+'/
+component [Web Server] #yellow
+
+@enduml

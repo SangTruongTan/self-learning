@@ -1,0 +1,15 @@
+@startuml Removing Foot Boxes
+skin rose
+scale 2
+
+/'
+You can use the hide footbox keywords to remove the foot boxes of the diagram.
+'/
+
+hide footbox
+title Foot Box removed
+
+Alice -> Bob: Authentication Request
+Bob --> Alice: Authentication Response
+
+@enduml

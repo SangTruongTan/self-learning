@@ -1,0 +1,25 @@
+@startuml Changing Arrows Direction
+/'
+By default, links between classes have two dashes -- and
+are vertically oriented. It is possible to use horizontal link
+by putting a single dash (or dot) like this:
+'/
+[Component] --> Interface1
+[Component] -> Interface2
+
+/'
+You can also change directions by reversing the link:
+'/
+Interface3 <-- [Component 1]
+Interface4 <- [Component 1]
+
+/'
+It is also possible to change arrow direction by adding left, right,
+up or down keywords inside the arrow:
+'/
+[Component 2] -left-> left
+[Component 2] -right-> right
+[Component 2] -up-> up
+[Component 2] -down-> down
+
+@enduml

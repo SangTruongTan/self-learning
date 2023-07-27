@@ -1,0 +1,29 @@
+@startuml Some Other Notes
+skin rose
+scale 2
+
+/'
+It is also possible to place notes relative to participant with note left of ,
+note right of or note over keywords.
+It is possible to highlight a note by changing its background color.
+You can also have a multi-line note using the end note keywords.
+'/
+participant Alice
+participant Bob
+
+note left of Alice #aqua
+This is displayed
+left of Alice.
+endnote
+
+note right of Alice: This is displayed right of Alice.
+
+note over Alice: This is displayed over Alice.
+note over Alice, Bob #FFAAAA: This is displayed\nover Bob and Alice.
+
+note over Bob, Alice
+This is yet another
+example of
+a long note.
+endnote
+@enduml

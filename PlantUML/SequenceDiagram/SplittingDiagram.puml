@@ -1,0 +1,27 @@
+@startuml Splitting Diagram
+skin rose
+scale 2
+/'
+The newpage keyword is used to split a diagram into several images.
+You can put a title for the new page just after the newpage keyword.
+This title overrides the previously specified title if any.
+This is very handy with Word to print long diagram on several pages.
+(Note: this really does work. Only the first page is shown below,
+but it is a display artifact.)
+'/
+title Splitting Diagram
+footer Page %page% of %lastpage%
+
+Alice -> Bob : message 1
+Alice -> Bob : message 2
+
+newpage
+
+Alice -> Bob : message 3
+Alice -> Bob : message 4
+
+newpage A title for the\nlast page
+
+Alice -> Bob : message 5
+Alice -> Bob : message 6
+@enduml

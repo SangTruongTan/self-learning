@@ -1,0 +1,29 @@
+@startuml Lifeline Activation and Destruction
+skin rose
+scale 2
+/'
+The activate and deactivate are used to denote participant activation.
+Once a participant is activated, its lifeline appears.
+The activate and deactivate apply on the previous message.
+The destroy denote the end of the lifeline of a participant.
+'/
+participant User
+
+User -> A: DoWork
+activate A
+
+A -> B: << createRequest >>
+activate B
+
+B -> C: DoWork
+activate C
+C --> B: WorkDone
+destroy C
+
+B --> A: RequestCreated
+deactivate B
+
+A -> User: Done
+deactivate A
+
+@enduml

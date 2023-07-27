@@ -1,0 +1,26 @@
+@startuml Participant Encompass
+skin rose
+scale 2
+/'
+It is possible to draw a box around some participants, using box and end box commands.
+You can add an optional title or a optional background color, after the box keyword.
+It is also possible to nest boxes - to draw a box within a box -
+when using the teoz rendering engine, for example:
+'/
+
+!pragma teoz true
+box "Internal Service" #LightBlue
+participant Bob
+box "Subteam"
+participant Alice
+participant John
+end box
+
+end box
+participant Other
+
+Bob -> Alice : hello
+Alice -> John : hello
+John -> Other: Hello
+
+@enduml

@@ -1,0 +1,11 @@
+@startuml Hide Unlinked Participant
+/'
+But you can hide unlinked participant.
+'/
+hide unlinked
+participant Alice
+participant Bob
+participant Carol
+
+Alice -> Bob : hello
+@enduml

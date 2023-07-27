@@ -1,0 +1,13 @@
+@startuml Text Wrapping
+skin rose
+scale 2
+/'
+To break long messages, you can manually add \n in your text.
+Another option is to use maxMessageSize setting:
+'/
+skinparam maxMessageSize 50
+participant a
+participant b
+a -> b :this\nis\nmanually\ndone
+a -> b :this is a very long message on several words
+@enduml
