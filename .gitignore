@@ -53,3 +53,6 @@ Thumbs.db
 # Compressed files
 *.rar
 *.zip
+
+# Build folders
+build/
