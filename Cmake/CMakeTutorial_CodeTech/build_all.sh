@@ -1,8 +1,19 @@
 #! /bin/bash
-echo "### Execute automatic script to build all Cmake project ###"
 
-DIR="$( cd "$( dirname "$0" )" && pwd )"
+GIT_DIRECTORY="$(git rev-parse --show-toplevel)"
+
+echo "GIT_DIRECTORY=$GIT_DIRECTORY"
+
+source $GIT_DIRECTORY/Libraries/libraries.sh
+
+DIR=$(script_dir)
 
 echo $DIR
 
-find $DIR/ -name "build.sh" -exec {} \;
+Scripts=$(find $DIR/ -name "build.sh")
+
+# Run Scripts recursively
+for i in $Scripts
+do
+    run_a_script $i
+done
