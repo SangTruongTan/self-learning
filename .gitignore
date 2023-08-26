@@ -56,3 +56,9 @@ Thumbs.db
 
 # Build folders
 build/
+
+# Library folders
+library/
+
+#Vscode settings
+.vscode
