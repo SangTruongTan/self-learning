@@ -8,8 +8,8 @@ DIR=$(script_dir)
 
 ECHO_HIGHLIGHT "Script path ==> $DIR" "BLUE"
 
-CONFIGURE="cmake -S $DIR -B $DIR/out/build -DCMAKE_INSTALL_PREFIX=$DIR/library"
-BUILD="cmake --build $DIR/out/build --target install"
+CONFIGURE="cmake -S $DIR -B $DIR/out/build"
+BUILD="cmake --build $DIR/out/build --target package"
 
 configure_cmake "$CONFIGURE"
 build_cmake "$BUILD"
