@@ -29,7 +29,7 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Install neccessary dependencies
-        run: sudo apt-get install libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev mesa-common-dev libglu1-mesa-dev freeglut3-dev
+        run: sudo apt-get install libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev mesa-common-dev libglu1-mesa-dev freeglut3-dev libglew-dev
       - name: Show CMake Version
         run: cmake --version
 
