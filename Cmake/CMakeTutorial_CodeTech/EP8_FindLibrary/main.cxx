@@ -5,11 +5,9 @@
 #include <iostream>
 
 #include <GL/glew.h>
-// #include <GL/glut.h>
 
 #include <GLFW/glfw3.h>
 
-#define GLEW_STATIC
 
 int main(int argc, const char **argv) {
     std::cout << argv[0] << " <== VERSION: " << EP8_VERSION_MAJOR << "."
@@ -19,7 +17,7 @@ int main(int argc, const char **argv) {
 #else
     std::cout << "Adder Library is disable" << std::endl;
 #endif
-    std::cout << "Episode 3: Git Submodules" << std::endl;
+    std::cout << "Episode 8: Find Library" << std::endl;
     GLFWwindow* window;
     if( !glfwInit() )
     {

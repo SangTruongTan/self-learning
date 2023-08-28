@@ -5,3 +5,7 @@
 [submodule "Cmake/CMakeTutorial_CodeTech/EP8_FindLibrary/external/glfw"]
 	path = Cmake/CMakeTutorial_CodeTech/EP8_FindLibrary/external/glfw
 	url = https://github.com/glfw/glfw.git
+
+[submodule "Cmake/CMakeTutorial_CodeTech/EP9_FindPackage/external/glfw"]
+	path = Cmake/CMakeTutorial_CodeTech/EP9_FindPackage/external/glfw
+	url = https://github.com/glfw/glfw.git
