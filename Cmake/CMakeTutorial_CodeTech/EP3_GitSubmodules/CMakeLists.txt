@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.13)
+
 project(ep3)
-add_executable(${PROJECT_NAME} main.cxx)
 
 # Download all the submodules.
 find_package(Git QUIET)
@@ -24,6 +24,8 @@ if(NOT EXISTS "${PROJECT_SOURCE_DIR}/external/glfw/CMakeLists.txt")
 endif()
 
 add_subdirectory(external/glfw)
+
+add_executable(${PROJECT_NAME} main.cxx)
 
 target_include_directories(${PROJECT_NAME}
     PUBLIC external/glfw/include
