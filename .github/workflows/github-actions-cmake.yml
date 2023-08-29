@@ -55,4 +55,4 @@ jobs:
           git checkout -b coverage
           git add --all
           git commit -m "Upload lcov and gcovr reports"
-          git push -f origin coverage
+          git push -f https://github.com/SangTruongTan/self-learning.git coverage
