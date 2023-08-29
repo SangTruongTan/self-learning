@@ -29,16 +29,16 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
-      - name: Install neccessary dependencies
+      - name: Install neccessary dependencies.
         run: sudo apt-get install libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev mesa-common-dev libglu1-mesa-dev freeglut3-dev libglew-dev freeglut3-dev
 
-      - name: Install dependencies for Code Coverage
+      - name: Install dependencies for Code Coverage.
         run: sudo apt-get install lcov clang-format gcovr
 
-      - name: Show CMake Version
+      - name: Show CMake Version.
         run: cmake --version
 
-      - name: Run all Cmake Projects inside of CodeTech Tutorial
+      - name: Run all Cmake Projects inside of Cmake Projects.
         run: ${{ github.workspace }}/Cmake/build.sh
 
       # - name: Test
@@ -47,3 +47,12 @@ jobs:
       #   # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       #   run: ctest -C ${{env.BUILD_TYPE}}
 
+      - name: Upload lcov and gcovr reports
+        if: github.ref == 'refs/heads/master'
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git checkout -b coverage
+          git add --all
+          git commit -m "Upload lcov and gcovr reports"
+          git push -f origin coverage
