@@ -48,3 +48,159 @@ Use these steps to clone from SourceTree, our client for using the repository co
 
 Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
 Sponsor by AWS EC1 Instances with Jira Key.
+
+## Folder tree
+
+```bash
+├── bitbucket-pipelines.yml
+├── Cmake
+│   ├── build.sh
+│   ├── CMakeTutorial
+│   │   ├── Step1
+│   │   ├── Step2
+│   │   ├── Step3
+│   │   ├── Step4
+│   │   ├── Step5
+│   │   ├── Step6
+│   │   └── Version
+│   ├── CMakeTutorial_CodeTech
+│   │   ├── EP1_UnderstandingTheBasics
+│   │   ├── EP2_Libraries_Installing_PairingWithExecutables
+│   │   ├── EP3_GitSubmodules
+│   │   ├── EP4_VersioningSourceCode
+│   │   ├── EP5_MakingLibsOptional
+│   │   ├── EP6_InstallingYourSoftware
+│   │   ├── EP7_InstallingWithCPack
+│   │   ├── EP8_FindLibrary
+│   │   └── EP9_FindPackage
+│   └── CMakeTutorial_SelfDefined
+│       └── CodeCoverage
+├── Cpp
+│   ├── CodeConvention.txt
+│   ├── Hacker-Rank
+│   │   ├── abstract-classes-polymorphism
+│   │   ├── accessing-inherited-functions
+│   │   ├── attending-workshop
+│   │   ├── bit-array
+│   │   ├── class-template-specialization
+│   │   ├── cpp-variadic
+│   │   ├── magic-spells
+│   │   └── messages-order
+│   ├── Learning-Cpp
+│   │   ├── build
+│   │   ├── CMakeLists.txt
+│   │   ├── data_types.cpp
+│   │   ├── file_input.cpp
+│   │   ├── file_output.cpp
+│   │   ├── file_output.txt
+│   │   ├── getting_started.cpp
+│   │   ├── input-argument-from-shell.cpp
+│   │   └── text_input.txt
+│   ├── SocketProgramming
+│   │   ├── Client
+│   │   └── Server
+│   └── SWCPT
+│       └── LGEDVOJ
+├── FreeRTOS
+│   ├── Demo
+│   │   ├── build
+│   │   ├── CMSIS
+│   │   ├── console.c
+│   │   ├── console.h
+│   │   ├── FreeRTOSConfig.h
+│   │   ├── init
+│   │   ├── main_blinky.c
+│   │   ├── main.c
+│   │   ├── Makefile
+│   │   ├── Readme.md
+│   │   ├── scripts
+│   │   └── syscall.c
+│   └── Tasks
+│       ├── Basic-Tasks-Management
+│       ├── Dead-Lock
+│       └── Thread-Safety
+├── git-bugreport-2023-03-19-1739.txt
+├── Libraries
+│   └── libraries.sh
+├── PlantUML
+│   ├── ComponentsDiagram
+│   │   ├── BasicExample.puml
+│   │   ├── ChaningArrowsDirection.puml
+│   │   ├── Components.puml
+│   │   ├── DisplayJsonData.puml
+│   │   ├── GroupingComponent.puml
+│   │   ├── IndividualColor.puml
+│   │   ├── Interfaces.puml
+│   │   ├── MixingPort.puml
+│   │   ├── Port.puml
+│   │   └── UsingNotes.puml
+│   └── SequenceDiagram
+│       ├── AnchorsAndDuration.puml
+│       ├── BasicExamples.puml
+│       ├── ChangeArrowColor.puml
+│       ├── ChangeArrowStyle.puml
+│       ├── ChangingNotesShape.puml
+│       ├── ChangingPadding.puml
+│       ├── ColorAGroupMessage.puml
+│       ├── CreoleAndHtml.puml
+│       ├── DecalringParticipant_1.puml
+│       ├── DeclaringParticipant_2.puml
+│       ├── DeclaringParticipant_3.puml
+│       ├── DeclaringParticipantOnMultilines.puml
+│       ├── Delay.puml
+│       ├── DividerOrSeparator.puml
+│       ├── GroupingMessage.puml
+│       ├── HideUnlinkedParticipant.puml
+│       ├── IncomingAndOutgoingMessages.puml
+│       ├── IncomingMessagesArrow.puml
+│       ├── ItselfArrow.puml
+│       ├── LifelineActivationAndDestruction_1.puml
+│       ├── LifelineActivationAndDestruction_2.puml
+│       ├── LifelineActivationAndDestruction_3.puml
+│       ├── Mainframe.puml
+│       ├── MessageSequenceNumbering_1.puml
+│       ├── MessageSequenceNumbering_2.puml
+│       ├── MessageSequenceNumbering_3.puml
+│       ├── MessageToSelf.puml
+│       ├── MoreInformationOnTitles.puml
+│       ├── NormalArrow.puml
+│       ├── NoteOverAllParticipants.puml
+│       ├── NotesOnMessages.puml
+│       ├── OutgoingMessagesArrow.puml
+│       ├── PageTitle_Header_Footer.puml
+│       ├── ParticipantCreation.puml
+│       ├── ParticipantEncompass.puml
+│       ├── References.puml
+│       ├── RemovingFootBoxes.puml
+│       ├── Return.puml
+│       ├── SecondaryGoupLabel.puml
+│       ├── SeveralNotesAlignedAtTheSameLevel.puml
+│       ├── ShortArrowsForIncomingAndOutgoingMessages.puml
+│       ├── ShortcutSyntax_1.puml
+│       ├── ShortcutSyntax_2.puml
+│       ├── Skinparam_1.puml
+│       ├── Skinparam_2.puml
+│       ├── SlantedOrOddArrows_1.puml
+│       ├── SlantedOrOddArrows_2.puml
+│       ├── SomeOtherNotes.puml
+│       ├── Space.puml
+│       ├── SplittingDiagram.puml
+│       ├── StereotypesAndSpots_1.puml
+│       ├── StereotypesAndSpots_2.puml
+│       ├── TextAlignment.puml
+│       ├── TextWrapping.puml
+│       └── UseNonLettersInParticipants.puml
+├── README.md
+├── Regex
+│   ├── Anchors.txt
+│   ├── Backreferences.csv
+│   ├── Backreferences.txt
+│   ├── CharacterSets.txt
+│   ├── Ex_Files_Learning_Regular_Expressions
+│   │   └── Exercise Files
+│   ├── GroupingAlternation.txt
+│   ├── LookaroundAssertion.txt
+│   └── repetition.txt
+└── TagQuestionExercises
+    └── Exercises.txt
+```
