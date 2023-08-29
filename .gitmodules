@@ -9,3 +9,7 @@
 [submodule "Cmake/CMakeTutorial_CodeTech/EP9_FindPackage/external/glfw"]
 	path = Cmake/CMakeTutorial_CodeTech/EP9_FindPackage/external/glfw
 	url = https://github.com/glfw/glfw.git
+
+[submodule "Cmake/CMakeTutorial_SelfDefined/CodeCoverage/external/cmake-modules"]
+	path = Cmake/CMakeTutorial_SelfDefined/CodeCoverage/external/cmake-modules
+	url = https://github.com/bilke/cmake-modules.git
