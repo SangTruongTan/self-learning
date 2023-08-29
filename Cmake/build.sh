@@ -10,7 +10,7 @@ DIR=$(script_dir)
 
 echo $DIR
 
-Scripts=$(find $DIR/ -name "build.sh")
+Scripts=$(find $DIR/ -name "build.sh" -not -path "$DIR/build.sh")
 
 # Run Scripts recursively
 for i in $Scripts
