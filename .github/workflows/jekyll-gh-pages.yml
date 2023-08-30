@@ -41,6 +41,15 @@ jobs:
         uses: actions/checkout@v3
       - name: Setup Pages
         uses: actions/configure-pages@v3
+      - name: Install neccessary dependencies.
+        run: sudo apt-get install libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev mesa-common-dev libglu1-mesa-dev freeglut3-dev libglew-dev freeglut3-dev
+
+      - name: Install dependencies for Code Coverage.
+        run: sudo apt-get install lcov clang-format gcovr
+
+      - name: Show CMake Version.
+        run: cmake --version
+
       - name: Build Artifacts
         run: ${{ github.workspace }}/Cmake/build.sh clean
       - name: Build with Jekyll
