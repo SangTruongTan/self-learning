@@ -14,8 +14,12 @@ BUILD="cmake --build $DIR/out/build --target CodeCoverage_coverage_gcovr CodeCov
 configure_cmake "$CONFIGURE"
 build_cmake "$BUILD"
 
-mkdir $DIR/coverages
-cp -r $DIR/out/build/CodeCoverage_coverage_gcovr $DIR/coverages/CodeCoverage_coverage_gcovr
-cp -r $DIR/out/build/CodeCoverage_coverage_lcov $DIR/coverages/CodeCoverage_coverage_lcov
+if [[ ! -d $DIR/coverages ]]
+then
+    ECHO_HIGHLIGHT "$DIR/coverages does not exist. Create coverages folder." "BLUE"
+    mkdir $DIR/coverages
+fi
+rsync -ah --progress $DIR/out/build/CodeCoverage_coverage_gcovr $DIR/coverages/CodeCoverage_coverage_gcovr
+rsync -ah --progress $DIR/out/build/CodeCoverage_coverage_lcov $DIR/coverages/CodeCoverage_coverage_lcov
 
 ECHO_HIGHLIGHT "BUILD SUCCESSFULLY" "LINE" "GREEN"
