@@ -17,3 +17,11 @@ for i in $Scripts
 do
     run_a_script $i
 done
+
+# Clean up
+if [[ $1 == "clean" ]]
+then
+    ECHO_HIGHLIGHT "Clean up everything" "LINE" "RED" 
+    git clean -dfX
+    git submodule deinit --all
+fi

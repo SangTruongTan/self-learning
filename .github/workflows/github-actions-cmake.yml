@@ -9,8 +9,6 @@ on:
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
   BUILD_TYPE: Release
-  CI_COMMIT_MESSAGE: Continuous Integration Build Artifacts
-  CI_COMMIT_AUTHOR: Continuous Integration
 
 jobs:
   Explore-GitHub-Actions:
@@ -24,8 +22,6 @@ jobs:
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
       - name: Check out repository code
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.WORKFLOW_GIT_ACCESS_TOKEN }}
       - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
       - run: echo "🖥️ The workflow is now ready to test your code on the runner."
       - name: List files in the repository
@@ -50,13 +46,3 @@ jobs:
       #   # Execute tests defined by the CMake configuration.
       #   # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
       #   run: ctest -C ${{env.BUILD_TYPE}}
-
-      - name: Upload lcov and gcovr reports
-        # if: github.ref == 'refs/heads/master'
-        run: |
-          git config user.name "${{ env.CI_COMMIT_AUTHOR }}"
-          git config user.email "username@users.noreply.github.com"
-          git checkout -b coverage
-          git add --all
-          git commit -m "${{ env.CI_COMMIT_MESSAGE }}"
-          git push -f origin coverage
