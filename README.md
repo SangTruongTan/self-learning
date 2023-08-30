@@ -1,6 +1,12 @@
 # SELF-LEARNING
 
-[![Build](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml)
+[![Deployment](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml?target=_blank) [![Build](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml?target=_blank)
+
+## Code Coverage report
+* 📄 [LCOV - code coverage report](https://sangtruongtan.github.io/self-learning/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_lcov)
+* 📄 [GCOVR - code coverage report](https://sangtruongtan.github.io/self-learning/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_gcovr)
+
+## Guidelines
 
 **Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
 
