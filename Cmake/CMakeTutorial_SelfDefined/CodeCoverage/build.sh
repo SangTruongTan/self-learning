@@ -14,8 +14,8 @@ BUILD="cmake --build $DIR/out/build --target CodeCoverage_coverage_gcovr CodeCov
 configure_cmake "$CONFIGURE"
 build_cmake "$BUILD"
 
-rm -r $DIR/coverages/*
-cp -r $DIR/out/build/CodeCoverage_coverage_gcovr $DIR/coverages
-cp -r $DIR/out/build/CodeCoverage_coverage_lcov $DIR/coverages
+mkdir $DIR/coverages
+cp -r $DIR/out/build/CodeCoverage_coverage_gcovr $DIR/coverages/CodeCoverage_coverage_gcovr
+cp -r $DIR/out/build/CodeCoverage_coverage_lcov $DIR/coverages/CodeCoverage_coverage_lcov
 
 ECHO_HIGHLIGHT "BUILD SUCCESSFULLY" "LINE" "GREEN"
