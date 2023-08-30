@@ -1,10 +1,12 @@
 # SELF-LEARNING
 
-[![Deployment](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml) [![Build](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml)
+[![Static Badge](https://img.shields.io/badge/License-MIT-purpel?logo=unlicense&logoColor=blue)](https://raw.githubusercontent.com/SangTruongTan/self-learning/master/LICENSE)
+[![Deployment](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml)
+[![Build](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml)
 
 ## Code Coverage report
-* 📄 [LCOV - code coverage report](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_lcov)
-* 📄 [GCOVR - code coverage report](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_gcovr)
+[![Static Badge](https://img.shields.io/badge/LCOV-Code_Coverage_Report-blue?logo=c%2B%2B&logoColor=blue)](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_lcov)
+[![Static Badge](https://img.shields.io/badge/GCOVR-Code_Coverage_Report-green?logo=c%2B%2B&logoColor=blue)](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_gcovr)
 
 ## Guidelines
 
