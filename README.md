@@ -1,10 +1,10 @@
 # SELF-LEARNING
 
-[![Deployment](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml?target=_blank) [![Build](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml?target=_blank)
+[![Deployment](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml) [![Build](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml)
 
 ## Code Coverage report
-* 📄 [LCOV - code coverage report](https://sangtruongtan.github.io/self-learning/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_lcov)
-* 📄 [GCOVR - code coverage report](https://sangtruongtan.github.io/self-learning/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_gcovr)
+* 📄 [LCOV - code coverage report](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_lcov)
+* 📄 [GCOVR - code coverage report](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_gcovr)
 
 ## Guidelines
 
