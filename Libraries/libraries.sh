@@ -99,3 +99,24 @@ function run_a_script()
         exit 1
     fi
 }
+
+# Install neccessary environment variables for freertos
+function install_freertos_enviroment()
+{
+    if [[ -z "FREERTOS_DIR" ]]
+    then
+        ECHO_HIGHLIGHT "FreeRTOS source already exposed $FREERTOS_DIR" "GREEN"
+    else
+        export FREERTOS_DIR="$GIT_DIRECTORY/FreeRTOS/external/FreeRTOS"
+        ECHO_HIGHLIGHT "FreeRTOS source path: $FREERTOS_DIR" "GREEN"
+    fi
+
+    if [[ "$PATH" == *"gcc-arm-none-eabi-10.3-2021.10"* ]]
+    then
+        ECHO_HIGHLIGHT "Already install gcc arm" "GREEN"
+    else
+        GCC=$(find ~ -name "gcc-arm-none-eabi-10.3-2021.10")
+        export PATH="$PATH:$GCC"
+        ECHO_HIGHLIGHT "Export gcc arm tool to path: $GCC" "GREEN"
+    fi
+}

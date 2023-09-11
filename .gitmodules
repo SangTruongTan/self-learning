@@ -13,3 +13,7 @@
 [submodule "Cmake/CMakeTutorial_SelfDefined/CodeCoverage/external/cmake-modules"]
 	path = Cmake/CMakeTutorial_SelfDefined/CodeCoverage/external/cmake-modules
 	url = https://github.com/bilke/cmake-modules.git
+
+[submodule "FreeRTOS/external/FreeRTOS"]
+	path = FreeRTOS/external/FreeRTOS
+	url = https://github.com/FreeRTOS/FreeRTOS.git
