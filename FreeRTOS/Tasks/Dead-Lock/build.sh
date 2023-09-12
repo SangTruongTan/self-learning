@@ -7,8 +7,6 @@ GIT_DIRECTORY="$(git rev-parse --show-toplevel)"
 
 source $GIT_DIRECTORY/Libraries/libraries.sh
 
-echo "PROG_PATH=$PROG_PATH"
-
 ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 
 install_freertos_enviroment

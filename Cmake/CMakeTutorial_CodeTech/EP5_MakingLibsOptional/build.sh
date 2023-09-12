@@ -1,15 +1,16 @@
 #! /bin/bash
 
+PROG_NAME="$(basename -- "${BASH_SOURCE[0]}")"
+PROG_PATH="$(dirname $(readlink -f -- "${BASH_SOURCE[0]}"))"
+
 GIT_DIRECTORY="$(git rev-parse --show-toplevel)"
 
 source $GIT_DIRECTORY/Libraries/libraries.sh
 
-DIR=$(script_dir)
+ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 
-ECHO_HIGHLIGHT "Script path ==> $DIR" "BLUE"
-
-CONFIGURE="cmake -S $DIR -B $DIR/out/build"
-BUILD="cmake --build $DIR/out/build"
+CONFIGURE="cmake -S $PROG_PATH -B $PROG_PATH/out/build"
+BUILD="cmake --build $PROG_PATH/out/build"
 
 configure_cmake "$CONFIGURE"
 build_cmake "$BUILD"
