@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
 PROG_NAME="$(basename -- "${BASH_SOURCE[0]}")"
 PROG_PATH="$(dirname $(readlink -f -- "${BASH_SOURCE[0]}"))"
@@ -9,10 +9,6 @@ source $GIT_DIRECTORY/Libraries/libraries.sh
 
 ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 
-CONFIGURE="cmake -S $PROG_PATH -B $PROG_PATH/out/build"
-BUILD="cmake --build $PROG_PATH/out/build"
+install_freertos_enviroment
 
-configure_cmake "$CONFIGURE"
-build_cmake "$BUILD"
-
-ECHO_HIGHLIGHT "BUILD SUCCESSFULLY" "LINE" "GREEN"
+make -C $PROG_PATH

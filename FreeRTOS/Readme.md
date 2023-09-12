@@ -29,13 +29,19 @@ sudo apt-get install -y make qemu qemu-system-arm
 4. Download and unzip Arm tools
 ```
 cd ~
-curl https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10-2020q4/gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2 -o gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
-tar -xjvf gcc-arm-none-eabi-10-2020-q4-major-x86_64-linux.tar.bz2
+# On x86 Architecture
+wget https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+tar -xjvf gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
+# On ARM Architecture
+wget https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2
+tar -xjvf gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2
 ```
 
 5. Update your path to include the arm toolchain Edit ".profile", add the unzipped bin folder to the front of the path. You can run the same command in the terminal to update the path temporarily in the current shell
 ```
-export PATH="$HOME/gcc-arm-none-eabi-10-2020-q4-major/bin:$PATH"
+
+export PATH="$PATH:$HOME/gcc-arm-none-eabi-10.3-2021.10/bin"
+export FREERTOS_DIR=/home/sang/Documents/Projects/self-learning/FreeRTOS/external/FreeRTOS/FreeRTOS
 ```
 
 6. Clone FreeRTOS

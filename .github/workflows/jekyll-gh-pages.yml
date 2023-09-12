@@ -42,16 +42,20 @@ jobs:
       - name: Setup Pages
         uses: actions/configure-pages@v3
       - name: Install neccessary dependencies.
-        run: sudo apt-get install libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev mesa-common-dev libglu1-mesa-dev freeglut3-dev libglew-dev freeglut3-dev
+        run: source ${{ github.workspace }}/build.sh install cmake
 
-      - name: Install dependencies for Code Coverage.
-        run: sudo apt-get install lcov clang-format gcovr
+      - name: Install dependencies for FreeRTOS.
+        run: source ${{ github.workspace }}/build.sh install freertos
 
       - name: Show CMake Version.
         run: cmake --version
 
       - name: Build Artifacts
-        run: ${{ github.workspace }}/Cmake/build.sh clean
+        run: source ${{ github.workspace }}/build.sh build_all
+
+      - name: Remove unneccessary files.
+        run: source ${{ github.workspace }}/build.sh clean
+
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
         with:
