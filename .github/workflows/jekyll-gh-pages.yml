@@ -47,6 +47,9 @@ jobs:
       - name: Install dependencies for FreeRTOS.
         run: source ${{ github.workspace }}/build.sh install freertos
 
+      - name: Setup environments.
+        run: source ${{ github.workspace }}/build.sh setup freertos amd
+
       - name: Show CMake Version.
         run: cmake --version
 
