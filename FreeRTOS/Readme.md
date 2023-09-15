@@ -57,6 +57,8 @@ make
 8. Run the Blinky Demo
 ```
 sudo qemu-system-arm -machine mps2-an385 -monitor null -semihosting --semihosting-config enable=on,target=native -kernel ./build/RTOSDemo.axf -serial stdio -nographic
+
+sudo qemu-system-arm -machine mps2-an385 -monitor null -semihosting --semihosting-config enable=on,target=native -kernel ./build/FreeRTOS_Execution.axf -serial stdio -nographic
 ```
 
 

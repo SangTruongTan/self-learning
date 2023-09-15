@@ -14,19 +14,21 @@ ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 # Intall packages.
 if [[ $1 == "install" ]] ; then
     ECHO_HIGHLIGHT "Install neccessary dependencies" "LINE" "BLUE"
+    ECHO_HIGHLIGHT "Run sudo apt update in advance." "BLUE"
+    sudo apt-get update
     if [[ $2 == "cmake" ]] ; then
         sudo apt-get install -y libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev \
                     libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
                     mesa-common-dev libglu1-mesa-dev freeglut3-dev libglew-dev \
                     freeglut3-dev lcov clang-format gcovr
     elif [[ $2 == "freertos" ]] ; then
-        sudo apt-get install -y make qemu qemu-system-arm
+        sudo apt-get install -y make qemu-system-arm
     elif [[ $2 == "all" ]] ; then
         sudo apt-get install -y libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev \
                     libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
                     mesa-common-dev libglu1-mesa-dev freeglut3-dev libglew-dev \
                     freeglut3-dev lcov clang-format gcovr \
-                    make qemu qemu-system-arm
+                    make qemu-system-arm
     fi
     return 0
 fi
