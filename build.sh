@@ -23,6 +23,8 @@ if [[ $1 == "install" ]] ; then
                     freeglut3-dev lcov clang-format gcovr
     elif [[ $2 == "freertos" ]] ; then
         sudo apt-get install -y make qemu-system-arm
+    elif [[ $2 == "doxygen" ]] ; then
+        sudo apt-get install doxygen graphviz
     elif [[ $2 == "all" ]] ; then
         sudo apt-get install -y libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev \
                     libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \

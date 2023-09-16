@@ -1,3 +1,9 @@
+/**************************************************************************//**
+ * @file     main_app.c
+ * @brief    Main application.
+ * @version  V1.0.0
+ * @date     16. September 2023
+ ******************************************************************************/
 /* FreeRTOS kernel includes. */
 #include <FreeRTOS.h>
 
@@ -24,8 +30,17 @@ const char *pcTextForTask2 = "Task 2 is running\r\n";
 
 /* The one-shot timer is configured to use a callback function that increments
  * ucTimerCounter each time it's called. */
-static TimerHandle_t xPeriodicTimer = NULL;              /* Timer handle */
-static void timerCallback(TimerHandle_t pxExpiredTimer); /* Timer Callback
+static TimerHandle_t xPeriodicTimer = NULL; /* Timer handle */
+
+/**
+ * @brief Timer Callback function.
+ * The function `timerCallback` is a callback function that is called when the
+ * timer expires. It takes a parameter `pxExpiredTimer` of type `TimerHandle_t`,
+ * which represents the handle of the timer that expired. In this function, it
+ * increments the `ucTimerCounter` variable and prints a message to the console.
+ * @param pxExpiredTimer TimerHandle_t.
+ */
+void timerCallback(TimerHandle_t pxExpiredTimer); /* Timer Callback
                                                           * function. */
 static uint8_t ucTimerCounter = (uint8_t)0;              /* Timer counters. */
 
@@ -88,7 +103,7 @@ void vTask2(void *pvParameters) {
     }
 }
 
-static void timerCallback(TimerHandle_t pxExpiredTimer) {
+void timerCallback(TimerHandle_t pxExpiredTimer) {
     (void)pxExpiredTimer;
     printf((char *)"Timer callback is called!\n");
     ucTimerCounter++;

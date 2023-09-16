@@ -1,0 +1,22 @@
+var searchData=
+[
+  ['scc_5faid_0',['SCC_AID',['../structMPS2__SCC__TypeDef.html#a9b7ead35d252915a357100ce9e5bc4e9',1,'MPS2_SCC_TypeDef']]],
+  ['scc_5fdll_1',['SCC_DLL',['../structMPS2__SCC__TypeDef.html#a6841906d1841463b003a2ce3f78ed3a8',1,'MPS2_SCC_TypeDef']]],
+  ['scc_5fid_2',['SCC_ID',['../structMPS2__SCC__TypeDef.html#a2a3530dd0deeea5158349533f2a8866d',1,'MPS2_SCC_TypeDef']]],
+  ['scr_3',['SCR',['../group__CMSIS__core__DebugFunctions.html#ga3a4840c6fa4d1ee75544f4032c88ec34',1,'SCB_Type']]],
+  ['shcsr_4',['SHCSR',['../group__CMSIS__core__DebugFunctions.html#ga7b5ae9741a99808043394c4743b635c4',1,'SCB_Type']]],
+  ['shp_5',['SHP',['../group__CMSIS__core__DebugFunctions.html#ga9b05f74580fc93daa7fe2f0e1c9c5663',1,'SCB_Type']]],
+  ['sleepcnt_6',['SLEEPCNT',['../group__CMSIS__core__DebugFunctions.html#ga416a54e2084ce66e5ca74f152a5ecc70',1,'DWT_Type']]],
+  ['sppr_7',['SPPR',['../group__CMSIS__core__DebugFunctions.html#ga12f79d4e3ddc69893ba8bff890d04cc5',1,'TPI_Type']]],
+  ['spsel_8',['SPSEL',['../group__CMSIS__core__DebugFunctions.html#ga8cc085fea1c50a8bd9adea63931ee8e2',1,'CONTROL_Type::SPSEL()'],['../group__CMSIS__core__DebugFunctions.html#gacb5002c5a68ff0200b894f699c005672',1,'CONTROL_Type::@9::SPSEL()']]],
+  ['sr_9',['SR',['../structMPS2__SSP__TypeDef.html#ac49662e2c3f47ea452111b5230838479',1,'MPS2_SSP_TypeDef']]],
+  ['sspsr_10',['SSPSR',['../group__CMSIS__core__DebugFunctions.html#ga037901d7cb870199ac51d9ad0ef9fd1a',1,'TPI_Type']]],
+  ['state_11',['STATE',['../structCMSDK__UART__TypeDef.html#a1568f1e4930caf5c3c16351310493f65',1,'CMSDK_UART_TypeDef::STATE()'],['../structUART__t.html#a9c65210ca0a0a636f8d4be808eb50e88',1,'UART_t::STATE()']]],
+  ['status_12',['STATUS',['../structMPS2__I2S__TypeDef.html#a62c6712abb292f14edb2830111bbea37',1,'MPS2_I2S_TypeDef']]],
+  ['stir_13',['STIR',['../group__CMSIS__core__DebugFunctions.html#ga37de89637466e007171c6b135299bc75',1,'NVIC_Type']]],
+  ['switches_14',['SWITCHES',['../structMPS2__SCC__TypeDef.html#abb6a005b07b366c924e99a26ff26ef77',1,'MPS2_SCC_TypeDef']]],
+  ['sys_5fcfgctrl_15',['SYS_CFGCTRL',['../structMPS2__SCC__TypeDef.html#a771b2609bfa2ab1a68d785aeae06e2d0',1,'MPS2_SCC_TypeDef']]],
+  ['sys_5fcfgdata_5fout_16',['SYS_CFGDATA_OUT',['../structMPS2__SCC__TypeDef.html#a1148cb55f4d5b2e17c2c21b955f1392e',1,'MPS2_SCC_TypeDef']]],
+  ['sys_5fcfgdata_5frtn_17',['SYS_CFGDATA_RTN',['../structMPS2__SCC__TypeDef.html#af29d262af217ba26e286603f8061ac22',1,'MPS2_SCC_TypeDef']]],
+  ['sys_5fcfgstat_18',['SYS_CFGSTAT',['../structMPS2__SCC__TypeDef.html#a811eb7de6e8f2d54019a23465289da64',1,'MPS2_SCC_TypeDef']]]
+];
