@@ -15,6 +15,15 @@ CONFIGURE="cmake -DGLFW_BUILD_DOCS=OFF -S $PROG_PATH -B $PROG_PATH/out/build"
 BUILD="cmake --build $PROG_PATH/out/build"
 
 configure_cmake "$CONFIGURE"
+EXIT_CODE=$?
+if [[ $EXIT_CODE != "0" ]] ; then
+    return $EXIT_CODE
+fi
+
 build_cmake "$BUILD"
+EXIT_CODE=$?
+if [[ $EXIT_CODE != "0" ]] ; then
+    return $EXIT_CODE
+fi
 
 ECHO_HIGHLIGHT "BUILD SUCCESSFULLY" "LINE" "GREEN"

@@ -13,6 +13,15 @@ CONFIGURE="cmake -S $PROG_PATH -B $PROG_PATH/out/build -DCMAKE_INSTALL_PREFIX=$P
 BUILD="cmake --build $PROG_PATH/out/build --target install"
 
 configure_cmake "$CONFIGURE"
+EXIT_CODE=$?
+if [[ $EXIT_CODE != "0" ]] ; then
+    return $EXIT_CODE
+fi
+
 build_cmake "$BUILD"
+EXIT_CODE=$?
+if [[ $EXIT_CODE != "0" ]] ; then
+    return $EXIT_CODE
+fi
 
 ECHO_HIGHLIGHT "BUILD SUCCESSFULLY" "LINE" "GREEN"
