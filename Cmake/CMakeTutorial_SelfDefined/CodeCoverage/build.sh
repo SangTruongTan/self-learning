@@ -29,12 +29,12 @@ then
     ECHO_HIGHLIGHT "$PROG_PATH/coverages does not exist. Create coverages folder." "BLUE"
     mkdir $PROG_PATH/coverages
 fi
-rsync -ah --progress $PROG_PATH/out/build/CodeCoverage_coverage_gcovr $PROG_PATH/coverages/CodeCoverage_coverage_gcovr
+rsync -ah --progress $PROG_PATH/out/build/CodeCoverage_coverage_gcovr $PROG_PATH/coverages/
 EXIT_CODE=$?
 if [[ $EXIT_CODE != "0" ]] ; then
     return $EXIT_CODE
 fi
-rsync -ah --progress $PROG_PATH/out/build/CodeCoverage_coverage_lcov $PROG_PATH/coverages/CodeCoverage_coverage_lcov
+rsync -ah --progress $PROG_PATH/out/build/CodeCoverage_coverage_lcov $PROG_PATH/coverages/
 EXIT_CODE=$?
 if [[ $EXIT_CODE != "0" ]] ; then
     return $EXIT_CODE

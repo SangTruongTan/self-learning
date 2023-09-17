@@ -38,7 +38,7 @@ fi
 # Clean up
 if [[ $1 == "clean" ]]
 then
-    ECHO_HIGHLIGHT "Clean up everything" "LINE" "RED"
+    ECHO_HIGHLIGHT "Clean up ignored files and submodules." "LINE" "RED"
     git clean -dfX
     git submodule deinit --all
     return 0
