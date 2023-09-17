@@ -24,7 +24,7 @@ if [[ $1 == "install" ]] ; then
     elif [[ $2 == "freertos" ]] ; then
         sudo apt-get install -y make qemu-system-arm
     elif [[ $2 == "doxygen" ]] ; then
-        sudo apt-get install doxygen graphviz
+        sudo apt-get install -y doxygen graphviz
     elif [[ $2 == "all" ]] ; then
         sudo apt-get install -y libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev \
                     libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
@@ -38,7 +38,7 @@ fi
 # Clean up
 if [[ $1 == "clean" ]]
 then
-    ECHO_HIGHLIGHT "Clean up everything" "LINE" "RED" 
+    ECHO_HIGHLIGHT "Clean up everything" "LINE" "RED"
     git clean -dfX
     git submodule deinit --all
     return 0
@@ -76,5 +76,10 @@ fi
 for i in $Scripts
 do
     run_a_script $i
+    EXIT_CODE=$?
+    if [[ $EXIT_CODE != "0" ]] ; then
+        ECHO_HIGHLIGHT "One of scripts was failed" "LINE" "RED"
+        return $EXIT_CODE
+    fi
 done
 

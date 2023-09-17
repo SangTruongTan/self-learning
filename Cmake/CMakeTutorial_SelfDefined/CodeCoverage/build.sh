@@ -13,7 +13,16 @@ CONFIGURE="cmake -DCMAKE_BUILD_TYPE=Debug -S $PROG_PATH -B $PROG_PATH/out/build"
 BUILD="cmake --build $PROG_PATH/out/build --target CodeCoverage_coverage_gcovr CodeCoverage_coverage_lcov"
 
 configure_cmake "$CONFIGURE"
+EXIT_CODE=$?
+if [[ $EXIT_CODE != "0" ]] ; then
+    return $EXIT_CODE
+fi
+
 build_cmake "$BUILD"
+EXIT_CODE=$?
+if [[ $EXIT_CODE != "0" ]] ; then
+    return $EXIT_CODE
+fi
 
 if [[ ! -d $PROG_PATH/coverages ]]
 then
@@ -21,6 +30,14 @@ then
     mkdir $PROG_PATH/coverages
 fi
 rsync -ah --progress $PROG_PATH/out/build/CodeCoverage_coverage_gcovr $PROG_PATH/coverages/CodeCoverage_coverage_gcovr
+EXIT_CODE=$?
+if [[ $EXIT_CODE != "0" ]] ; then
+    return $EXIT_CODE
+fi
 rsync -ah --progress $PROG_PATH/out/build/CodeCoverage_coverage_lcov $PROG_PATH/coverages/CodeCoverage_coverage_lcov
+EXIT_CODE=$?
+if [[ $EXIT_CODE != "0" ]] ; then
+    return $EXIT_CODE
+fi
 
 ECHO_HIGHLIGHT "BUILD SUCCESSFULLY" "LINE" "GREEN"
