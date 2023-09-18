@@ -1,0 +1,12 @@
+1. What does the command stat myfile.txt do?
+=> Display myfile.txt file statistics.
+
+2. What does the command df -h / do?
+Print out the usage of / directory in the human-readable way.
+
+3. What command would I use to search for files in a directory hierarchy?
+=> find command.
+
+4. Which option would I use with the ls command to output a comma-separated
+list of files and directories?
+=> ls -manually
