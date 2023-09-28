@@ -1,0 +1,14 @@
+Correct these commands and describe the errors in each
+1. cd ~/home/scott
+=> cd ~/ or cd /home/scott
+=> ~ equivalent to /home/scott
+
+2. Ls /home
+=> ls /home
+=> Capitalized defect
+
+3. mv ~/log.tar.gz home scott
+=> mv ~/log.tar.gz /home/scott
+
+4. chmod ~/log.tar.gz
+=> chmod 755 ~/log.tar.gz

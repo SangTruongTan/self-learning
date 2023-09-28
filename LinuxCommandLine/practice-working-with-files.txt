@@ -1,0 +1,4 @@
+Spend some time working with files
+Create files with the touch command, or make copies of existing files
+Practice with links and directories
+Don't move the original exercise files
