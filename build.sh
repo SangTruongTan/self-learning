@@ -11,26 +11,27 @@ source $GIT_PROG_PATHECTORY/Libraries/libraries.sh
 
 ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 
+# APT PACKAGES
+CMAKE_PACKAGE="make cmake gcc g++ libxss-dev libxxf86vm-dev libxkbfile-dev
+               libxv-dev libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
+               mesa-common-dev libglu1-mesa-dev freeglut3-dev libglew-dev \
+               freeglut3-dev lcov clang-format gcovr"
+FREERTOS_PACKAGE="make cmake gcc g++"
+DOXYGEN_PACKAGE="doxygen graphviz"
+
 # Intall packages.
 if [[ $1 == "install" ]] ; then
     ECHO_HIGHLIGHT "Install neccessary dependencies" "LINE" "BLUE"
     ECHO_HIGHLIGHT "Run sudo apt update in advance." "BLUE"
     sudo apt-get update
     if [[ $2 == "cmake" ]] ; then
-        sudo apt-get install -y libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev \
-                    libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
-                    mesa-common-dev libglu1-mesa-dev freeglut3-dev libglew-dev \
-                    freeglut3-dev lcov clang-format gcovr
+        sudo apt-get install -y $CMAKE_PACKAGE
     elif [[ $2 == "freertos" ]] ; then
-        sudo apt-get install -y make qemu-system-arm
+        sudo apt-get install -y $FREERTOS_PACKAGE
     elif [[ $2 == "doxygen" ]] ; then
-        sudo apt-get install -y doxygen graphviz
+        sudo apt-get install -y $DOXYGEN_PACKAGE
     elif [[ $2 == "all" ]] ; then
-        sudo apt-get install -y libxss-dev libxxf86vm-dev libxkbfile-dev libxv-dev \
-                    libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev \
-                    mesa-common-dev libglu1-mesa-dev freeglut3-dev libglew-dev \
-                    freeglut3-dev lcov clang-format gcovr \
-                    make qemu-system-arm
+        sudo apt-get install -y $CMAKE_PACKAGE $FREERTOS_PACKAGE $DOXYGEN_PACKAGE
     fi
     return 0
 fi
@@ -82,4 +83,3 @@ do
         return $EXIT_CODE
     fi
 done
-
