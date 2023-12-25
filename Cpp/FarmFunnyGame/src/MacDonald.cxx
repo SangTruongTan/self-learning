@@ -1,5 +1,7 @@
 #include "MacDonald.h"
 
+#include <thread>
+
 Farm::MacDonald::MacDonald(Farm::Logger *Log)
     : mLogger(Log), mTimeManager(nullptr) {
     this->mLogger->LogI("New Mac Donal Farm has been created");
@@ -17,7 +19,9 @@ void Farm::MacDonald::start() {
         std::cout << "this is 12AM" << std::endl;
         this->incAgeAll();
     }));
-    this->mTimeManager->start(timeLists);
+    std::thread timeThread(std::bind(&TimeManager::start, this->mTimeManager, std::ref(timeLists)));
+    this->mLogger->LogI("Spawned a new thread for Time Managers");
+    timeThread.join();
 }
 
 void Farm::MacDonald::incAgeAll() {
