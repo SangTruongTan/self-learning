@@ -13,6 +13,10 @@ TARGET = $(BUILD_DIR)/FarmFunnyGame.o
 #######################################
 # optimization
 OPT = -O2
+
+# Debug
+OPT = -g
+
 # Cxx standard version
 CXX_GNU = -std=gnu++11
 
@@ -24,6 +28,7 @@ SRCS += src/Chicken.cxx
 SRCS += src/Logger.cxx
 SRCS += src/TimeManager.cxx
 SRCS += src/MacDonald.cxx
+SRCS += src/UserInterface.cxx
 SRCS += src/main.cxx
 
 #######################################
