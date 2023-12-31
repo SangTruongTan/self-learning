@@ -1,0 +1,49 @@
+@startuml Architectural Design
+
+title "Architectural Design"
+
+skin rose
+
+package "Application" {
+    [DLT Client] as dlt
+    [Logger] as log
+    [User Interface] as ui
+    [MacDonal Farm] as farm
+    [Time Manager] as tm
+    [Animal] as ani
+}
+
+() "Command Line" as cl
+
+() "dlt-daemon interface" as daemon
+
+actor User as usr
+
+usr -( cl : cmd & promts
+
+cl -l- ui
+
+ui ...> farm : control
+farm ...> ui : information promts
+
+farm ...> log : logs
+
+log ..> dlt : logs & cmd
+
+farm ..> tm : timer configure
+tm ..> farm : event callback
+
+ani <..> farm : Animal managing
+
+
+dlt -d-( daemon : TCP/IP
+
+
+skinparam LegendBackgroundColor #White
+skinparam LegendBorderColor #Blue
+legend left
+Project: Funny Farm
+Author: Sang, Tan Truong
+File: ArchitecturalDesign.puml
+endlegend
+@enduml
