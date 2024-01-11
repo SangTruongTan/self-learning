@@ -21,9 +21,6 @@ private:
     Farm::UserInterface *mUserInterface;
 
     std::mutex mMutex;
-    std::condition_variable mCV;
-    std::istringstream mIss;
-
 public:
     std::vector<Animal *> mAnimalList;
     Farm::SharedObjects mShared;
@@ -33,6 +30,7 @@ public:
     void handleCommands();
 
     void incAgeAll();
+    bool isAnimalExist(const char *name);
 };
 }; // namespace Farm
 

@@ -1,6 +1,6 @@
 #include "Chicken.h"
 
-Farm::Chicken::Chicken(Farm::Logger *Log, const char *Name, Farm::SharedObjects &shared)
+Farm::Chicken::Chicken(Farm::Logger *Log, std::string Name, Farm::SharedObjects &shared)
     : Animal(Log, Name, shared) {
     std::stringstream ss;
     ss << "A new Chicken named: \"" << this->mName << "\" has been born";
@@ -14,10 +14,6 @@ Farm::Chicken::~Chicken() {
     this->mLogger->LogI(ss.str());
     std::cout << ss.str().c_str() << std::endl;
 }
-
-const char *Farm::Chicken::getName(void) { return this->mName; }
-
-uint16_t Farm::Chicken::getAge(void) { return this->mAge; }
 
 void Farm::Chicken::incAge() {
     std::stringstream ss;

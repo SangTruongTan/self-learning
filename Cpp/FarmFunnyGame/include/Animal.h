@@ -152,17 +152,20 @@ public:
 
 protected:
     Farm::Logger *mLogger;
-    const char *mName;
+    std::string mName;
     uint16_t mAge;
     double mWeight;
     int mFeedConsecutiveDays;
     bool mGoOutStatus;
     Farm::SharedObjects &mShared;
+
 public:
-    Animal(Farm::Logger *Log, const char *Name, Farm::SharedObjects &shared);
+    Animal(Farm::Logger *Log, std::string Name, Farm::SharedObjects &shared);
     virtual ~Animal();
-    virtual const char *getName(void) = 0;
-    virtual uint16_t getAge(void) = 0;
+    const std::string getName(void) const;
+    const uint16_t getAge(void) const;
+
+protected:
     virtual void incAge(void) = 0;
     virtual void sound(int NumOfSound = 1) = 0;
     virtual bool exceedLifeTime(void) = 0;

@@ -14,7 +14,7 @@ void Farm::TimeManager::start(
 
         std::stringstream sstr;
         sstr << "mDay=" << this->mDay << ";mHour=" << this->mHour;
-        this->mLogger->LogI(sstr.str());
+        // this->mLogger->LogI(sstr.str());
         for (auto const &time : timeLists) {
             if (time.first == this->mHour) {
                 time.second();

@@ -7,10 +7,9 @@ namespace Farm {
 class Chicken : public Animal {
 private:
 public:
-    Chicken(Farm::Logger *Log, const char *Name, Farm::SharedObjects &shared);
+    Chicken(Farm::Logger *Log, std::string Name, Farm::SharedObjects &shared);
     ~Chicken();
-    const char *getName(void) override;
-    uint16_t getAge(void) override;
+
     void incAge() override;
     void sound(int NumOfSound = 1) override;
     bool exceedLifeTime(void) override;
