@@ -8,17 +8,11 @@ Farm::Chicken::Chicken(Farm::Logger *Log, std::string Name, Farm::SharedObjects 
 }
 
 Farm::Chicken::~Chicken() {
-    this->sound(Farm::Animal::DOG_NUM_SOUND_WHEN_DIE);
+    this->sound(Farm::Animal::CHICKEN_NUM_SOUND_WHEN_DIE);
     std::stringstream ss;
     ss << "\"" << this->mName << "\" has been died!";
     this->mLogger->LogI(ss.str());
     std::cout << ss.str().c_str() << std::endl;
-}
-
-void Farm::Chicken::incAge() {
-    std::stringstream ss;
-    ss << "Inc Age to => " << ++this->mAge;
-    this->mLogger->LogI(ss.str());
 }
 
 void Farm::Chicken::sound(int NumOfSound) {

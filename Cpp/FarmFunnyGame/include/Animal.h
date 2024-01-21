@@ -3,8 +3,8 @@
 
 #include <cstdint>
 #include <iostream>
-#include <string>
 #include <sstream>
+#include <string>
 
 #include "Logger.h"
 #include "SharedObjects.h"
@@ -87,9 +87,8 @@ public:
     static constexpr int CHICKEN_REDUCTION_CONDITION_BY_SOUND =
         10; /* From Cats, Dogs and Pigs in a day. */
     static constexpr int CAT_REDUCTION_CONDITION_BY_SOUND =
-        15; /*From Dogs and Chickens in a day. */
-    static constexpr int DOG_REDUCTION_CONDITION_BY_SOUND =
-        5; /* From Cats in a day. */
+        15;                                                    /*From Dogs and Chickens in a day. */
+    static constexpr int DOG_REDUCTION_CONDITION_BY_SOUND = 5; /* From Cats in a day. */
 
     /* Eating. */
     static constexpr int CHICKEN_EAT_UNIT = 1;
@@ -138,7 +137,7 @@ public:
     static constexpr uint8_t PIG_NUM_SOUND_WHEN_BORN = 2;
 
     /* Go out. */
-    static constexpr int TIME_TO_GO_BACK = 12;  /* Except Cat */
+    static constexpr int TIME_TO_GO_BACK = 12; /* Except Cat */
 
     /* Die. */
     static constexpr int DIE_WHEN_HAPPY_INDEX_ZERO = 3;
@@ -164,11 +163,12 @@ public:
     virtual ~Animal();
     const std::string getName(void) const;
     const uint16_t getAge(void) const;
+    virtual void incAge(void);
+    virtual bool exceedLifeTime(void) = 0;
 
 protected:
-    virtual void incAge(void) = 0;
+
     virtual void sound(int NumOfSound = 1) = 0;
-    virtual bool exceedLifeTime(void) = 0;
 
 };
 }; // namespace Farm

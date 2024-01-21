@@ -19,3 +19,9 @@ const std::string Farm::Animal::getName(void) const {
 const uint16_t Farm::Animal::getAge(void) const {
     return this->mAge;
 }
+
+void Farm::Animal::incAge() {
+    std::stringstream ss;
+    ss << "[" << this->mName << "] Inc Age to => " << ++this->mAge;
+    this->mLogger->LogI(ss.str());
+}

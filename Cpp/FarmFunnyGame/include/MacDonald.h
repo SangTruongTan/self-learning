@@ -20,7 +20,8 @@ private:
     Farm::TimeManager *mTimeManager;
     Farm::UserInterface *mUserInterface;
 
-    std::mutex mMutex;
+    std::mutex mMutexUserInterface;
+    std::mutex mMutexAnimals;
 public:
     std::vector<Animal *> mAnimalList;
     Farm::SharedObjects mShared;

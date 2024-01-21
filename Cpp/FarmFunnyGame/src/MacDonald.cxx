@@ -1,5 +1,6 @@
 #include "MacDonald.h"
 
+#include <algorithm>
 #include <cstring>
 #include <thread>
 
@@ -13,15 +14,15 @@ void Farm::MacDonald::start() {
     this->mTimeManager = new TimeManager(this->mLogger);
 
     this->mLogger->LogI("Create a new User Interface attribute");
-    this->mUserInterface = new UserInterface(this->mLogger, &this->mMutex);
+    this->mUserInterface = new UserInterface(this->mLogger, &this->mMutexUserInterface);
 
     std::vector<std::pair<int, std::function<void(void)>>> timeLists;
     timeLists.push_back(std::make_pair(0, [this]() {
+        std::lock_guard<std::mutex> lock(this->mMutexAnimals);
         // std::cout << "this is 12AM" << std::endl;
         this->incAgeAll();
     }));
-    std::thread timeThread(std::bind(&TimeManager::start, this->mTimeManager,
-                                     std::ref(timeLists)));
+    std::thread timeThread(std::bind(&TimeManager::start, this->mTimeManager, std::ref(timeLists)));
     this->mLogger->LogI("Spawned a new thread for TimeManager::start()");
 
     std::thread userInterfaceThread(std::bind(&UserInterface::start, this->mUserInterface));
@@ -39,14 +40,15 @@ void Farm::MacDonald::handleCommands() {
     this->mLogger->LogI("Enter Farm::MacDonald::handleCommands()");
     std::vector<std::string> cmd;
     while (true) {
-        std::unique_lock<std::mutex> lock(this->mMutex);
-        this->mUserInterface->mCV.wait(lock, [this] { return this->mUserInterface->mIss.peek() != EOF; });
+        std::unique_lock<std::mutex> lock(this->mMutexUserInterface);
+        this->mUserInterface->mCV.wait(lock,
+                                       [this] { return this->mUserInterface->mIss.peek() != EOF; });
         this->mLogger->LogD("Enter parsing process");
 
         std::string tempString{};
         std::stringstream ss;
         int i{0};
-        while (this->mUserInterface->mIss.peek() != EOF ) {
+        while (this->mUserInterface->mIss.peek() != EOF) {
             this->mUserInterface->mIss >> tempString;
             ss.clear();
             ss.str(std::string());
@@ -56,6 +58,8 @@ void Farm::MacDonald::handleCommands() {
             i++;
         }
         this->mUserInterface->mCV.notify_one();
+
+        std::lock_guard<std::mutex> lockAnimal(this->mMutexAnimals);
         if (cmd.size() <= 1) {
             std::cout << "Command doesn't support" << std::endl;
         } else {
@@ -114,7 +118,9 @@ void Farm::MacDonald::handleCommands() {
                             this->mLogger->LogI("CMD --> let specific animal back");
                         }
                     } else {
-                        std::cout << "Command doesn't support --> You must specify \"out\" or \"back\"" << std::endl;
+                        std::cout << "Command doesn't support --> You must "
+                                     "specify \"out\" or \"back\""
+                                  << std::endl;
                     }
                 }
             } else if (cmd.at(0) == "buy") {
@@ -126,8 +132,10 @@ void Farm::MacDonald::handleCommands() {
                         ss.clear();
                         ss.str(std::string());
                         if (this->isAnimalExist(cmd.at(2).c_str()) == false) {
-                            this->mAnimalList.emplace_back(new Farm::Chicken(this->mLogger, cmd.at(2).c_str(), this->mShared));
-                            std::cout << "New Chicken (" << cmd.at(2) << ") has been bought" << std::endl;
+                            this->mAnimalList.emplace_back(
+                                new Farm::Chicken(this->mLogger, cmd.at(2).c_str(), this->mShared));
+                            std::cout << "New Chicken (" << cmd.at(2) << ") has been bought"
+                                      << std::endl;
                         } else {
                             this->mLogger->LogI("This animal has been existed");
                             std::cout << "This animal has been existed" << std::endl;
@@ -136,19 +144,21 @@ void Farm::MacDonald::handleCommands() {
                         ss << "CMD --> buy cats named: " << cmd.at(2);
                         this->mLogger->LogI(ss.str().c_str());
                         ss.clear();
-                        ss.str(std::string());    
+                        ss.str(std::string());
                     } else if (cmd.at(1) == "dogs") {
                         ss << "CMD --> buy dogs named: " << cmd.at(2);
                         this->mLogger->LogI(ss.str().c_str());
                         ss.clear();
-                        ss.str(std::string());    
+                        ss.str(std::string());
                     } else if (cmd.at(1) == "pigs") {
                         ss << "CMD --> buy pigs named: " << cmd.at(2);
                         this->mLogger->LogI(ss.str().c_str());
                         ss.clear();
-                        ss.str(std::string());    
+                        ss.str(std::string());
                     } else {
-                        std::cout << "Command doesn't support --> You must choose one of animal types (chickens|cats|dogs|pigs)" << std::endl;
+                        std::cout << "Command doesn't support --> You must choose "
+                                     "one of animal types (chickens|cats|dogs|pigs)"
+                                  << std::endl;
                     }
                 } else {
                     std::cout << "Command doesn't support" << std::endl;
@@ -179,14 +189,20 @@ void Farm::MacDonald::incAgeAll() {
     for (Farm::Animal *animal : this->mAnimalList) {
         animal->incAge();
     }
-    for (std::vector<Animal *>::iterator animal = this->mAnimalList.begin();
-         animal != this->mAnimalList.end();) {
-        if ((*animal)->exceedLifeTime() == true) {
-            this->mAnimalList.erase(animal);
-            delete (*animal);
-        } else {
-            ++animal;
-        }
+    if (this->mAnimalList.size() > 0) {
+        std::vector<Animal *>::iterator removeIterator = std::remove_if(
+            this->mAnimalList.begin(), this->mAnimalList.end(), [this](Animal *animal) {
+                this->mLogger->LogD("Checking animal's age");
+                if (animal->exceedLifeTime()) {
+                    std::ostringstream os;
+                    os << "Animal[" << animal->getName() << "] Exceeded life time";
+                    this->mLogger->LogI(os.str());
+                    delete animal;
+                    return true; // Remove the animal from the vector
+                }
+                return false; // Keep the animal in the vector
+            });
+        this->mAnimalList.erase(removeIterator, this->mAnimalList.end());
     }
 }
 
@@ -196,7 +212,7 @@ bool Farm::MacDonald::isAnimalExist(const char *name) {
         this->mLogger->LogI(ani->getName().c_str());
         if (::strcmp(ani->getName().c_str(), name) == 0) {
             std::stringstream ss;
-            ss << "Found (" << name << ") in Animal List"; 
+            ss << "Found (" << name << ") in Animal List";
             this->mLogger->LogI(ss.str().c_str());
             retval = true;
         }
