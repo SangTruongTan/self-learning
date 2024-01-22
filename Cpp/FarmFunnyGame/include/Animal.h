@@ -150,7 +150,6 @@ public:
     static constexpr int DOG_TRAIN_FACTOR = 2;
 
 protected:
-    Farm::Logger *mLogger;
     std::string mName;
     uint16_t mAge;
     double mWeight;
@@ -159,7 +158,7 @@ protected:
     Farm::SharedObjects &mShared;
 
 public:
-    Animal(Farm::Logger *Log, std::string Name, Farm::SharedObjects &shared);
+    Animal(std::string Name, Farm::SharedObjects &shared);
     virtual ~Animal();
     const std::string getName(void) const;
     const uint16_t getAge(void) const;

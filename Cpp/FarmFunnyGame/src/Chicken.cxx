@@ -1,32 +1,35 @@
 #include "Chicken.h"
 
-Farm::Chicken::Chicken(Farm::Logger *Log, std::string Name, Farm::SharedObjects &shared)
-    : Animal(Log, Name, shared) {
+namespace Farm {
+
+Chicken::Chicken(std::string Name, SharedObjects &shared)
+    : Animal(Name, shared) {
     std::stringstream ss;
     ss << "A new Chicken named: \"" << this->mName << "\" has been born";
-    this->mLogger->LogI(ss.str());
+    LOG_ANIMAL(LogLevel::INFO, ss.str());
 }
 
-Farm::Chicken::~Chicken() {
-    this->sound(Farm::Animal::CHICKEN_NUM_SOUND_WHEN_DIE);
+Chicken::~Chicken() {
+    this->sound(Animal::CHICKEN_NUM_SOUND_WHEN_DIE);
     std::stringstream ss;
     ss << "\"" << this->mName << "\" has been died!";
-    this->mLogger->LogI(ss.str());
-    std::cout << ss.str().c_str() << std::endl;
+    LOG_ANIMAL(LogLevel::INFO, ss.str());
+    LOG_CONSOLE(LogLevel::INFO, ss.str().c_str(), "\n");
 }
 
-void Farm::Chicken::sound(int NumOfSound) {
+void Chicken::sound(int NumOfSound) {
     for (int i = 0; i < NumOfSound; i++) {
         this->mShared.ChickenSound++;
-        this->mLogger->LogI(std::string(CHICKENS_SOUND));
-        std::cout << CHICKENS_SOUND << std::endl;
+        LOG_ANIMAL(LogLevel::INFO, std::string(CHICKENS_SOUND));
+        LOG_CONSOLE(LogLevel::INFO, CHICKENS_SOUND, "\n");
     }
 }
 
-bool Farm::Chicken::exceedLifeTime(void) {
+bool Chicken::exceedLifeTime(void) {
     bool retVal = false;
-    if (this->getAge() >= Farm::Animal::CHICKEN_LIFE_TIME) {
+    if (this->getAge() >= Animal::CHICKEN_LIFE_TIME) {
         retVal = true;
     }
     return retVal;
 }
+} // namespace Farm

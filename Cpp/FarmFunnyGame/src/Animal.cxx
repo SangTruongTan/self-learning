@@ -1,27 +1,30 @@
 #include "Animal.h"
 
-Farm::Animal::Animal(Farm::Logger *Log, std::string Name, Farm::SharedObjects &shared)
-    : mLogger(Log), mName(Name), mAge(0), mWeight(0), mFeedConsecutiveDays(0),
+namespace Farm {
+
+Animal::Animal(std::string Name, SharedObjects &shared)
+    : mName(Name), mAge(0), mWeight(0), mFeedConsecutiveDays(0),
       mGoOutStatus(false), mShared(shared) {
     std::stringstream ss;
     ss << "New Animal named: " << mName;
-    this->mLogger->LogD(ss.str());
+    LOG_ANIMAL(LogLevel::DEBUG, ss.str());
 }
 
-Farm::Animal::~Animal() {
-    this->mLogger->LogD("This animal will be dead");
+Animal::~Animal() {
+    LOG_ANIMAL(LogLevel::DEBUG, "This animal will be dead");
 }
 
-const std::string Farm::Animal::getName(void) const {
+const std::string Animal::getName(void) const {
     return this->mName;
 }
 
-const uint16_t Farm::Animal::getAge(void) const {
+const uint16_t Animal::getAge(void) const {
     return this->mAge;
 }
 
-void Farm::Animal::incAge() {
+void Animal::incAge() {
     std::stringstream ss;
     ss << "[" << this->mName << "] Inc Age to => " << ++this->mAge;
-    this->mLogger->LogI(ss.str());
+    LOG_ANIMAL(LogLevel::INFO, ss.str());
 }
+} // namespace Farm

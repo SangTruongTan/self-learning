@@ -21,4 +21,5 @@ const std::unordered_map<Logger::ModuleName, std::string> Logger::moduleNameStri
     {Logger::ModuleName::LOG_SRC_TIME_MANAGEMENT, "CLOCK"},
     {Logger::ModuleName::LOG_SRC_MAC_DONALD, "FARM"},
     {Logger::ModuleName::LOG_SRC_DEFAULT, "DEFAULT"}};
+
 } // namespace Farm

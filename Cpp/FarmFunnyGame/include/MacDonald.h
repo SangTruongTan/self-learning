@@ -16,7 +16,6 @@ namespace Farm {
 
 class MacDonald {
 private:
-    Farm::Logger *mLogger;
     Farm::TimeManager *mTimeManager;
     Farm::UserInterface *mUserInterface;
 
@@ -26,7 +25,7 @@ public:
     std::vector<Animal *> mAnimalList;
     Farm::SharedObjects mShared;
 
-    MacDonald(Farm::Logger *Log);
+    MacDonald();
     void start();
     void handleCommands();
 

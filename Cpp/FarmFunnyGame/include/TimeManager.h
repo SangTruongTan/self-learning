@@ -9,7 +9,6 @@
 namespace Farm {
 class TimeManager {
 private:
-    Farm::Logger *mLogger;
     bool mRunning;
     int mHour;
     int mDay;
@@ -17,10 +16,8 @@ private:
 public:
     /**
      * @brief Construct a new Time Manager object
-     *
-     * @param Log
      */
-    TimeManager(Farm::Logger *Log);
+    TimeManager();
 
     /**
      * @brief Destroy the Time Manager object

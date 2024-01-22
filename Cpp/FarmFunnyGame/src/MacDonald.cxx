@@ -4,46 +4,47 @@
 #include <cstring>
 #include <thread>
 
-Farm::MacDonald::MacDonald(Farm::Logger *Log)
-    : mLogger(Log), mTimeManager(nullptr), mUserInterface(nullptr) {
-    this->mLogger->LogI("New Mac Donal Farm has been created");
+namespace Farm {
+
+MacDonald::MacDonald()
+    : mTimeManager(nullptr), mUserInterface(nullptr) {
+    LOG_FARM(LogLevel::INFO, "New Mac Donal Farm has been created");
 }
 
-void Farm::MacDonald::start() {
-    this->mLogger->LogI("Create new time manager");
-    this->mTimeManager = new TimeManager(this->mLogger);
+void MacDonald::start() {
+    LOG_FARM(LogLevel::INFO, "Create new time manager");
+    this->mTimeManager = new TimeManager();
 
-    this->mLogger->LogI("Create a new User Interface attribute");
-    this->mUserInterface = new UserInterface(this->mLogger, &this->mMutexUserInterface);
+    LOG_FARM(LogLevel::INFO, "Create a new User Interface attribute");
+    this->mUserInterface = new UserInterface(&this->mMutexUserInterface);
 
     std::vector<std::pair<int, std::function<void(void)>>> timeLists;
     timeLists.push_back(std::make_pair(0, [this]() {
         std::lock_guard<std::mutex> lock(this->mMutexAnimals);
-        // std::cout << "this is 12AM" << std::endl;
         this->incAgeAll();
     }));
     std::thread timeThread(std::bind(&TimeManager::start, this->mTimeManager, std::ref(timeLists)));
-    this->mLogger->LogI("Spawned a new thread for TimeManager::start()");
+    LOG_FARM(LogLevel::INFO, "Spawned a new thread for TimeManager::start()");
 
     std::thread userInterfaceThread(std::bind(&UserInterface::start, this->mUserInterface));
-    this->mLogger->LogI("Spawned a new thread for UserInterface::start()");
+    LOG_FARM(LogLevel::INFO, "Spawned a new thread for UserInterface::start()");
 
     std::thread handleCommandsThread(std::bind(&MacDonald::handleCommands, this));
-    this->mLogger->LogI("Spawned a new thread for MacDonald::handleCommands()");
+    LOG_FARM(LogLevel::INFO, "Spawned a new thread for MacDonald::handleCommands()");
 
     timeThread.join();
     userInterfaceThread.join();
     handleCommandsThread.join();
 }
 
-void Farm::MacDonald::handleCommands() {
-    this->mLogger->LogI("Enter Farm::MacDonald::handleCommands()");
+void MacDonald::handleCommands() {
+    LOG_FARM(LogLevel::INFO, "Enter MacDonald::handleCommands()");
     std::vector<std::string> cmd;
     while (true) {
         std::unique_lock<std::mutex> lock(this->mMutexUserInterface);
         this->mUserInterface->mCV.wait(lock,
                                        [this] { return this->mUserInterface->mIss.peek() != EOF; });
-        this->mLogger->LogD("Enter parsing process");
+        LOG_FARM(LogLevel::DEBUG, "Enter parsing process");
 
         std::string tempString{};
         std::stringstream ss;
@@ -54,73 +55,72 @@ void Farm::MacDonald::handleCommands() {
             ss.str(std::string());
             ss << "Argument[" << i << "] = " << tempString;
             cmd.emplace_back(tempString);
-            this->mLogger->LogD(ss.str().c_str());
+            LOG_FARM(LogLevel::DEBUG, ss.str().c_str());
             i++;
         }
         this->mUserInterface->mCV.notify_one();
 
         std::lock_guard<std::mutex> lockAnimal(this->mMutexAnimals);
         if (cmd.size() <= 1) {
-            std::cout << "Command doesn't support" << std::endl;
+            LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
         } else {
             if (cmd.at(0) == "report") {
                 if (cmd.at(1) == "all") {
-                    this->mLogger->LogI("CMD --> report all");
+                    LOG_FARM(LogLevel::INFO, "CMD --> report all");
                 } else if (cmd.at(1) == "resource") {
-                    this->mLogger->LogI("CMD --> report resource");
+                    LOG_FARM(LogLevel::INFO, "CMD --> report resource");
                 } else if (cmd.at(1) == "animals") {
-                    this->mLogger->LogI("CMD --> report animals");
+                    LOG_FARM(LogLevel::INFO, "CMD --> report animals");
                 } else {
-                    std::cout << "Command doesn't support" << std::endl;
+                    LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
                 }
             } else if (cmd.at(0) == "feed") {
                 if (cmd.at(1) == "animals") {
-                    this->mLogger->LogI("CMD --> feed animals");
+                    LOG_FARM(LogLevel::INFO, "CMD --> feed animals");
                 } else if (cmd.at(1) == "chickens") {
-                    this->mLogger->LogI("CMD --> feed chickens");
+                    LOG_FARM(LogLevel::INFO, "CMD --> feed chickens");
                 } else if (cmd.at(1) == "cats") {
-                    this->mLogger->LogI("CMD --> feed cats");
+                    LOG_FARM(LogLevel::INFO, "CMD --> feed cats");
                 } else if (cmd.at(1) == "dogs") {
-                    this->mLogger->LogI("CMD --> feed dogs");
+                    LOG_FARM(LogLevel::INFO, "CMD --> feed dogs");
                 } else if (cmd.at(1) == "pigs") {
-                    this->mLogger->LogI("CMD --> feed pigs");
+                    LOG_FARM(LogLevel::INFO, "CMD --> feed pigs");
                 } else {
-                    this->mLogger->LogI("CMD --> feed a specific animal");
+                    LOG_FARM(LogLevel::INFO, "CMD --> feed a specific animal");
                 }
             } else if (cmd.at(0) == "let") {
                 if (cmd.size() == 3) {
                     if (cmd.at(2) == "out") {
                         if (cmd.at(2) == "animals") {
-                            this->mLogger->LogI("CMD --> let animals out");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let animals out");
                         } else if (cmd.at(2) == "chickens") {
-                            this->mLogger->LogI("CMD --> let chickens out");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let chickens out");
                         } else if (cmd.at(2) == "cats") {
-                            this->mLogger->LogI("CMD --> let cats out");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let cats out");
                         } else if (cmd.at(2) == "dogs") {
-                            this->mLogger->LogI("CMD --> let dogs out");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let dogs out");
                         } else if (cmd.at(2) == "pigs") {
-                            this->mLogger->LogI("CMD --> let dogs out");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let dogs out");
                         } else {
-                            this->mLogger->LogI("CMD --> let specific animal out");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let specific animal out");
                         }
                     } else if (cmd.at(2) == "back") {
                         if (cmd.at(2) == "animals") {
-                            this->mLogger->LogI("CMD --> let animals back");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let animals back");
                         } else if (cmd.at(2) == "chickens") {
-                            this->mLogger->LogI("CMD --> let chickens back");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let chickens back");
                         } else if (cmd.at(2) == "cats") {
-                            this->mLogger->LogI("CMD --> let cats back");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let cats back");
                         } else if (cmd.at(2) == "dogs") {
-                            this->mLogger->LogI("CMD --> let dogs back");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let dogs back");
                         } else if (cmd.at(2) == "pigs") {
-                            this->mLogger->LogI("CMD --> let dogs back");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let dogs back");
                         } else {
-                            this->mLogger->LogI("CMD --> let specific animal back");
+                            LOG_FARM(LogLevel::INFO, "CMD --> let specific animal back");
                         }
                     } else {
-                        std::cout << "Command doesn't support --> You must "
-                                     "specify \"out\" or \"back\""
-                                  << std::endl;
+                        LOG_CONSOLE(LogLevel::INFO, "Command doesn't support --> You must specify \"out\" or \"back\"\n");
+
                     }
                 }
             } else if (cmd.at(0) == "buy") {
@@ -128,75 +128,72 @@ void Farm::MacDonald::handleCommands() {
                     std::stringstream ss;
                     if (cmd.at(1) == "chickens") {
                         ss << "CMD --> buy chickens named: " << cmd.at(2);
-                        this->mLogger->LogI(ss.str().c_str());
+                        LOG_FARM(LogLevel::INFO, ss.str().c_str());
                         ss.clear();
                         ss.str(std::string());
                         if (this->isAnimalExist(cmd.at(2).c_str()) == false) {
                             this->mAnimalList.emplace_back(
-                                new Farm::Chicken(this->mLogger, cmd.at(2).c_str(), this->mShared));
-                            std::cout << "New Chicken (" << cmd.at(2) << ") has been bought"
-                                      << std::endl;
+                                new Chicken(cmd.at(2).c_str(), this->mShared));
+                            LOG_CONSOLE(LogLevel::INFO, "New Chicken [", cmd.at(2), "] has been bought\n");
                         } else {
-                            this->mLogger->LogI("This animal has been existed");
-                            std::cout << "This animal has been existed" << std::endl;
+                            LOG_FARM(LogLevel::INFO, "This animal has been existed");
+                            LOG_CONSOLE(LogLevel::INFO, "This animal has been existed\n");
                         }
                     } else if (cmd.at(1) == "cats") {
                         ss << "CMD --> buy cats named: " << cmd.at(2);
-                        this->mLogger->LogI(ss.str().c_str());
+                        LOG_FARM(LogLevel::INFO, ss.str().c_str());
                         ss.clear();
                         ss.str(std::string());
                     } else if (cmd.at(1) == "dogs") {
                         ss << "CMD --> buy dogs named: " << cmd.at(2);
-                        this->mLogger->LogI(ss.str().c_str());
+                        LOG_FARM(LogLevel::INFO, ss.str().c_str());
                         ss.clear();
                         ss.str(std::string());
                     } else if (cmd.at(1) == "pigs") {
                         ss << "CMD --> buy pigs named: " << cmd.at(2);
-                        this->mLogger->LogI(ss.str().c_str());
+                        LOG_FARM(LogLevel::INFO, ss.str().c_str());
                         ss.clear();
                         ss.str(std::string());
                     } else {
-                        std::cout << "Command doesn't support --> You must choose "
-                                     "one of animal types (chickens|cats|dogs|pigs)"
-                                  << std::endl;
+                        LOG_CONSOLE(LogLevel::INFO, "Command doesn't support --> You must choose one of animal types (chickens|cats|dogs|pigs)\n");
                     }
                 } else {
-                    std::cout << "Command doesn't support" << std::endl;
+                    LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
                 }
             } else if (cmd.at(0) == "sell") {
                 if (cmd.at(1) == "chickens") {
-                    this->mLogger->LogI("CMD --> sell all chickens");
+                    LOG_FARM(LogLevel::INFO, "CMD --> sell all chickens");
                 } else if (cmd.at(1) == "cats") {
-                    this->mLogger->LogI("CMD --> sell all cats");
+                    LOG_FARM(LogLevel::INFO, "CMD --> sell all cats");
                 } else if (cmd.at(1) == "dogs") {
-                    this->mLogger->LogI("CMD --> sell all dogs");
+                    LOG_FARM(LogLevel::INFO, "CMD --> sell all dogs");
                 } else if (cmd.at(1) == "pigs") {
-                    this->mLogger->LogI("CMD --> sell all pigs");
+                    LOG_FARM(LogLevel::INFO, "CMD --> sell all pigs");
                 } else {
-                    this->mLogger->LogI("CMD --> sell a specific animal");
+                    LOG_FARM(LogLevel::INFO, "CMD --> sell a specific animal");
                 }
             } else {
-                std::cout << "Command doesn't support" << std::endl;
+                LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
             }
         }
         cmd.clear();
     }
-    this->mLogger->LogI("Exit Farm::MacDonald::handleCommands()");
+    LOG_FARM(LogLevel::INFO, "Exit MacDonald::handleCommands()");
 }
 
-void Farm::MacDonald::incAgeAll() {
-    this->mLogger->LogI("Increase age for all animals");
-    for (Farm::Animal *animal : this->mAnimalList) {
+void MacDonald::incAgeAll() {
+    LOG_FARM(LogLevel::INFO, "Increase age for all animals");
+    for (Animal *animal : this->mAnimalList) {
         animal->incAge();
     }
     if (this->mAnimalList.size() > 0) {
         std::vector<Animal *>::iterator removeIterator = std::remove_if(
             this->mAnimalList.begin(), this->mAnimalList.end(), [this](Animal *animal) {
-                this->mLogger->LogD("Checking animal's age");
+                LOG_FARM(LogLevel::DEBUG, "Checking animal's age");
                 if (animal->exceedLifeTime()) {
                     std::ostringstream os;
                     os << "Animal[" << animal->getName() << "] Exceeded life time";
-                    this->mLogger->LogI(os.str());
+                    LOG_FARM(LogLevel::INFO, os.str());
                     delete animal;
                     return true; // Remove the animal from the vector
                 }
@@ -206,16 +203,18 @@ void Farm::MacDonald::incAgeAll() {
     }
 }
 
-bool Farm::MacDonald::isAnimalExist(const char *name) {
+bool MacDonald::isAnimalExist(const char *name) {
     bool retval = false;
-    for (const Farm::Animal *ani : this->mAnimalList) {
-        this->mLogger->LogI(ani->getName().c_str());
+    for (const Animal *ani : this->mAnimalList) {
+        LOG_FARM(LogLevel::INFO, ani->getName().c_str());
         if (::strcmp(ani->getName().c_str(), name) == 0) {
             std::stringstream ss;
             ss << "Found (" << name << ") in Animal List";
-            this->mLogger->LogI(ss.str().c_str());
+            LOG_FARM(LogLevel::INFO, ss.str().c_str());
             retval = true;
         }
     }
     return retval;
 }
+
+} // namespace Farm

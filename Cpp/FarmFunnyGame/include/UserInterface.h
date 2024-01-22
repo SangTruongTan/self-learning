@@ -11,7 +11,6 @@
 namespace Farm {
 class UserInterface {
 private:
-    Farm::Logger *mLogger;
     std::string mUserInput;
     std::mutex *pMutex;
 public:
@@ -19,7 +18,7 @@ public:
     std::condition_variable mCV;
     std::istringstream mIss;
 
-    UserInterface(Farm::Logger *Log, std::mutex *Mutex);
+    UserInterface(std::mutex *Mutex);
 
     ~UserInterface();
 

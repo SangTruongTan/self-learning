@@ -4,11 +4,12 @@
 #include <sstream>
 #include <thread>
 
-Farm::TimeManager::TimeManager(Farm::Logger *Log)
-    : mLogger(Log), mRunning(true), mHour(0), mDay(0){};
-Farm::TimeManager::~TimeManager() {}
+namespace Farm {
+TimeManager::TimeManager()
+    : mRunning(true), mHour(0), mDay(0){};
+TimeManager::~TimeManager() {}
 
-void Farm::TimeManager::start(
+void TimeManager::start(
     std::vector<std::pair<int, std::function<void(void)>>> &timeLists) {
     while (this->mRunning == true) {
 
@@ -27,3 +28,4 @@ void Farm::TimeManager::start(
         }
     }
 }
+} // namespace Farm
