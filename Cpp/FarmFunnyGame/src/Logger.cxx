@@ -6,6 +6,7 @@ Logger::Logger(void) {}
 
 Logger::~Logger(void) {
     LOG_DEFAULT(Farm::LogLevel::INFO, "Deinitialize Logger module");
+    deinitScreen();
     DLT_UNREGISTER_CONTEXT(ctx);
     DLT_UNREGISTER_APP();
 }
@@ -23,6 +24,36 @@ void Logger::setAppContext(std::string AppId, std::string ContextId) {
     DLT_REGISTER_APP(AppId.c_str(), "New Application");
     DLT_REGISTER_CONTEXT(ins.ctx, ContextId.c_str(), "Test Context for Logging");
     LOG_DEFAULT(Farm::LogLevel::INFO, "Initialized Logger module");
+    initScreen();
+}
+
+void Logger::initScreen() {
+    LOG_DEFAULT(LogLevel::INFO, "Initializing the Screen");
+    initscr();
+    cbreak();
+    echo();
+    input = newwin(1, COLS, LINES - 1, 0);
+    output = newwin(LINES - 1, COLS, 0, 0);
+    wmove(output, LINES - 2, 0);    /* start at the bottom */
+    scrollok(output, TRUE);
+    iBuffer = new char[1024];
+}
+
+void Logger::deinitScreen() {
+    LOG_DEFAULT(LogLevel::INFO, "Deinitializing the Screen");
+    endwin();
+    delete[] iBuffer;
+}
+
+const char* Logger::getLine(std::string sInput) {
+    std::lock_guard<std::mutex> lock(mInputMutex);
+    mvwprintw(input, 0, 0, "%s", sInput.c_str());
+    if (wgetnstr(input, iBuffer, COLS - 4) != OK) {
+        return nullptr;
+    }
+    werase(input);
+
+    return iBuffer;
 }
 
 const std::unordered_map<LogLevel, std::string> Logger::logLevelStrings = {

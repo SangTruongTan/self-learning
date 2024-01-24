@@ -2,11 +2,14 @@
 #define __LOGGER_H__
 
 #include <iostream>
+#include <chrono>
 #include <mutex>
 #include <sstream>
 #include <string>
 #include <unordered_map>
+#include <thread>
 
+#include "curses.h"
 #include "dlt/dlt.h"
 
 /* DLT LOG */
@@ -34,6 +37,8 @@
 #define LOG_CONSOLE(level, ...)                                                                    \
     Farm::Logger::getInstance().log_console(level, ##__VA_ARGS__)
 
+/* Get Line */
+#define GET_LINE(msg) Logger::getInstance().getLine(msg)
 
 namespace Farm {
 
@@ -59,6 +64,8 @@ public:
 
     void setLogLevel(LogLevel level);
 
+    const char* getLine(std::string input);
+
     /**
      * @brief Construct a new Logger object
      *
@@ -79,7 +86,13 @@ public:
     void log_console(LogLevel level, Args... args) {
         if (level >= logLevel) {
             std::lock_guard<std::mutex> lock(this->mMutex);
-            std::cout << log_simple(args...).str();
+            int x = getcurx(input);
+            int y = getcury(input);
+            waddstr(output, log_simple(args...).str().c_str());
+            wmove(input, y, x);
+            wrefresh(output);
+            wrefresh(input);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
     }
 
@@ -114,6 +127,13 @@ private:
     DLT_DECLARE_CONTEXT(ctx)
     LogLevel logLevel = INFO;
 
+    std::mutex mMutex;
+    std::mutex mInputMutex;
+
+    WINDOW* input;
+    WINDOW* output;
+    char* iBuffer;
+
     Logger(const Logger &rhs);
     Logger &operator=(const Logger &rhs);
 
@@ -127,10 +147,13 @@ private:
         // Base case for the variadic template recursion
     }
 
+    void initScreen();
+
+    void deinitScreen();
+
     static const std::unordered_map<LogLevel, std::string> logLevelStrings;
     static const std::unordered_map<ModuleName, std::string> moduleNameStrings;
     static const std::unordered_map<LogLevel, DltLogLevelType> dltLogLevel;
-    std::mutex mMutex;
 };
 
 } // namespace Farm

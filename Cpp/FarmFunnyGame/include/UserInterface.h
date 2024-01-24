@@ -1,6 +1,7 @@
 #ifndef __USER_INTERFACE_H__
 #define __USER_INTERFACE_H__
 
+#include <atomic>
 #include <condition_variable>
 #include <mutex>
 #include <sstream>
@@ -17,6 +18,8 @@ public:
 
     std::condition_variable mCV;
     std::istringstream mIss;
+
+    std::atomic<bool> mIsPoisonReceived;
 
     UserInterface(std::mutex *Mutex);
 

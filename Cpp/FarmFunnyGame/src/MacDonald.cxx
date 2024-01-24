@@ -60,6 +60,12 @@ void MacDonald::handleCommands() {
         }
         this->mUserInterface->mCV.notify_one();
 
+        if (mUserInterface->mIsPoisonReceived == true) {
+            LOG_FARM(LogLevel::INFO, "The poison signal received. All threads will be canceled");
+            mTimeManager->mIsPoisonReceived = true;
+            break;
+        }
+
         std::lock_guard<std::mutex> lockAnimal(this->mMutexAnimals);
         if (cmd.size() <= 1) {
             LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");

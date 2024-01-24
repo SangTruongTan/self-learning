@@ -1,6 +1,7 @@
 #ifndef __TIME_MANAGER_H__
 #define __TIME_MANAGER_H__
 
+#include <atomic>
 #include <functional>
 #include <vector>
 
@@ -14,6 +15,8 @@ private:
     int mDay;
 
 public:
+    std::atomic<bool> mIsPoisonReceived;
+
     /**
      * @brief Construct a new Time Manager object
      */
@@ -27,6 +30,7 @@ public:
 
     void
     start(std::vector<std::pair<int, std::function<void(void)>>> &timeLists);
+
 };
 };     // namespace Farm
 #endif /* __TIME_MANAGER_H__ */

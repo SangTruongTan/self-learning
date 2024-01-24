@@ -6,13 +6,17 @@
 
 namespace Farm {
 TimeManager::TimeManager()
-    : mRunning(true), mHour(0), mDay(0){};
+    : mRunning(true), mHour(0), mDay(0), mIsPoisonReceived(false) {};
 TimeManager::~TimeManager() {}
 
 void TimeManager::start(
     std::vector<std::pair<int, std::function<void(void)>>> &timeLists) {
     while (this->mRunning == true) {
 
+        if (mIsPoisonReceived == true) {
+            LOG_CLOCK(LogLevel::INFO, "The poison signal received");
+            break;
+        }
         std::stringstream sstr;
         sstr << "mDay=" << this->mDay << ";mHour=" << this->mHour;
         // this->mLogger->LogI(sstr.str());

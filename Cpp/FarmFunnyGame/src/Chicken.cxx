@@ -12,7 +12,7 @@ Chicken::Chicken(std::string Name, SharedObjects &shared)
 Chicken::~Chicken() {
     this->sound(Animal::CHICKEN_NUM_SOUND_WHEN_DIE);
     std::stringstream ss;
-    ss << "\"" << this->mName << "\" has been died!";
+    ss << "Chicken [" << this->mName << "] has been died!";
     LOG_ANIMAL(LogLevel::INFO, ss.str());
     LOG_CONSOLE(LogLevel::INFO, ss.str().c_str(), "\n");
 }
@@ -21,7 +21,7 @@ void Chicken::sound(int NumOfSound) {
     for (int i = 0; i < NumOfSound; i++) {
         this->mShared.ChickenSound++;
         LOG_ANIMAL(LogLevel::INFO, std::string(CHICKENS_SOUND));
-        LOG_CONSOLE(LogLevel::INFO, CHICKENS_SOUND, "\n");
+        LOG_CONSOLE(LogLevel::INFO, "[", mName, "] => ", CHICKENS_SOUND, "\n");
     }
 }
 

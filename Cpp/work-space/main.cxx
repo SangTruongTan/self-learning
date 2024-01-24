@@ -47,7 +47,6 @@ int main(void)
                 wrefresh(output);
                 }
                 done = (*buffer == 4);  /* quit on control-D */
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
 
         }
 
