@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <cstring>
 #include <thread>
+#include <typeinfo>
+#include "VariadicTable.h"
 
 namespace Farm {
 
@@ -73,10 +75,12 @@ void MacDonald::handleCommands() {
             if (cmd.at(0) == "report") {
                 if (cmd.at(1) == "all") {
                     LOG_FARM(LogLevel::INFO, "CMD --> report all");
+
                 } else if (cmd.at(1) == "resource") {
                     LOG_FARM(LogLevel::INFO, "CMD --> report resource");
                 } else if (cmd.at(1) == "animals") {
                     LOG_FARM(LogLevel::INFO, "CMD --> report animals");
+                    reportAnimals();
                 } else {
                     LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
                 }
@@ -221,6 +225,24 @@ bool MacDonald::isAnimalExist(const char *name) {
         }
     }
     return retval;
+}
+
+const char* MacDonald::getAnimalName(Animal *ani) const {
+    if (dynamic_cast<Chicken *>(ani) != nullptr) {
+        return MacDonald::CHICKEN_NAME;
+    }
+    return MacDonald::ANIMAL_NAME;
+}
+
+void MacDonald::reportAnimals() const {
+    VariadicTable<std::string, const char*, const uint16_t> vt({"Name", "Type", "Age"}, 20);
+    for (Animal *animal : this->mAnimalList) {
+        vt.addRow(animal->getName(), getAnimalName(animal), animal->getAge());
+    }
+    std::stringstream ss;
+    vt.print(ss);
+    LOG_CONSOLE(LogLevel::INFO, "Animals status\n");
+    LOG_CONSOLE(LogLevel::INFO, ss.str());
 }
 
 } // namespace Farm

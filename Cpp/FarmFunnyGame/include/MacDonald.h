@@ -16,11 +16,21 @@ namespace Farm {
 
 class MacDonald {
 private:
+    static constexpr const char* ANIMAL_NAME = "Animal";
+    static constexpr const char* CHICKEN_NAME = "Chicken";
+    static constexpr const char* DOG_NAME = "Dog";
+    static constexpr const char* PIG_NAME = "Pig";
+    static constexpr const char* CAT_NAME = "Cat";
+
     Farm::TimeManager *mTimeManager;
     Farm::UserInterface *mUserInterface;
 
     std::mutex mMutexUserInterface;
     std::mutex mMutexAnimals;
+
+    const char* getAnimalName(Animal *ani) const;
+    void reportAnimals() const;
+
 public:
     std::vector<Animal *> mAnimalList;
     Farm::SharedObjects mShared;
