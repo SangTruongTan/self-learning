@@ -194,7 +194,7 @@ void MacDonald::handleCommands() {
         }
         cmd.clear();
     }
-    LOG_FARM(LogLevel::INFO, "Exit MacDonald::handleCommands()");
+    LOG_FARM(LogLevel::INFO, "Exit MacDonald::handleCommands() thread");
 }
 
 void MacDonald::incAgeAll() {

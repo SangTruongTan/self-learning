@@ -36,6 +36,6 @@ void UserInterface::start() {
             break;
         }
     }
-    LOG_USER(LogLevel::INFO, "Exit UserInterface::start()");
+    LOG_USER(LogLevel::INFO, "Exit UserInterface::start() thread");
 }
 } // namespace Farm
