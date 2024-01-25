@@ -31,9 +31,15 @@ private:
     const char* getAnimalName(Animal *ani) const;
     void reportAnimals() const;
 
+    void buyAnimal(Animal::AnimalType type, std::vector<std::string>::iterator start,
+                   std::vector<std::string>::iterator end);
 public:
     std::vector<Animal *> mAnimalList;
     Farm::SharedObjects mShared;
+
+    static const std::unordered_map<Animal::AnimalType, const char*> AnimalStrings;
+
+    static const std::unordered_map<std::string, Animal::AnimalType> AnimalTypeFromStrings;
 
     MacDonald();
     void start();

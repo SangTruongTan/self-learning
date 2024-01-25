@@ -8,6 +8,22 @@
 
 namespace Farm {
 
+const std::unordered_map<Animal::AnimalType, const char*> MacDonald::AnimalStrings = {
+    {Animal::AnimalType::CHICKEN, MacDonald::CHICKEN_NAME},
+    {Animal::AnimalType::PIG, MacDonald::PIG_NAME},
+    {Animal::AnimalType::DOG, MacDonald::DOG_NAME},
+    {Animal::AnimalType::CAT, MacDonald::CAT_NAME},
+    {Animal::AnimalType::ANIMAL, MacDonald::ANIMAL_NAME}
+};
+
+const std::unordered_map<std::string, Animal::AnimalType> MacDonald::AnimalTypeFromStrings = {
+    {"chickens", Animal::AnimalType::CHICKEN},
+    {"pigs", Animal::AnimalType::PIG},
+    {"dogs", Animal::AnimalType::DOG},
+    {"cats", Animal::AnimalType::CAT},
+    {"animals", Animal::AnimalType::ANIMAL},
+};
+
 MacDonald::MacDonald()
     : mTimeManager(nullptr), mUserInterface(nullptr) {
     LOG_FARM(LogLevel::INFO, "New Mac Donal Farm has been created");
@@ -51,6 +67,9 @@ void MacDonald::handleCommands() {
         std::string tempString{};
         std::stringstream ss;
         int i{0};
+        static uint16_t cmdCount = 0;
+        LOG_CONSOLE(LogLevel::INFO,"\n\n==============\n", cmdCount++, ".User: ", mUserInterface->mIss.str(), "\n");
+        LOG_CONSOLE(LogLevel::INFO, "--------------\nMac Donnald: ");
         while (this->mUserInterface->mIss.peek() != EOF) {
             this->mUserInterface->mIss >> tempString;
             ss.clear();
@@ -134,36 +153,23 @@ void MacDonald::handleCommands() {
                     }
                 }
             } else if (cmd.at(0) == "buy") {
-                if (cmd.size() == 3) {
+                if (cmd.size() >= 3) {
                     std::stringstream ss;
-                    if (cmd.at(1) == "chickens") {
-                        ss << "CMD --> buy chickens named: " << cmd.at(2);
-                        LOG_FARM(LogLevel::INFO, ss.str().c_str());
-                        ss.clear();
-                        ss.str(std::string());
-                        if (this->isAnimalExist(cmd.at(2).c_str()) == false) {
-                            this->mAnimalList.emplace_back(
-                                new Chicken(cmd.at(2).c_str(), this->mShared));
-                            LOG_CONSOLE(LogLevel::INFO, "New Chicken [", cmd.at(2), "] has been bought\n");
+                    const auto typeIt = AnimalTypeFromStrings.find(cmd.at(1));
+                    if (typeIt != AnimalTypeFromStrings.end()) {
+                        ss << "CMD --> buy " << AnimalStrings.at((*typeIt).second) << " named:";
+                        auto it = std::next(cmd.begin(), 2);
+                        if (it < cmd.end()) {
+                            auto debugIt = it;
+                            while (debugIt != cmd.end()) {
+                                ss << " " << (*debugIt).c_str();
+                                debugIt++;
+                            }
+                            LOG_FARM(LogLevel::INFO, ss.str().c_str());
+                            buyAnimal((*typeIt).second, it, cmd.end());
                         } else {
-                            LOG_FARM(LogLevel::INFO, "This animal has been existed");
-                            LOG_CONSOLE(LogLevel::INFO, "This animal has been existed\n");
+                            LOG_FARM(LogLevel::ERROR, "Interator is out of range");
                         }
-                    } else if (cmd.at(1) == "cats") {
-                        ss << "CMD --> buy cats named: " << cmd.at(2);
-                        LOG_FARM(LogLevel::INFO, ss.str().c_str());
-                        ss.clear();
-                        ss.str(std::string());
-                    } else if (cmd.at(1) == "dogs") {
-                        ss << "CMD --> buy dogs named: " << cmd.at(2);
-                        LOG_FARM(LogLevel::INFO, ss.str().c_str());
-                        ss.clear();
-                        ss.str(std::string());
-                    } else if (cmd.at(1) == "pigs") {
-                        ss << "CMD --> buy pigs named: " << cmd.at(2);
-                        LOG_FARM(LogLevel::INFO, ss.str().c_str());
-                        ss.clear();
-                        ss.str(std::string());
                     } else {
                         LOG_CONSOLE(LogLevel::INFO, "Command doesn't support --> You must choose one of animal types (chickens|cats|dogs|pigs)\n");
                     }
@@ -243,6 +249,36 @@ void MacDonald::reportAnimals() const {
     vt.print(ss);
     LOG_CONSOLE(LogLevel::INFO, "Animals status\n");
     LOG_CONSOLE(LogLevel::INFO, ss.str());
+}
+
+void MacDonald::buyAnimal(Animal::AnimalType type, std::vector<std::string>::iterator start,
+                std::vector<std::string>::iterator end) {
+    std::stringstream ss;
+    for (auto i = start; i != end; i++) {
+        ss.clear();
+        ss.str(std::string());
+        if (this->isAnimalExist((*i).c_str()) == false) {
+            bool retval = true;
+            switch (type) {
+                case Animal::AnimalType::CHICKEN:
+                    this->mAnimalList.emplace_back(
+                        new Chicken((*i).c_str(), this->mShared));
+                    break;
+                case Animal::AnimalType::CAT:
+                case Animal::AnimalType::PIG:
+                case Animal::AnimalType::DOG:
+                case Animal::AnimalType::ANIMAL:
+                    LOG_CONSOLE(LogLevel::INFO, "Animal doesn't support yet\n");
+                    retval = false;
+            }
+            if (retval == true) {
+                LOG_CONSOLE(LogLevel::INFO, "New ", AnimalStrings.at(type), " [", (*i).c_str(), "] has been bought\n");
+            }
+        } else {
+            LOG_FARM(LogLevel::INFO, "This animal [", (*i).c_str(), "] has been existed");
+            LOG_CONSOLE(LogLevel::INFO, "This animal [", (*i).c_str(), "] has been existed\n");
+        }
+    }
 }
 
 } // namespace Farm

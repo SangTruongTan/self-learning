@@ -12,6 +12,15 @@
 namespace Farm {
 class Animal {
 public:
+    /* Enum definiton. */
+    enum AnimalType {
+        CHICKEN,
+        CAT,
+        PIG,
+        DOG,
+        ANIMAL
+    };
+
     /* Lift time declaration. Units in Days. */
     static constexpr uint16_t CHICKEN_LIFE_TIME = 3;
     static constexpr uint16_t CAT_LIFE_TIME = 20;
