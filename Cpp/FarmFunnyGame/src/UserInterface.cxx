@@ -23,16 +23,10 @@ void UserInterface::start() {
             continue;
         }
 
-
-        // this->mUserInput.clear();
         this->mIss.clear();
-        // LOG_CONSOLE(LogLevel::INFO, "Please type your commands: ");
-        // std::getline(std::cin, this->mUserInput);
-
-        // this->mIss.str(this->mUserInput);
         this->mIss.str(userInput);
         std::stringstream ss;
-        // ss << "User Input is: " << this->mUserInput.c_str();
+
         ss << "User Input is: " << userInput;
         LOG_USER(LogLevel::DEBUG, ss.str().c_str());
 

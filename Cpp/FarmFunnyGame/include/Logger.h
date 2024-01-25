@@ -37,6 +37,9 @@
 #define LOG_CONSOLE(level, ...)                                                                    \
     Farm::Logger::getInstance().log_console(level, ##__VA_ARGS__)
 
+/* Clock Output */
+#define LOG_CLOCK_SCREEN(...) Farm::Logger::getInstance().log_clock_screen(__VA_ARGS__)
+
 /* Get Line */
 #define GET_LINE(msg) Logger::getInstance().getLine(msg)
 
@@ -123,6 +126,18 @@ public:
         return logMessageStream;
     }
 
+    template <typename... Args>
+    void log_clock_screen(Args... args) {
+        std::lock_guard<std::mutex> lock(this->mMutex);
+        int x = getcurx(input);
+        int y = getcury(input);
+        mvwprintw(clockWin, 0, 0, "%s", log_simple(args...).str().c_str());
+        wmove(input, y, x);
+        wrefresh(clockWin);
+        wrefresh(input);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+
 private:
     DLT_DECLARE_CONTEXT(ctx)
     LogLevel logLevel = INFO;
@@ -132,6 +147,7 @@ private:
 
     WINDOW* input;
     WINDOW* output;
+    WINDOW* clockWin;
     char* iBuffer;
 
     Logger(const Logger &rhs);

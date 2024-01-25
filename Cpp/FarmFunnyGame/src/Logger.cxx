@@ -33,7 +33,8 @@ void Logger::initScreen() {
     cbreak();
     echo();
     input = newwin(1, COLS, LINES - 1, 0);
-    output = newwin(LINES - 1, COLS, 0, 0);
+    output = newwin(LINES - 3, COLS, 2, 0);
+    clockWin = newwin(2, COLS, 0, 0);
     wmove(output, LINES - 2, 0);    /* start at the bottom */
     scrollok(output, TRUE);
     iBuffer = new char[1024];

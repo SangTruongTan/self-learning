@@ -18,8 +18,9 @@ void TimeManager::start(
             break;
         }
         std::stringstream sstr;
-        sstr << "mDay=" << this->mDay << ";mHour=" << this->mHour;
-        // this->mLogger->LogI(sstr.str());
+        sstr << "mDay=" << this->mDay << "; mHour=" << this->mHour << ":00  ";
+        LOG_CLOCK_SCREEN(sstr.str().c_str());
+
         for (auto const &time : timeLists) {
             if (time.first == this->mHour) {
                 time.second();
