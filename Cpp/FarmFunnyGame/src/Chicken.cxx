@@ -32,4 +32,26 @@ bool Chicken::exceedLifeTime(void) {
     }
     return retVal;
 }
+
+/**
+ * This API will be invoked at 12:00AM-
+*/
+void Chicken::scanAnimal(void) {
+    LOG_ANIMAL(LogLevel::DEBUG, "[", mName, "] scanAnimal()");
+    /* Check weight. */
+    if (mFedToday == true) {
+        if (mFeedConsecutiveDays >= CHICKEN_WEIGHT_CONSECUTIVE_DAYS) {
+            mWeight += CHICKEN_GAIN_WEIGHT;
+            if (mWeight >= CHICKEN_MAX_WEIGHT) {
+                mWeight = CHICKEN_MAX_WEIGHT;
+            }
+        }
+    } else {
+        mFeedConsecutiveDays = 0;
+        LOG_ANIMAL(LogLevel::DEBUG, "[", mName, "] Reset mFeedConsecutiveDays");
+    }
+    mFedToday = false;
+    LOG_ANIMAL(LogLevel::DEBUG, "[", mName, "] Weight => ", mWeight);
+}
+
 } // namespace Farm

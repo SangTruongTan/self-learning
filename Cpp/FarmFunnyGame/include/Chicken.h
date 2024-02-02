@@ -11,6 +11,7 @@ public:
     ~Chicken();
     void sound(int NumOfSound = 1) override;
     bool exceedLifeTime(void) override;
+    void scanAnimal(void) override;
 };
 }; // namespace Farm
 

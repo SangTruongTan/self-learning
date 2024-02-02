@@ -18,11 +18,18 @@ public:
         CAT,
         PIG,
         DOG,
-        ANIMAL
+        ANIMAL,
+        SPECIFIC_ANIMAL
+    };
+
+    enum AnimalError {
+        AnimalNoError,
+        AnimalAlreadyFed,
+        AnimalNotExist
     };
 
     /* Lift time declaration. Units in Days. */
-    static constexpr uint16_t CHICKEN_LIFE_TIME = 3;
+    static constexpr uint16_t CHICKEN_LIFE_TIME = 15;
     static constexpr uint16_t CAT_LIFE_TIME = 20;
     static constexpr uint16_t DOG_LIFE_TIME = 25;
     static constexpr uint16_t PIG_LIFE_TIME = 22;
@@ -165,15 +172,21 @@ protected:
     int mFeedConsecutiveDays;
     bool mGoOutStatus;
     Farm::SharedObjects &mShared;
+    bool mFedToday = false;
 
 public:
+    static const std::unordered_map<AnimalError, std::string> AnimalErrorToStrings;
+
     Animal(std::string Name, Farm::SharedObjects &shared);
     virtual ~Animal();
     const std::string getName(void) const;
     const uint16_t getAge(void) const;
     virtual void incAge(void);
     virtual bool exceedLifeTime(void) = 0;
-
+    AnimalError feedAnimal(void);
+    virtual void scanAnimal(void) = 0;
+    double getWeight(void);
+    int getFeedConsecutiveDays(void);
 protected:
 
     virtual void sound(int NumOfSound = 1) = 0;

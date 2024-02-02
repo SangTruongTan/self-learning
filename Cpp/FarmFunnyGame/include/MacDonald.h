@@ -28,11 +28,17 @@ private:
     std::mutex mMutexUserInterface;
     std::mutex mMutexAnimals;
 
+    std::vector<std::pair<int, std::function<void(void)>>> timeLists;
+
     const char* getAnimalName(Animal *ani) const;
     void reportAnimals() const;
 
     void buyAnimal(Animal::AnimalType type, std::vector<std::string>::iterator start,
                    std::vector<std::string>::iterator end);
+    void registerTimer(void);
+    void feedAnimals(Animal::AnimalType Type, std::string name = "");
+    void scanAnimal(void);
+
 public:
     std::vector<Animal *> mAnimalList;
     Farm::SharedObjects mShared;
@@ -46,7 +52,8 @@ public:
     void handleCommands();
 
     void incAgeAll();
-    bool isAnimalExist(const char *name);
+    Animal* isAnimalExist(const char *name);
+    std::string AnimalErrorToStrings(Animal::AnimalError er);
 };
 }; // namespace Farm
 

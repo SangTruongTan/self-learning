@@ -27,4 +27,31 @@ void Animal::incAge() {
     ss << "[" << this->mName << "] Inc Age to => " << ++this->mAge;
     LOG_ANIMAL(LogLevel::INFO, ss.str());
 }
+
+Animal::AnimalError Animal::feedAnimal(void) {
+    AnimalError retval{AnimalAlreadyFed};
+    if (mFedToday == false) {
+        std::stringstream ss;
+        ss << "[" << this->mName << "] Inc feed consecutive days to => " << ++mFeedConsecutiveDays;
+        LOG_ANIMAL(LogLevel::INFO, ss.str());
+        retval = AnimalNoError;
+        mFedToday = true;
+    }
+    return retval;
+}
+
+const std::unordered_map<Animal::AnimalError, std::string> Animal::AnimalErrorToStrings {
+    {AnimalNoError, "AnimalNoError"},
+    {AnimalAlreadyFed, "AnimalAlreadyFed"},
+    {AnimalNotExist, "AnimalNotExist"}
+};
+
+double Animal::getWeight(void) {
+    return this->mWeight;
+}
+
+int Animal::getFeedConsecutiveDays(void) {
+    return this->mFeedConsecutiveDays;
+}
+
 } // namespace Farm
