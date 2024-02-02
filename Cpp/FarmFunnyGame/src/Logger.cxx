@@ -33,8 +33,9 @@ void Logger::initScreen() {
     cbreak();
     echo();
     input = newwin(1, COLS, LINES - 1, 0);
-    output = newwin(LINES - 3, COLS, 2, 0);
-    clockWin = newwin(2, COLS, 0, 0);
+    output = newwin(LINES - 3, COLS/2, 2, 0);
+    clockWin = newwin(2, COLS/2, 0, 0);
+    dashboard = newwin(LINES - 1, COLS/2, 0, COLS/2);
     wmove(output, LINES - 2, 0);    /* start at the bottom */
     scrollok(output, TRUE);
     iBuffer = new char[1024];
@@ -55,6 +56,10 @@ const char* Logger::getLine(std::string sInput) {
     werase(input);
 
     return iBuffer;
+}
+
+void Logger::cleanDashboard(void) {
+    werase(dashboard);
 }
 
 const std::unordered_map<LogLevel, std::string> Logger::logLevelStrings = {

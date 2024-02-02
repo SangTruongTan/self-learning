@@ -28,7 +28,7 @@ private:
     std::mutex mMutexUserInterface;
     std::mutex mMutexAnimals;
 
-    std::vector<std::pair<int, std::function<void(void)>>> timeLists;
+    std::vector<std::pair<const int, std::function<void(void)>>> timeLists;
 
     const char* getAnimalName(Animal *ani) const;
     void reportAnimals() const;
@@ -38,6 +38,8 @@ private:
     void registerTimer(void);
     void feedAnimals(Animal::AnimalType Type, std::string name = "");
     void scanAnimal(void);
+    void updateDashboard(void) const;
+    std::string getAnimalsStatus(void) const;
 
 public:
     std::vector<Animal *> mAnimalList;

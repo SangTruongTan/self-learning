@@ -10,7 +10,7 @@ TimeManager::TimeManager()
 TimeManager::~TimeManager() {}
 
 void TimeManager::start(
-    std::vector<std::pair<int, std::function<void(void)>>> &timeLists) {
+    std::vector<std::pair<const int, std::function<void(void)>>> &timeLists) {
     while (this->mRunning == true) {
 
         if (mIsPoisonReceived == true) {
@@ -23,6 +23,8 @@ void TimeManager::start(
 
         for (auto const &time : timeLists) {
             if (time.first == this->mHour) {
+                time.second();
+            } else if (time.first == TimeManager::CONTINUOUS) {
                 time.second();
             }
         }

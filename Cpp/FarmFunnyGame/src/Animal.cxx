@@ -54,4 +54,8 @@ int Animal::getFeedConsecutiveDays(void) {
     return this->mFeedConsecutiveDays;
 }
 
+bool Animal::getFedToday(void) {
+    return this->mFedToday;
+}
+
 } // namespace Farm

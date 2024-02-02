@@ -236,14 +236,8 @@ const char* MacDonald::getAnimalName(Animal *ani) const {
 }
 
 void MacDonald::reportAnimals() const {
-    VariadicTable<std::string, const char*, const uint16_t, double, int> vt({"Name", "Type", "Age", "Weight", "FeedConsecutiveDays"}, 20);
-    for (Animal *animal : this->mAnimalList) {
-        vt.addRow(animal->getName(), getAnimalName(animal), animal->getAge(), animal->getWeight(), animal->getFeedConsecutiveDays());
-    }
-    std::stringstream ss;
-    vt.print(ss);
     LOG_CONSOLE(LogLevel::INFO, "Animals status\n");
-    LOG_CONSOLE(LogLevel::INFO, ss.str());
+    LOG_CONSOLE(LogLevel::INFO, getAnimalsStatus());
 }
 
 void MacDonald::buyAnimal(Animal::AnimalType type, std::vector<std::string>::iterator start,
@@ -295,6 +289,12 @@ void MacDonald::registerTimer(void) {
         std::lock_guard<std::mutex> lock(this->mMutexAnimals);
         this->incAgeAll();
     }));
+
+    /* Continuos Executing */
+    timeLists.push_back(std::make_pair(static_cast<const int>(TimeManager::CONTINUOUS), [this] {
+        std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+        this->updateDashboard();
+    }));
 }
 
 void MacDonald::feedAnimals(Animal::AnimalType Type, std::string name) {
@@ -333,14 +333,37 @@ void MacDonald::feedAnimals(Animal::AnimalType Type, std::string name) {
             LOG_CONSOLE(LogLevel::INFO, "Feed [", ani->getName(), "] <= ", AnimalErrorToStrings(ae), "\n");
         } else {
             ae = Animal::AnimalError::AnimalNotExist;
-            LOG_FARM(LogLevel::INFO, "Feeding failed [", name, "] does not exist");
-            LOG_CONSOLE(LogLevel::INFO, "Feeding failed [", name, "] does not exist", "\n");
+            std::stringstream msg;
+            msg << "Feeding failed [" << name << "] does not exist" << std::endl;
+            LOG_FARM(LogLevel::INFO, msg.str());
+            LOG_CONSOLE(LogLevel::INFO, msg.str(), "\n");
+            std::string levelStr = logLevelStrings.at(LogLevel::INFO);
         }
     }
 }
 
 std::string MacDonald::AnimalErrorToStrings(Animal::AnimalError er) {
     return Animal::AnimalErrorToStrings.at(er);
+}
+
+void MacDonald::updateDashboard(void) const{
+    CLEAN_DASHBOARD();
+    LOG_DASHBOARD("DashBoard\n");
+    LOG_DASHBOARD(getAnimalsStatus().c_str());
+
+}
+
+std::string MacDonald::getAnimalsStatus(void) const {
+    VariadicTable<std::string, const char*, const uint16_t, double, int, std::string>
+        vt({"Name", "Type", "Age", "Weight", "FedDays", "FedToday"}, 10);
+    for (Animal *animal : this->mAnimalList) {
+        vt.addRow(animal->getName(), getAnimalName(animal), animal->getAge(), animal->getWeight(),
+                  animal->getFeedConsecutiveDays(),
+                  (animal->getFedToday() == false) ? "False" : "True");
+    }
+    std::stringstream ss;
+    vt.print(ss);
+    return ss.str();
 }
 
 } // namespace Farm

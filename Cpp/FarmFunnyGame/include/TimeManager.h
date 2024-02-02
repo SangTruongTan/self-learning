@@ -15,6 +15,8 @@ private:
     int mDay;
 
 public:
+    static constexpr const int CONTINUOUS = -1;
+
     std::atomic<bool> mIsPoisonReceived;
 
     /**
@@ -29,7 +31,7 @@ public:
     ~TimeManager();
 
     void
-    start(std::vector<std::pair<int, std::function<void(void)>>> &timeLists);
+    start(std::vector<std::pair<const int, std::function<void(void)>>> &timeLists);
 
 };
 };     // namespace Farm

@@ -40,6 +40,10 @@
 /* Clock Output */
 #define LOG_CLOCK_SCREEN(...) Farm::Logger::getInstance().log_clock_screen(__VA_ARGS__)
 
+/* Dash Board */
+#define LOG_DASHBOARD(...) Farm::Logger::getInstance().log_dashboard(__VA_ARGS__)
+#define CLEAN_DASHBOARD() Farm::Logger::getInstance().cleanDashboard()
+
 /* Get Line */
 #define GET_LINE(msg) Logger::getInstance().getLine(msg)
 
@@ -76,6 +80,8 @@ public:
      * @param ContextId
      */
     void setAppContext(std::string AppId, std::string ContextId);
+
+    void cleanDashboard(void);
 
     template <typename... Args> void log_dlt(ModuleName src, LogLevel level, Args... args) {
         if (level >= logLevel) {
@@ -138,6 +144,18 @@ public:
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
+    template <typename... Args>
+    void log_dashboard(Args... args) {
+        std::lock_guard<std::mutex> lock(this->mMutex);
+        int x = getcurx(input);
+        int y = getcury(input);
+        waddstr(dashboard, log_simple(args...).str().c_str());
+        wmove(input, y, x);
+        wrefresh(dashboard);
+        wrefresh(input);
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
+    }
+
 private:
     DLT_DECLARE_CONTEXT(ctx)
     LogLevel logLevel = INFO;
@@ -148,6 +166,7 @@ private:
     WINDOW* input;
     WINDOW* output;
     WINDOW* clockWin;
+    WINDOW* dashboard;
     char* iBuffer;
 
     Logger(const Logger &rhs);

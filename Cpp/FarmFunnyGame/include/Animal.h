@@ -187,6 +187,7 @@ public:
     virtual void scanAnimal(void) = 0;
     double getWeight(void);
     int getFeedConsecutiveDays(void);
+    bool getFedToday(void);
 protected:
 
     virtual void sound(int NumOfSound = 1) = 0;
