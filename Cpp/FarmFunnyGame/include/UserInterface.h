@@ -14,8 +14,8 @@ class UserInterface {
 private:
     std::string mUserInput;
     std::mutex *pMutex;
-public:
 
+public:
     std::condition_variable mCV;
     std::istringstream mIss;
 

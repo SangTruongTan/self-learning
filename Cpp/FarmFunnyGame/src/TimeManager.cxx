@@ -6,7 +6,7 @@
 
 namespace Farm {
 TimeManager::TimeManager()
-    : mRunning(true), mHour(0), mDay(0), mIsPoisonReceived(false) {};
+    : mRunning(true), mHour(0), mDay(0), mIsPoisonReceived(false){};
 TimeManager::~TimeManager() {}
 
 void TimeManager::start(

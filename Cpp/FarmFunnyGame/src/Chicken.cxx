@@ -35,7 +35,7 @@ bool Chicken::exceedLifeTime(void) {
 
 /**
  * This API will be invoked at 12:00AM-
-*/
+ */
 void Chicken::scanAnimal(void) {
     LOG_ANIMAL(LogLevel::DEBUG, "[", mName, "] scanAnimal()");
     /* Check weight. */

@@ -30,9 +30,8 @@ public:
      */
     ~TimeManager();
 
-    void
-    start(std::vector<std::pair<const int, std::function<void(void)>>> &timeLists);
-
+    void start(std::vector<std::pair<const int, std::function<void(void)>>>
+                   &timeLists);
 };
 };     // namespace Farm
 #endif /* __TIME_MANAGER_H__ */

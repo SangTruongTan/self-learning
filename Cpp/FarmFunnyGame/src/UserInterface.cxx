@@ -4,7 +4,8 @@
 
 namespace Farm {
 
-UserInterface::UserInterface(std::mutex *Mutex) : pMutex(Mutex), mIsPoisonReceived(false) {
+UserInterface::UserInterface(std::mutex *Mutex)
+    : pMutex(Mutex), mIsPoisonReceived(false) {
     LOG_USER(LogLevel::INFO, "Initiated User Interface class");
 }
 
@@ -31,7 +32,7 @@ void UserInterface::start() {
         LOG_USER(LogLevel::DEBUG, ss.str().c_str());
 
         this->mCV.notify_one();
-        if (mIsPoisonReceived = (*userInput == 0x04)) {
+        if ((mIsPoisonReceived = ((*userInput) == 0x04))) {
             LOG_USER(LogLevel::INFO, "Poison signal received");
             break;
         }

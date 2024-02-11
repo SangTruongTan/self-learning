@@ -13,20 +13,9 @@ namespace Farm {
 class Animal {
 public:
     /* Enum definiton. */
-    enum AnimalType {
-        CHICKEN,
-        CAT,
-        PIG,
-        DOG,
-        ANIMAL,
-        SPECIFIC_ANIMAL
-    };
+    enum AnimalType { CHICKEN, CAT, PIG, DOG, ANIMAL, SPECIFIC_ANIMAL };
 
-    enum AnimalError {
-        AnimalNoError,
-        AnimalAlreadyFed,
-        AnimalNotExist
-    };
+    enum AnimalError { AnimalNoError, AnimalAlreadyFed, AnimalNotExist };
 
     /* Lift time declaration. Units in Days. */
     static constexpr uint16_t CHICKEN_LIFE_TIME = 15;
@@ -103,8 +92,9 @@ public:
     static constexpr int CHICKEN_REDUCTION_CONDITION_BY_SOUND =
         10; /* From Cats, Dogs and Pigs in a day. */
     static constexpr int CAT_REDUCTION_CONDITION_BY_SOUND =
-        15;                                                    /*From Dogs and Chickens in a day. */
-    static constexpr int DOG_REDUCTION_CONDITION_BY_SOUND = 5; /* From Cats in a day. */
+        15; /*From Dogs and Chickens in a day. */
+    static constexpr int DOG_REDUCTION_CONDITION_BY_SOUND =
+        5; /* From Cats in a day. */
 
     /* Eating. */
     static constexpr int CHICKEN_EAT_UNIT = 1;
@@ -175,7 +165,8 @@ protected:
     bool mFedToday = false;
 
 public:
-    static const std::unordered_map<AnimalError, std::string> AnimalErrorToStrings;
+    static const std::unordered_map<AnimalError, std::string>
+        AnimalErrorToStrings;
 
     Animal(std::string Name, Farm::SharedObjects &shared);
     virtual ~Animal();
@@ -188,10 +179,9 @@ public:
     double getWeight(void);
     int getFeedConsecutiveDays(void);
     bool getFedToday(void);
+
 protected:
-
     virtual void sound(int NumOfSound = 1) = 0;
-
 };
 }; // namespace Farm
 
