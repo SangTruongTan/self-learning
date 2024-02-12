@@ -5,6 +5,7 @@
 #include <iostream>
 #include <mutex>
 #include <sstream>
+#include <stack>
 #include <string>
 #include <thread>
 #include <unordered_map>
@@ -49,10 +50,17 @@
 /* Dash Board */
 #define LOG_DASHBOARD(...)                                                     \
     Farm::Logger::getInstance().log_dashboard(__VA_ARGS__)
+
 #define CLEAN_DASHBOARD() Farm::Logger::getInstance().cleanDashboard()
+
+#define RESET_CURSOR_DASHBOARD()                                               \
+    Farm::Logger::getInstance().resetCursorDashboard()
 
 /* Get Line */
 #define GET_LINE(msg) Logger::getInstance().getLine(msg)
+
+/* Special Characters */
+#define EOT_CHAR 0x04
 
 namespace Farm {
 
@@ -77,7 +85,7 @@ public:
 
     void setLogLevel(LogLevel level);
 
-    const char *getLine(std::string input);
+    const char *getLine(std::string sInput);
 
     /**
      * @brief Construct a new Logger object
@@ -88,6 +96,8 @@ public:
     void setAppContext(std::string AppId, std::string ContextId);
 
     void cleanDashboard(void);
+
+    void resetCursorDashboard(void);
 
     template <typename... Args>
     void log_dlt(ModuleName src, LogLevel level, Args... args) {

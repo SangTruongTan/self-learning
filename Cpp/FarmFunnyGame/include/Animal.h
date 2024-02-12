@@ -163,6 +163,7 @@ protected:
     bool mGoOutStatus;
     Farm::SharedObjects &mShared;
     bool mFedToday = false;
+    AnimalType mType;
 
 public:
     static const std::unordered_map<AnimalError, std::string>
@@ -179,6 +180,10 @@ public:
     double getWeight(void);
     int getFeedConsecutiveDays(void);
     bool getFedToday(void);
+    virtual bool isSalable(void) const = 0;
+    virtual void killAnimal(void) = 0;
+    virtual int getSellPrice(void) const = 0;
+    virtual AnimalType getType(void) const = 0;
 
 protected:
     virtual void sound(int NumOfSound = 1) = 0;

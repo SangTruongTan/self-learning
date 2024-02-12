@@ -190,6 +190,51 @@ void MacDonald::handleCommands() {
                     LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
                 }
             } else if (cmd.at(0) == "sell") {
+                if (cmd.size() >= 2) {
+                    std::stringstream ss;
+                    auto typeIt = AnimalTypeFromStrings.find(cmd.at(1));
+                    if (typeIt == AnimalTypeFromStrings.end()) {
+                        ss << "CMD --> sell animals named:";
+                        auto it = std::next(cmd.begin(), 1);
+                        if (it < cmd.end()) {
+                            while (it != cmd.end()) {
+                                sellAnimals(Animal::AnimalType::SPECIFIC_ANIMAL,
+                                            (*it).c_str());
+                                ss << " " << (*it).c_str();
+                                it++;
+                            }
+                            LOG_FARM(LogLevel::INFO, ss.str().c_str());
+                        } else {
+                            LOG_FARM(LogLevel::ERROR,
+                                     "Interator is out of range");
+                        }
+                    } else {
+                        std::stringstream ss;
+                        bool retval;
+                        ss << "CMD --> sell Animal Type:";
+                        long unsigned int i = 1;
+                        std::string typeString;
+                        while (i < cmd.size()) {
+                            typeString = cmd.at(i++);
+                            ss << " " << typeString;
+                            typeIt = AnimalTypeFromStrings.find(typeString);
+                            if (typeIt != AnimalTypeFromStrings.end()) {
+                                retval = sellAnimals(typeIt->second);
+                                if (retval == false) {
+                                    LOG_CONSOLE(LogLevel::INFO, typeIt->first,
+                                                " is not suitable to sell\n");
+                                }
+                            } else {
+                                LOG_CONSOLE(LogLevel::INFO, "{", typeString,
+                                            "} is not supported\n");
+                            }
+                        }
+                        LOG_FARM(LogLevel::INFO, ss.str().c_str());
+                    }
+                } else {
+                    LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
+                }
+
                 if (cmd.at(1) == "chickens") {
                     LOG_FARM(LogLevel::INFO, "CMD --> sell all chickens");
                 } else if (cmd.at(1) == "cats") {
@@ -215,22 +260,19 @@ void MacDonald::incAgeAll() {
     for (Animal *animal : this->mAnimalList) {
         animal->incAge();
     }
+    std::vector<std::string> removeList{};
     if (this->mAnimalList.size() > 0) {
-        std::vector<Animal *>::iterator removeIterator = std::remove_if(
-            this->mAnimalList.begin(), this->mAnimalList.end(),
-            [this](Animal *animal) {
-                LOG_FARM(LogLevel::DEBUG, "Checking animal's age");
-                if (animal->exceedLifeTime()) {
-                    std::ostringstream os;
-                    os << "Animal[" << animal->getName()
-                       << "] Exceeded life time";
-                    LOG_FARM(LogLevel::INFO, os.str());
-                    delete animal;
-                    return true; // Remove the animal from the vector
-                }
-                return false; // Keep the animal in the vector
-            });
-        this->mAnimalList.erase(removeIterator, this->mAnimalList.end());
+        LOG_FARM(LogLevel::DEBUG, "Checking animal's age");
+        for (Animal *animal : mAnimalList) {
+            if (animal->exceedLifeTime()) {
+                std::ostringstream os;
+                os << "Animal[" << animal->getName() << "] Exceeded life time";
+                LOG_FARM(LogLevel::INFO, os.str());
+                animal->killAnimal();
+                removeList.emplace_back(animal->getName());
+            }
+        }
+        removeAnimals(removeList);
     }
 }
 
@@ -375,9 +417,20 @@ std::string MacDonald::AnimalErrorToStrings(Animal::AnimalError er) {
 }
 
 void MacDonald::updateDashboard(void) const {
-    CLEAN_DASHBOARD();
-    LOG_DASHBOARD("DashBoard\n");
-    LOG_DASHBOARD(getAnimalsStatus().c_str());
+    static int numOfLines{0};
+    std::stringstream ss;
+    RESET_CURSOR_DASHBOARD();
+    ss << "Farm Resource Balance\n";
+    ss << "Account Balance:" << mAccountBalance << " " << CURRENCY
+       << "\tFood Units:" << mFoodUnits << " Unit\n\n";
+    ss << "DashBoard\n";
+    std::string table = getAnimalsStatus();
+    ss << table;
+    if (countLines(ss.str()) <= numOfLines) {
+        CLEAN_DASHBOARD();
+    }
+    numOfLines = countLines(ss.str());
+    LOG_DASHBOARD(ss.str());
 }
 
 std::string MacDonald::getAnimalsStatus(void) const {
@@ -392,6 +445,87 @@ std::string MacDonald::getAnimalsStatus(void) const {
     std::stringstream ss;
     vt.print(ss);
     return ss.str();
+}
+
+bool MacDonald::sellAnimals(Animal::AnimalType Type, std::string name) {
+    bool retval{false};
+    if (Type == Animal::AnimalType::SPECIFIC_ANIMAL) {
+        LOG_FARM(LogLevel::INFO, "Try sell [", name, "]");
+        Animal *ani{nullptr};
+        if ((ani = isAnimalExist(name.c_str())) != nullptr) {
+            if (ani->isSalable() == true) {
+                updateBalance(ani->getSellPrice());
+                std::stringstream ss;
+                ss << "Sold [" << ani->getName() << "] earned "
+                   << ani->getSellPrice() << " " << CURRENCY << std::endl;
+                LOG_FARM(LogLevel::INFO, ss.str());
+                LOG_CONSOLE(LogLevel::INFO, ss.str());
+                std::vector<std::string> removeList{ani->getName()};
+                removeAnimals(removeList);
+                retval |= true;
+            }
+        } else {
+            std::stringstream msg;
+            msg << "Selling failed [" << name << "] does not exist"
+                << std::endl;
+            LOG_FARM(LogLevel::INFO, msg.str());
+            LOG_CONSOLE(LogLevel::INFO, msg.str(), "\n");
+        }
+    } else {
+        auto it = mAnimalList.begin();
+        while (it != mAnimalList.end()) {
+            if ((*it)->getType() == Type) {
+                if (sellAnimals(Animal::AnimalType::SPECIFIC_ANIMAL,
+                                (*it)->getName()) == true) {
+                    retval |= true;
+                    continue;
+                }
+            }
+            it++;
+        }
+    }
+    return retval;
+}
+
+void MacDonald::removeAnimals(std::vector<std::string> nameList) {
+    if (this->mAnimalList.size() > 0) {
+        std::vector<Animal *>::iterator removeIterator = std::remove_if(
+            this->mAnimalList.begin(), this->mAnimalList.end(),
+            [this, nameList](Animal *animal) {
+                for (std::string name : nameList) {
+                    if (animal->getName() == name) {
+                        delete animal;
+                        return true; // Remove the animal from the vector
+                    }
+                }
+                return false; // Keep the animal in the vector
+            });
+        this->mAnimalList.erase(removeIterator, this->mAnimalList.end());
+    }
+}
+
+bool MacDonald::updateBalance(int offset) {
+    bool retval{false};
+    int current = mAccountBalance;
+    if (mAccountBalance + offset >= 0) {
+        mAccountBalance += offset;
+        LOG_FARM(LogLevel::INFO, "Balance updated from [", current, "] => [",
+                 mAccountBalance, "]");
+        retval = true;
+    }
+    return retval;
+}
+
+int MacDonald::countLines(const std::string &text) {
+    int lines = 1; // At least one line even if the string is empty
+
+    for (char ch : text) {
+        if (ch == '\n') {
+            lines++;
+        }
+    }
+
+    return lines;
 }
 
 } // namespace Farm

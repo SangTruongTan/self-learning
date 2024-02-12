@@ -23,7 +23,6 @@ void UserInterface::start() {
             LOG_USER(LogLevel::ERROR, "Failed to get user input");
             continue;
         }
-
         this->mIss.clear();
         this->mIss.str(userInput);
         std::stringstream ss;
@@ -32,7 +31,7 @@ void UserInterface::start() {
         LOG_USER(LogLevel::DEBUG, ss.str().c_str());
 
         this->mCV.notify_one();
-        if ((mIsPoisonReceived = ((*userInput) == 0x04))) {
+        if ((mIsPoisonReceived = ((*userInput) == EOT_CHAR))) {
             LOG_USER(LogLevel::INFO, "Poison signal received");
             break;
         }

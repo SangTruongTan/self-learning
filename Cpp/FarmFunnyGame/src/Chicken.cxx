@@ -7,14 +7,13 @@ Chicken::Chicken(std::string Name, SharedObjects &shared)
     std::stringstream ss;
     ss << "A new Chicken named: \"" << this->mName << "\" has been born";
     LOG_ANIMAL(LogLevel::INFO, ss.str());
+    mType = Animal::AnimalType::CHICKEN;
 }
 
 Chicken::~Chicken() {
-    this->sound(Animal::CHICKEN_NUM_SOUND_WHEN_DIE);
     std::stringstream ss;
-    ss << "Chicken [" << this->mName << "] has been died!";
+    ss << "Chicken [" << this->mName << "] instance is destroying!";
     LOG_ANIMAL(LogLevel::INFO, ss.str());
-    LOG_CONSOLE(LogLevel::INFO, ss.str().c_str(), "\n");
 }
 
 void Chicken::sound(int NumOfSound) {
@@ -53,5 +52,19 @@ void Chicken::scanAnimal(void) {
     mFedToday = false;
     LOG_ANIMAL(LogLevel::DEBUG, "[", mName, "] Weight => ", mWeight);
 }
+
+bool Chicken::isSalable(void) const { return (mWeight == CHICKEN_MAX_WEIGHT); }
+
+void Chicken::killAnimal(void) {
+    std::stringstream ss;
+    ss << "Animal [" << mName << "] is going to be dead\n";
+    LOG_ANIMAL(LogLevel::INFO, ss.str());
+    LOG_CONSOLE(LogLevel::INFO, ss.str());
+    this->sound(Animal::CHICKEN_NUM_SOUND_WHEN_DIE);
+}
+
+int Chicken::getSellPrice(void) const { return CHICKEN_SELL_PRICE; }
+
+Animal::AnimalType Chicken::getType(void) const { return mType; }
 
 } // namespace Farm

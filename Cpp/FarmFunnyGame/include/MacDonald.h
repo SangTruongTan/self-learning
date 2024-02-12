@@ -21,6 +21,7 @@ private:
     static constexpr const char *DOG_NAME = "Dog";
     static constexpr const char *PIG_NAME = "Pig";
     static constexpr const char *CAT_NAME = "Cat";
+    static constexpr const char *CURRENCY = "USD";
 
     Farm::TimeManager *mTimeManager;
     Farm::UserInterface *mUserInterface;
@@ -29,6 +30,9 @@ private:
     std::mutex mMutexAnimals;
 
     std::vector<std::pair<const int, std::function<void(void)>>> timeLists;
+
+    int mAccountBalance;
+    int mFoodUnits;
 
     const char *getAnimalName(Animal *ani) const;
     void reportAnimals() const;
@@ -41,6 +45,10 @@ private:
     void scanAnimal(void);
     void updateDashboard(void) const;
     std::string getAnimalsStatus(void) const;
+    bool sellAnimals(Animal::AnimalType Type, std::string name = "");
+    void removeAnimals(std::vector<std::string> nameList);
+    bool updateBalance(int offset);
+    bool updateFoodUnits(int offset);
 
 public:
     std::vector<Animal *> mAnimalList;
@@ -59,6 +67,7 @@ public:
     void incAgeAll();
     Animal *isAnimalExist(const char *name);
     std::string AnimalErrorToStrings(Animal::AnimalError er);
+    static int countLines(const std::string &text);
 };
 }; // namespace Farm
 

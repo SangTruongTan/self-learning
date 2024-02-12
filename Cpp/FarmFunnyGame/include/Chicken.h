@@ -12,6 +12,10 @@ public:
     void sound(int NumOfSound = 1) override;
     bool exceedLifeTime(void) override;
     void scanAnimal(void) override;
+    bool isSalable(void) const override;
+    void killAnimal(void) override;
+    int getSellPrice(void) const override;
+    AnimalType getType(void) const override;
 };
 }; // namespace Farm
 

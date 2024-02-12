@@ -43,7 +43,7 @@ void Logger::initScreen() {
 }
 
 void Logger::deinitScreen() {
-    LOG_DEFAULT(LogLevel::INFO, "Deinitializing the Screen");
+    LOG_DEFAULT(LogLevel::INFO, "Deinitialize the Screen");
     endwin();
     delete[] iBuffer;
 }
@@ -60,6 +60,8 @@ const char *Logger::getLine(std::string sInput) {
 }
 
 void Logger::cleanDashboard(void) { werase(dashboard); }
+
+void Logger::resetCursorDashboard(void) { wmove(dashboard, 0, 0); }
 
 const std::unordered_map<LogLevel, std::string> Logger::logLevelStrings = {
     {Farm::LogLevel::VERBOSE, "VERBOSE"}, {Farm::LogLevel::DEBUG, "DEBUG"},
@@ -82,4 +84,5 @@ const std::unordered_map<LogLevel, DltLogLevelType> Logger::dltLogLevel = {
     {Farm::LogLevel::ERROR, DLT_LOG_ERROR},
     {Farm::LogLevel::FATAL, DLT_LOG_FATAL},
 };
+
 } // namespace Farm
