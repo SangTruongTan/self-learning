@@ -16,6 +16,7 @@ public:
     void killAnimal(void) override;
     int getSellPrice(void) const override;
     AnimalType getType(void) const override;
+    int checkHappyReductionBySounds(void) override;
 };
 }; // namespace Farm
 

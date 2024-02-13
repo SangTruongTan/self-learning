@@ -1,12 +1,13 @@
 #ifndef __SHARED_OBJECTS_H__
 #define __SHARED_OBJECTS_H__
-namespace Farm {
 
+#include <functional>
+
+namespace Farm {
+/* Enum definiton. */
+enum AnimalType { CHICKEN, CAT, PIG, DOG, ANIMAL, SPECIFIC_ANIMAL };
 struct SharedObjects {
-    int PigSound;
-    int ChickenSound;
-    int DogSound;
-    int CatSound;
+    std::function<void(AnimalType, int)> soundCallback;
 };
 
 }; // namespace Farm

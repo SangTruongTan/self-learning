@@ -39,6 +39,7 @@ void Logger::initScreen() {
     dashboard = newwin(LINES - 1, COLS / 2, 0, COLS / 2);
     wmove(output, LINES - 2, 0); /* start at the bottom */
     scrollok(output, TRUE);
+    scrollok(dashboard,TRUE);
     iBuffer = new char[1024];
 }
 

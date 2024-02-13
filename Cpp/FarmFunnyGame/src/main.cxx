@@ -8,7 +8,7 @@
 
 int main(int argc, char **argv) {
 
-    Farm::Logger::getInstance().setLogLevel(Farm::LogLevel::INFO);
+    Farm::Logger::getInstance().setLogLevel(Farm::LogLevel::DEBUG);
     Farm::Logger::getInstance().setAppContext("Farm", "Farm1");
     Farm::MacDonald *Mac = new Farm::MacDonald();
 

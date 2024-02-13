@@ -37,27 +37,28 @@ private:
     const char *getAnimalName(Animal *ani) const;
     void reportAnimals() const;
 
-    void buyAnimal(Animal::AnimalType type,
+    void buyAnimal(AnimalType type,
                    std::vector<std::string>::iterator start,
                    std::vector<std::string>::iterator end);
     void registerTimer(void);
-    void feedAnimals(Animal::AnimalType Type, std::string name = "");
+    void feedAnimals(AnimalType Type, std::string name = "");
     void scanAnimal(void);
     void updateDashboard(void) const;
     std::string getAnimalsStatus(void) const;
-    bool sellAnimals(Animal::AnimalType Type, std::string name = "");
+    bool sellAnimals(AnimalType Type, std::string name = "");
     void removeAnimals(std::vector<std::string> nameList);
     bool updateBalance(int offset);
     bool updateFoodUnits(int offset);
+    void soundHandler(AnimalType type, int num);
 
 public:
     std::vector<Animal *> mAnimalList;
     Farm::SharedObjects mShared;
 
-    static const std::unordered_map<Animal::AnimalType, const char *>
+    static const std::unordered_map<AnimalType, const char *>
         AnimalStrings;
 
-    static const std::unordered_map<std::string, Animal::AnimalType>
+    static const std::unordered_map<std::string, AnimalType>
         AnimalTypeFromStrings;
 
     MacDonald();

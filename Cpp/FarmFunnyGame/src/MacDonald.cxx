@@ -8,25 +8,28 @@
 
 namespace Farm {
 
-const std::unordered_map<Animal::AnimalType, const char *>
+const std::unordered_map<AnimalType, const char *>
     MacDonald::AnimalStrings = {
-        {Animal::AnimalType::CHICKEN, MacDonald::CHICKEN_NAME},
-        {Animal::AnimalType::PIG, MacDonald::PIG_NAME},
-        {Animal::AnimalType::DOG, MacDonald::DOG_NAME},
-        {Animal::AnimalType::CAT, MacDonald::CAT_NAME},
-        {Animal::AnimalType::ANIMAL, MacDonald::ANIMAL_NAME}};
+        {AnimalType::CHICKEN, MacDonald::CHICKEN_NAME},
+        {AnimalType::PIG, MacDonald::PIG_NAME},
+        {AnimalType::DOG, MacDonald::DOG_NAME},
+        {AnimalType::CAT, MacDonald::CAT_NAME},
+        {AnimalType::ANIMAL, MacDonald::ANIMAL_NAME}};
 
-const std::unordered_map<std::string, Animal::AnimalType>
+const std::unordered_map<std::string, AnimalType>
     MacDonald::AnimalTypeFromStrings = {
-        {"chickens", Animal::AnimalType::CHICKEN},
-        {"pigs", Animal::AnimalType::PIG},
-        {"dogs", Animal::AnimalType::DOG},
-        {"cats", Animal::AnimalType::CAT},
-        {"animals", Animal::AnimalType::ANIMAL},
+        {"chickens", AnimalType::CHICKEN},
+        {"pigs", AnimalType::PIG},
+        {"dogs", AnimalType::DOG},
+        {"cats", AnimalType::CAT},
+        {"animals", AnimalType::ANIMAL},
 };
 
 MacDonald::MacDonald() : mTimeManager(nullptr), mUserInterface(nullptr) {
     LOG_FARM(LogLevel::INFO, "New Mac Donal Farm has been created");
+    mShared.soundCallback =
+        std::bind(&MacDonald::soundHandler, this, std::placeholders::_1,
+                   std::placeholders::_2);
 }
 
 void MacDonald::start() {
@@ -117,7 +120,7 @@ void MacDonald::handleCommands() {
                 } else {
                     ss << "CMD --> feed [" << cmd.at(1) << "]";
                     LOG_FARM(LogLevel::INFO, ss.str().c_str());
-                    feedAnimals(Animal::AnimalType::SPECIFIC_ANIMAL, cmd.at(1));
+                    feedAnimals(AnimalType::SPECIFIC_ANIMAL, cmd.at(1));
                 }
             } else if (cmd.at(0) == "let") {
                 if (cmd.size() == 3) {
@@ -198,7 +201,7 @@ void MacDonald::handleCommands() {
                         auto it = std::next(cmd.begin(), 1);
                         if (it < cmd.end()) {
                             while (it != cmd.end()) {
-                                sellAnimals(Animal::AnimalType::SPECIFIC_ANIMAL,
+                                sellAnimals(AnimalType::SPECIFIC_ANIMAL,
                                             (*it).c_str());
                                 ss << " " << (*it).c_str();
                                 it++;
@@ -302,7 +305,7 @@ void MacDonald::reportAnimals() const {
     LOG_CONSOLE(LogLevel::INFO, getAnimalsStatus());
 }
 
-void MacDonald::buyAnimal(Animal::AnimalType type,
+void MacDonald::buyAnimal(AnimalType type,
                           std::vector<std::string>::iterator start,
                           std::vector<std::string>::iterator end) {
     std::stringstream ss;
@@ -312,15 +315,15 @@ void MacDonald::buyAnimal(Animal::AnimalType type,
         if (this->isAnimalExist((*i).c_str()) == nullptr) {
             bool retval = true;
             switch (type) {
-            case Animal::AnimalType::CHICKEN:
+            case AnimalType::CHICKEN:
                 this->mAnimalList.emplace_back(
                     new Chicken((*i).c_str(), this->mShared));
                 break;
-            case Animal::AnimalType::CAT:
-            case Animal::AnimalType::PIG:
-            case Animal::AnimalType::DOG:
-            case Animal::AnimalType::ANIMAL:
-            case Animal::SPECIFIC_ANIMAL:
+            case AnimalType::CAT:
+            case AnimalType::PIG:
+            case AnimalType::DOG:
+            case AnimalType::ANIMAL:
+            case AnimalType::SPECIFIC_ANIMAL:
                 LOG_CONSOLE(LogLevel::INFO, "Animal doesn't support yet\n");
                 retval = false;
             }
@@ -364,7 +367,7 @@ void MacDonald::registerTimer(void) {
         }));
 }
 
-void MacDonald::feedAnimals(Animal::AnimalType Type, std::string name) {
+void MacDonald::feedAnimals(AnimalType Type, std::string name) {
     if (mAnimalList.size() == 0) {
         std::string er = "Farm is empty";
         LOG_FARM(LogLevel::INFO, er.c_str());
@@ -372,14 +375,14 @@ void MacDonald::feedAnimals(Animal::AnimalType Type, std::string name) {
         return;
     }
     Animal::AnimalError ae{Animal::AnimalError::AnimalNoError};
-    if (Type == Animal::AnimalType::ANIMAL) {
+    if (Type == AnimalType::ANIMAL) {
         LOG_FARM(LogLevel::INFO, "Feed all animals");
         for (Animal *animal : this->mAnimalList) {
             ae = animal->feedAnimal();
             LOG_CONSOLE(LogLevel::INFO, "Feed Animal [", animal->getName(),
                         "] <= ", AnimalErrorToStrings(ae), "\n");
         }
-    } else if (Type == Animal::AnimalType::CHICKEN) {
+    } else if (Type == AnimalType::CHICKEN) {
         LOG_FARM(LogLevel::INFO, "Feed all chickens");
         for (Animal *animal : this->mAnimalList) {
             if (dynamic_cast<Chicken *>(animal) != nullptr) {
@@ -388,13 +391,13 @@ void MacDonald::feedAnimals(Animal::AnimalType Type, std::string name) {
                             "] <= ", AnimalErrorToStrings(ae), "\n");
             }
         }
-    } else if (Type == Animal::AnimalType::PIG) {
+    } else if (Type == AnimalType::PIG) {
         LOG_CONSOLE(LogLevel::INFO, "Not support yet");
-    } else if (Type == Animal::AnimalType::DOG) {
+    } else if (Type == AnimalType::DOG) {
         LOG_CONSOLE(LogLevel::INFO, "Not support yet");
-    } else if (Type == Animal::AnimalType::CAT) {
+    } else if (Type == AnimalType::CAT) {
         LOG_CONSOLE(LogLevel::INFO, "Not support yet");
-    } else if (Type == Animal::AnimalType::SPECIFIC_ANIMAL) {
+    } else if (Type == AnimalType::SPECIFIC_ANIMAL) {
         LOG_FARM(LogLevel::INFO, "Try feeding [", name, "]");
         Animal *ani{nullptr};
         if ((ani = isAnimalExist(name.c_str())) != nullptr) {
@@ -435,21 +438,21 @@ void MacDonald::updateDashboard(void) const {
 
 std::string MacDonald::getAnimalsStatus(void) const {
     VariadicTable<std::string, const char *, const uint16_t, double, int,
-                  std::string>
-        vt({"Name", "Type", "Age", "Weight", "FedDays", "FedToday"}, 10);
+                  std::string, std::string>
+        vt({"Name", "Type", "Age", "Weight", "FedDays", "FedToday", "SoundHeard"}, 10);
     for (Animal *animal : this->mAnimalList) {
         vt.addRow(animal->getName(), getAnimalName(animal), animal->getAge(),
                   animal->getWeight(), animal->getFeedConsecutiveDays(),
-                  (animal->getFedToday() == false) ? "False" : "True");
+                  (animal->getFedToday() == false) ? "False" : "True", animal->getSoundStatusStrings());
     }
     std::stringstream ss;
     vt.print(ss);
     return ss.str();
 }
 
-bool MacDonald::sellAnimals(Animal::AnimalType Type, std::string name) {
+bool MacDonald::sellAnimals(AnimalType Type, std::string name) {
     bool retval{false};
-    if (Type == Animal::AnimalType::SPECIFIC_ANIMAL) {
+    if (Type == AnimalType::SPECIFIC_ANIMAL) {
         LOG_FARM(LogLevel::INFO, "Try sell [", name, "]");
         Animal *ani{nullptr};
         if ((ani = isAnimalExist(name.c_str())) != nullptr) {
@@ -475,7 +478,7 @@ bool MacDonald::sellAnimals(Animal::AnimalType Type, std::string name) {
         auto it = mAnimalList.begin();
         while (it != mAnimalList.end()) {
             if ((*it)->getType() == Type) {
-                if (sellAnimals(Animal::AnimalType::SPECIFIC_ANIMAL,
+                if (sellAnimals(AnimalType::SPECIFIC_ANIMAL,
                                 (*it)->getName()) == true) {
                     retval |= true;
                     continue;
@@ -526,6 +529,16 @@ int MacDonald::countLines(const std::string &text) {
     }
 
     return lines;
+}
+
+void MacDonald::soundHandler(AnimalType type, int num) {
+    LOG_FARM(LogLevel::DEBUG, "Gain ", num, " sound units from ",
+             Animal::Animal::AnimalTypeToStrings.at(type));
+    for (Animal *animal : this->mAnimalList) {
+        LOG_FARM(LogLevel::VERBOSE, "Gain for ", animal->getName());
+
+        animal->gainSound(type, num);
+    }
 }
 
 } // namespace Farm

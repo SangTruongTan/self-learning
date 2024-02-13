@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <iostream>
+#include <map>
 #include <sstream>
 #include <string>
 
@@ -13,12 +14,10 @@ namespace Farm {
 class Animal {
 public:
     /* Enum definiton. */
-    enum AnimalType { CHICKEN, CAT, PIG, DOG, ANIMAL, SPECIFIC_ANIMAL };
-
     enum AnimalError { AnimalNoError, AnimalAlreadyFed, AnimalNotExist };
 
     /* Lift time declaration. Units in Days. */
-    static constexpr uint16_t CHICKEN_LIFE_TIME = 15;
+    static constexpr uint16_t CHICKEN_LIFE_TIME = 3;
     static constexpr uint16_t CAT_LIFE_TIME = 20;
     static constexpr uint16_t DOG_LIFE_TIME = 25;
     static constexpr uint16_t PIG_LIFE_TIME = 22;
@@ -161,15 +160,20 @@ protected:
     double mWeight;
     int mFeedConsecutiveDays;
     bool mGoOutStatus;
-    Farm::SharedObjects &mShared;
+    SharedObjects &mShared;
     bool mFedToday = false;
     AnimalType mType;
+    std::map<AnimalType, int> numOfSounds;
+    int mHappyIndex;
 
 public:
     static const std::unordered_map<AnimalError, std::string>
         AnimalErrorToStrings;
 
-    Animal(std::string Name, Farm::SharedObjects &shared);
+    static const std::unordered_map<AnimalType, std::string>
+        AnimalTypeToStrings;
+
+    Animal(std::string Name, SharedObjects &shared);
     virtual ~Animal();
     const std::string getName(void) const;
     const uint16_t getAge(void) const;
@@ -184,6 +188,10 @@ public:
     virtual void killAnimal(void) = 0;
     virtual int getSellPrice(void) const = 0;
     virtual AnimalType getType(void) const = 0;
+    void clearSound(void);
+    void gainSound(AnimalType type, int num);
+    virtual int checkHappyReductionBySounds(void) = 0;
+    std::string getSoundStatusStrings(void);
 
 protected:
     virtual void sound(int NumOfSound = 1) = 0;

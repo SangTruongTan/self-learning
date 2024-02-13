@@ -7,7 +7,7 @@ Chicken::Chicken(std::string Name, SharedObjects &shared)
     std::stringstream ss;
     ss << "A new Chicken named: \"" << this->mName << "\" has been born";
     LOG_ANIMAL(LogLevel::INFO, ss.str());
-    mType = Animal::AnimalType::CHICKEN;
+    mType = AnimalType::CHICKEN;
 }
 
 Chicken::~Chicken() {
@@ -18,9 +18,12 @@ Chicken::~Chicken() {
 
 void Chicken::sound(int NumOfSound) {
     for (int i = 0; i < NumOfSound; i++) {
-        this->mShared.ChickenSound++;
         LOG_ANIMAL(LogLevel::INFO, std::string(CHICKENS_SOUND));
         LOG_CONSOLE(LogLevel::INFO, "[", mName, "] => ", CHICKENS_SOUND, "\n");
+    }
+    if (mShared.soundCallback) {
+        LOG_ANIMAL(LogLevel::DEBUG, "Invoke sound callback function");
+        mShared.soundCallback(mType, NumOfSound);
     }
 }
 
@@ -65,6 +68,16 @@ void Chicken::killAnimal(void) {
 
 int Chicken::getSellPrice(void) const { return CHICKEN_SELL_PRICE; }
 
-Animal::AnimalType Chicken::getType(void) const { return mType; }
+AnimalType Chicken::getType(void) const { return mType; }
+
+int Chicken::checkHappyReductionBySounds(void) {
+    int offset = (numOfSounds.at(AnimalType::CAT) +
+                  numOfSounds.at(AnimalType::DOG) +
+                  numOfSounds.at(AnimalType::PIG)) %
+                 CHICKEN_REDUCTION_CONDITION_BY_SOUND;
+    LOG_ANIMAL(LogLevel::INFO, "Happy Index new = ", mHappyIndex, " - ", offset);
+    mHappyIndex -= offset;
+    return mHappyIndex;
+}
 
 } // namespace Farm
