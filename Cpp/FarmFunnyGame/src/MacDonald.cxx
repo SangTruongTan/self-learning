@@ -351,9 +351,16 @@ void MacDonald::registerTimer(void) {
     }));
 
     /* Check at 12:00AM+ */
+    /* Increase all animal age. */
     timeLists.push_back(std::make_pair(0, [this]() {
         std::lock_guard<std::mutex> lock(this->mMutexAnimals);
         this->incAgeAll();
+    }));
+
+    /* Reproduction handling. */
+    timeLists.push_back(std::make_pair(0, [this]() {
+        std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+        this->AnimalReproduction();
     }));
 
     /* Check at specific moment. */
@@ -363,7 +370,7 @@ void MacDonald::registerTimer(void) {
         static_cast<const int>(Animal::CAT_SOUND_TIME), [this]() {
             AnimalType type = AnimalType::CAT;
             std::lock_guard<std::mutex> lock(this->mMutexAnimals);
-            LOG_FARM(LogLevel::INFO, "It's time to sound for {",
+            LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
                      Animal::AnimalTypeToStrings.at(type), "}");
             for (Animal *animal : this->mAnimalList) {
                 if (animal->getType() == type) {
@@ -377,7 +384,7 @@ void MacDonald::registerTimer(void) {
         static_cast<const int>(Animal::CHICKEN_SOUND_TIME), [this]() {
             AnimalType type = AnimalType::CHICKEN;
             std::lock_guard<std::mutex> lock(this->mMutexAnimals);
-            LOG_FARM(LogLevel::INFO, "It's time to sound for {",
+            LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
                      Animal::AnimalTypeToStrings.at(type), "}");
             for (Animal *animal : this->mAnimalList) {
                 if (animal->getType() == type) {
@@ -391,7 +398,7 @@ void MacDonald::registerTimer(void) {
         static_cast<const int>(Animal::DOG_SOUND_TIME), [this]() {
             AnimalType type = AnimalType::DOG;
             std::lock_guard<std::mutex> lock(this->mMutexAnimals);
-            LOG_FARM(LogLevel::INFO, "It's time to sound for {",
+            LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
                      Animal::AnimalTypeToStrings.at(type), "}");
             for (Animal *animal : this->mAnimalList) {
                 if (animal->getType() == type) {
@@ -405,7 +412,7 @@ void MacDonald::registerTimer(void) {
         static_cast<const int>(Animal::PIG_SOUND_TIME), [this]() {
             AnimalType type = AnimalType::PIG;
             std::lock_guard<std::mutex> lock(this->mMutexAnimals);
-            LOG_FARM(LogLevel::INFO, "It's time to sound for {",
+            LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
                      Animal::AnimalTypeToStrings.at(type), "}");
             for (Animal *animal : this->mAnimalList) {
                 if (animal->getType() == type) {
@@ -596,6 +603,25 @@ void MacDonald::soundHandler(AnimalType type, int num) {
         LOG_FARM(LogLevel::VERBOSE, "Gain for ", animal->getName());
 
         animal->gainSound(type, num);
+    }
+}
+
+void MacDonald::AnimalReproduction(void) {
+    std::vector<Animal *> childList{};
+    std::stringstream ss;
+    for (Animal *animal : mAnimalList) {
+        int num = animal->reproduce(childList);
+        if (num != 0) {
+            ss.clear();
+            ss.str(std::string());
+            ss << "["  << animal->getName() << "] reproduced " << num << " child(s)" << std::endl;
+            LOG_FARM(LogLevel::INFO, ss.str());
+            LOG_CONSOLE(LogLevel::INFO, ss.str());
+        }
+    }
+    for (Animal *child : childList) {
+        mAnimalList.emplace_back(child);
+        child->soundWhenBorn();
     }
 }
 

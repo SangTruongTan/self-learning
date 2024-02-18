@@ -1,5 +1,7 @@
 #include "Chicken.h"
 
+#include <random>
+
 namespace Farm {
 
 Chicken::Chicken(std::string Name, SharedObjects &shared)
@@ -71,17 +73,41 @@ int Chicken::getSellPrice(void) const { return CHICKEN_SELL_PRICE; }
 AnimalType Chicken::getType(void) const { return mType; }
 
 int Chicken::checkHappyReductionBySounds(void) {
-    int offset = (numOfSounds.at(AnimalType::CAT) +
-                  numOfSounds.at(AnimalType::DOG) +
-                  numOfSounds.at(AnimalType::PIG)) %
-                 CHICKEN_REDUCTION_CONDITION_BY_SOUND;
-    LOG_ANIMAL(LogLevel::INFO, "Happy Index new = ", mHappyIndex, " - ", offset);
+    int offset =
+        (numOfSounds.at(AnimalType::CAT) + numOfSounds.at(AnimalType::DOG) +
+         numOfSounds.at(AnimalType::PIG)) %
+        CHICKEN_REDUCTION_CONDITION_BY_SOUND;
+    LOG_ANIMAL(LogLevel::INFO, "Happy Index new = ", mHappyIndex, " - ",
+               offset);
     mHappyIndex -= offset;
     return mHappyIndex;
 }
 
 Animal::AnimalError Chicken::isEdible(void) {
-    return AnimalError::AnimalNoError;
+    return (mAge >= CHICKEN_AGE_TO_EAT) ? AnimalError::AnimalNoError
+                                        : AnimalError::AnimalAgeNotAdequate;
+}
+
+bool Chicken::isReproducible(void) {
+    return (mAge == CHICKEN_AGE_TO_REPRODUCE) &&
+           (mWeight == CHICKEN_WEIGHT_TO_REPRODUCE) &&
+           (mHappyIndex == CHICKEN_HAPPY_INDEX_TO_REPRODUCE);
+}
+
+Animal *Chicken::reproduce(std::string name) const {
+    return new Chicken(name, mShared);
+}
+
+int Chicken::getNumberOfChilds(void) {
+    std::random_device rd;
+    std::default_random_engine generator(rd());
+    std::uniform_int_distribution<int> distribution(
+        CHICKEN_NUM_REPRODUCE_RANDOM_MIN, CHICKEN_NUM_REPRODUCE_RANDOM_MAX);
+    return distribution(generator);
+}
+
+void Chicken::soundWhenBorn(void) {
+    sound(CHICKEN_NUM_SOUND_WHEN_BORN);
 }
 
 } // namespace Farm

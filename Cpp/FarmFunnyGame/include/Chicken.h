@@ -6,7 +6,7 @@
 namespace Farm {
 class Chicken : public Animal {
 private:
-    AnimalError isEdible(void);
+    AnimalError isEdible(void) override;
 
 public:
     Chicken(std::string Name, Farm::SharedObjects &shared);
@@ -19,6 +19,10 @@ public:
     int getSellPrice(void) const override;
     AnimalType getType(void) const override;
     int checkHappyReductionBySounds(void) override;
+    bool isReproducible(void) override;
+    Animal *reproduce(std::string name) const override;
+    int getNumberOfChilds(void) override;
+    void soundWhenBorn(void) override;
 };
 }; // namespace Farm
 

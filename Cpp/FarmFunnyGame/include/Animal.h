@@ -6,6 +6,7 @@
 #include <map>
 #include <sstream>
 #include <string>
+#include <vector>
 
 #include "Logger.h"
 #include "SharedObjects.h"
@@ -14,10 +15,17 @@ namespace Farm {
 class Animal {
 public:
     /* Enum definiton. */
-    enum AnimalError { AnimalNoError, AnimalAlreadyFed, AnimalNotExist };
+    enum AnimalError {
+        AnimalNoError,
+        AnimalAlreadyFed,
+        AnimalNotExist,
+        AnimalAgeNotAdequate
+    };
+
+    typedef std::vector<Animal *> AnimalList;
 
     /* Lift time declaration. Units in Days. */
-    static constexpr uint16_t CHICKEN_LIFE_TIME = 3;
+    static constexpr uint16_t CHICKEN_LIFE_TIME = 5;
     static constexpr uint16_t CAT_LIFE_TIME = 20;
     static constexpr uint16_t DOG_LIFE_TIME = 25;
     static constexpr uint16_t PIG_LIFE_TIME = 22;
@@ -118,10 +126,10 @@ public:
     static constexpr uint8_t PIG_NUM_REPRODUCE_RANDOM_MAX = 2;
 
     /* Time to reproduce. */
-    static constexpr uint16_t CHICKEN_TIME_TO_REPRODUCE = 13;
-    static constexpr uint16_t CAT_TIME_TO_REPRODUCE = 18;
-    static constexpr uint16_t DOG_TIME_TO_REPRODUCE = 22;
-    static constexpr uint16_t PIG_TIME_TO_REPRODUCE = 20;
+    static constexpr uint16_t CHICKEN_AGE_TO_REPRODUCE = 13;
+    static constexpr uint16_t CAT_AGE_TO_REPRODUCE = 18;
+    static constexpr uint16_t DOG_AGE_TO_REPRODUCE = 22;
+    static constexpr uint16_t PIG_AGE_TO_REPRODUCE = 20;
 
     /* Condition to reproduce. */
     static constexpr uint8_t CHICKEN_WEIGHT_TO_REPRODUCE = 2;
@@ -154,6 +162,10 @@ public:
     /* Train for Dog. */
     static constexpr int DOG_TRAIN_FACTOR = 2;
 
+    /* Children naming. */
+    static constexpr int CHILDREN_NAMING_NUMBER = 2;
+    static constexpr const char *CHILDREN_NAMING = "_child+";
+
 protected:
     std::string mName;
     uint16_t mAge;
@@ -165,6 +177,7 @@ protected:
     AnimalType mType;
     std::map<AnimalType, int> numOfSounds;
     int mHappyIndex;
+    int mChildrenRemark;
 
 public:
     static const std::unordered_map<AnimalError, std::string>
@@ -193,10 +206,14 @@ public:
     virtual int checkHappyReductionBySounds(void) = 0;
     std::string getSoundStatusStrings(void);
     virtual void sound(int NumOfSound = 1) = 0;
+    virtual bool isReproducible(void) = 0;
+    int reproduce(AnimalList &childList);
+    virtual Animal *reproduce(std::string name) const = 0;
+    virtual int getNumberOfChilds(void) = 0;
+    virtual void soundWhenBorn(void) = 0;
 
 protected:
     virtual AnimalError isEdible(void) = 0;
-
 };
 }; // namespace Farm
 

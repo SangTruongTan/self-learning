@@ -50,6 +50,7 @@ private:
     bool updateBalance(int offset);
     bool updateFoodUnits(int offset);
     void soundHandler(AnimalType type, int num);
+    void AnimalReproduction(void);
 
 public:
     std::vector<Animal *> mAnimalList;
