@@ -80,4 +80,8 @@ int Chicken::checkHappyReductionBySounds(void) {
     return mHappyIndex;
 }
 
+Animal::AnimalError Chicken::isEdible(void) {
+    return AnimalError::AnimalNoError;
+}
+
 } // namespace Farm

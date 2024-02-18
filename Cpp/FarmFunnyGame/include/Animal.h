@@ -195,6 +195,7 @@ public:
     virtual void sound(int NumOfSound = 1) = 0;
 
 protected:
+    virtual AnimalError isEdible(void) = 0;
 
 };
 }; // namespace Farm

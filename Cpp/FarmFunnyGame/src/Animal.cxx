@@ -28,14 +28,15 @@ void Animal::incAge() {
 
 Animal::AnimalError Animal::feedAnimal(void) {
     AnimalError retval{AnimalAlreadyFed};
-    if (mFedToday == false) {
+    retval = isEdible();
+    if (mFedToday == false && retval == AnimalNoError) {
         std::stringstream ss;
         ss << "[" << this->mName << "] Inc feed consecutive days to => "
            << ++mFeedConsecutiveDays;
         LOG_ANIMAL(LogLevel::INFO, ss.str());
-        retval = AnimalNoError;
         mFedToday = true;
     }
+
     return retval;
 }
 

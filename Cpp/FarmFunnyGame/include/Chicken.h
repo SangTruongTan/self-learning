@@ -6,6 +6,8 @@
 namespace Farm {
 class Chicken : public Animal {
 private:
+    AnimalError isEdible(void);
+
 public:
     Chicken(std::string Name, Farm::SharedObjects &shared);
     ~Chicken();
