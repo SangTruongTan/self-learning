@@ -8,20 +8,17 @@
 
 namespace Farm {
 
-const std::unordered_map<AnimalType, const char *>
-    MacDonald::AnimalStrings = {
-        {AnimalType::CHICKEN, MacDonald::CHICKEN_NAME},
-        {AnimalType::PIG, MacDonald::PIG_NAME},
-        {AnimalType::DOG, MacDonald::DOG_NAME},
-        {AnimalType::CAT, MacDonald::CAT_NAME},
-        {AnimalType::ANIMAL, MacDonald::ANIMAL_NAME}};
+const std::unordered_map<AnimalType, const char *> MacDonald::AnimalStrings = {
+    {AnimalType::CHICKEN, MacDonald::CHICKEN_NAME},
+    {AnimalType::PIG, MacDonald::PIG_NAME},
+    {AnimalType::DOG, MacDonald::DOG_NAME},
+    {AnimalType::CAT, MacDonald::CAT_NAME},
+    {AnimalType::ANIMAL, MacDonald::ANIMAL_NAME}};
 
 const std::unordered_map<std::string, AnimalType>
     MacDonald::AnimalTypeFromStrings = {
-        {"chickens", AnimalType::CHICKEN},
-        {"pigs", AnimalType::PIG},
-        {"dogs", AnimalType::DOG},
-        {"cats", AnimalType::CAT},
+        {"chickens", AnimalType::CHICKEN}, {"pigs", AnimalType::PIG},
+        {"dogs", AnimalType::DOG},         {"cats", AnimalType::CAT},
         {"animals", AnimalType::ANIMAL},
 };
 
@@ -29,7 +26,7 @@ MacDonald::MacDonald() : mTimeManager(nullptr), mUserInterface(nullptr) {
     LOG_FARM(LogLevel::INFO, "New Mac Donal Farm has been created");
     mShared.soundCallback =
         std::bind(&MacDonald::soundHandler, this, std::placeholders::_1,
-                   std::placeholders::_2);
+                  std::placeholders::_2);
 }
 
 void MacDonald::start() {
@@ -359,6 +356,64 @@ void MacDonald::registerTimer(void) {
         this->incAgeAll();
     }));
 
+    /* Check at specific moment. */
+    /* Time to sound. */
+    /* Cats. */
+    timeLists.push_back(std::make_pair(
+        static_cast<const int>(Animal::CAT_SOUND_TIME), [this]() {
+            AnimalType type = AnimalType::CAT;
+            std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+            LOG_FARM(LogLevel::INFO, "It's time to sound for {",
+                     Animal::AnimalTypeToStrings.at(type), "}");
+            for (Animal *animal : this->mAnimalList) {
+                if (animal->getType() == type) {
+                    animal->sound();
+                }
+            }
+        }));
+
+    /* Chickens. */
+    timeLists.push_back(std::make_pair(
+        static_cast<const int>(Animal::CHICKEN_SOUND_TIME), [this]() {
+            AnimalType type = AnimalType::CHICKEN;
+            std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+            LOG_FARM(LogLevel::INFO, "It's time to sound for {",
+                     Animal::AnimalTypeToStrings.at(type), "}");
+            for (Animal *animal : this->mAnimalList) {
+                if (animal->getType() == type) {
+                    animal->sound();
+                }
+            }
+        }));
+
+    /* Dog. */
+    timeLists.push_back(std::make_pair(
+        static_cast<const int>(Animal::DOG_SOUND_TIME), [this]() {
+            AnimalType type = AnimalType::DOG;
+            std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+            LOG_FARM(LogLevel::INFO, "It's time to sound for {",
+                     Animal::AnimalTypeToStrings.at(type), "}");
+            for (Animal *animal : this->mAnimalList) {
+                if (animal->getType() == type) {
+                    animal->sound();
+                }
+            }
+        }));
+
+    /* Pigs. */
+    timeLists.push_back(std::make_pair(
+        static_cast<const int>(Animal::PIG_SOUND_TIME), [this]() {
+            AnimalType type = AnimalType::PIG;
+            std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+            LOG_FARM(LogLevel::INFO, "It's time to sound for {",
+                     Animal::AnimalTypeToStrings.at(type), "}");
+            for (Animal *animal : this->mAnimalList) {
+                if (animal->getType() == type) {
+                    animal->sound();
+                }
+            }
+        }));
+
     /* Continuos Executing */
     timeLists.push_back(
         std::make_pair(static_cast<const int>(TimeManager::CONTINUOUS), [this] {
@@ -439,11 +494,14 @@ void MacDonald::updateDashboard(void) const {
 std::string MacDonald::getAnimalsStatus(void) const {
     VariadicTable<std::string, const char *, const uint16_t, double, int,
                   std::string, std::string>
-        vt({"Name", "Type", "Age", "Weight", "FedDays", "FedToday", "SoundHeard"}, 10);
+        vt({"Name", "Type", "Age", "Weight", "FedDays", "FedToday",
+            "SoundHeard"},
+           10);
     for (Animal *animal : this->mAnimalList) {
         vt.addRow(animal->getName(), getAnimalName(animal), animal->getAge(),
                   animal->getWeight(), animal->getFeedConsecutiveDays(),
-                  (animal->getFedToday() == false) ? "False" : "True", animal->getSoundStatusStrings());
+                  (animal->getFedToday() == false) ? "False" : "True",
+                  animal->getSoundStatusStrings());
     }
     std::stringstream ss;
     vt.print(ss);
@@ -533,7 +591,7 @@ int MacDonald::countLines(const std::string &text) {
 
 void MacDonald::soundHandler(AnimalType type, int num) {
     LOG_FARM(LogLevel::DEBUG, "Gain ", num, " sound units from ",
-             Animal::Animal::AnimalTypeToStrings.at(type));
+             Animal::AnimalTypeToStrings.at(type));
     for (Animal *animal : this->mAnimalList) {
         LOG_FARM(LogLevel::VERBOSE, "Gain for ", animal->getName());
 

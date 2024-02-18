@@ -80,7 +80,7 @@ public:
     static constexpr int CHICKEN_SOUND_TIME = 6;
     static constexpr int CAT_SOUND_TIME = 13;
     static constexpr int DOG_SOUND_TIME = 20;
-    static constexpr int Pig_SOUND_TIME = 0; /* If hungry. */
+    static constexpr int PIG_SOUND_TIME = 0; /* If hungry. */
 
     /* Happy index reduction by sounds. */
     static constexpr int CHICKEN_HAPPY_INDEX_REDUCTION_BY_SOUND = 1;
@@ -192,9 +192,10 @@ public:
     void gainSound(AnimalType type, int num);
     virtual int checkHappyReductionBySounds(void) = 0;
     std::string getSoundStatusStrings(void);
+    virtual void sound(int NumOfSound = 1) = 0;
 
 protected:
-    virtual void sound(int NumOfSound = 1) = 0;
+
 };
 }; // namespace Farm
 
