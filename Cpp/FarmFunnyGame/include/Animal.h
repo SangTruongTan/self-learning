@@ -19,13 +19,17 @@ public:
         AnimalNoError,
         AnimalAlreadyFed,
         AnimalNotExist,
-        AnimalAgeNotAdequate
+        AnimalAgeNotAdequate,
+        AnimalIsOutdoor,
+        AnimalIsIndoor,
+        AnimalAlreadyWentOutdoorToday,
+        AnimalHappyIndexAlert
     };
 
     typedef std::vector<Animal *> AnimalList;
 
     /* Lift time declaration. Units in Days. */
-    static constexpr uint16_t CHICKEN_LIFE_TIME = 5;
+    static constexpr uint16_t CHICKEN_LIFE_TIME = 15;
     static constexpr uint16_t CAT_LIFE_TIME = 20;
     static constexpr uint16_t DOG_LIFE_TIME = 25;
     static constexpr uint16_t PIG_LIFE_TIME = 22;
@@ -53,6 +57,7 @@ public:
     static constexpr int8_t HAPPY_INDEX_MAX = 10;
     static constexpr int8_t HAPPY_INDEX_MIN = 0;
     static constexpr int8_t HAPPY_INDEX_DEFAULT = 7;
+    static constexpr int8_t GAIN_HAPPY_INDEX = 2;
 
     /* Intelligent Index. Only Dog has this index. */
     static constexpr int8_t INTELLIGENT_INDEX_MAX = 10;
@@ -150,7 +155,14 @@ public:
     static constexpr uint8_t PIG_NUM_SOUND_WHEN_BORN = 2;
 
     /* Go out. */
-    static constexpr int TIME_TO_GO_BACK = 12; /* Except Cat */
+    static constexpr int TIME_TO_GO_BACK = 0; /* 11:59PM. Except Cat */
+    static constexpr int TIME_TO_GO_OUT_BEGIN =
+        4; /* Applicable only for Chickens & Dogs. */
+    static constexpr int TIME_TO_GO_OUT_END =
+        0; /* Applicable only for Chickens & Dogs. */
+    static constexpr int NOT_GO_OUT_CONSECUTIVE = 2;
+    static constexpr int GAIN_ON_CONSECUTIVE_INDOOR = -1;
+    static constexpr int HAPPY_INDEX_CONDITION_TO_EAT = 3;
 
     /* Die. */
     static constexpr int DIE_WHEN_HAPPY_INDEX_ZERO = 3;
@@ -171,8 +183,11 @@ protected:
     uint16_t mAge;
     double mWeight;
     int mFeedConsecutiveDays;
-    bool mGoOutStatus;
     SharedObjects &mShared;
+    bool mIsOutdoor;
+    int mNotGoOutdoorConsecutiveDays;
+    bool mIsWentOutToday;
+    int mZeroHappyIndexConsecutiveDays;
     bool mFedToday = false;
     AnimalType mType;
     std::map<AnimalType, int> numOfSounds;
@@ -211,6 +226,14 @@ public:
     virtual Animal *reproduce(std::string name) const = 0;
     virtual int getNumberOfChilds(void) = 0;
     virtual void soundWhenBorn(void) = 0;
+    AnimalError letAnimalGoOut(void);
+    AnimalError letAnimalGoBack(void);
+    bool getGoOutStatus(void);
+    static std::string animalTypeToString(AnimalType type);
+    int gainHappyIndex(int offset);
+    int getHappyIndex(void);
+    int getZeroHappyIndexConsecutiveDays(void);
+    bool isDead(void);
 
 protected:
     virtual AnimalError isEdible(void) = 0;

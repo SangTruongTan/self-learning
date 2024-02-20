@@ -120,45 +120,25 @@ void MacDonald::handleCommands() {
                     feedAnimals(AnimalType::SPECIFIC_ANIMAL, cmd.at(1));
                 }
             } else if (cmd.at(0) == "let") {
-                if (cmd.size() == 3) {
-                    if (cmd.at(2) == "out") {
-                        if (cmd.at(2) == "animals") {
-                            LOG_FARM(LogLevel::INFO, "CMD --> let animals out");
-                        } else if (cmd.at(2) == "chickens") {
-                            LOG_FARM(LogLevel::INFO,
-                                     "CMD --> let chickens out");
-                        } else if (cmd.at(2) == "cats") {
-                            LOG_FARM(LogLevel::INFO, "CMD --> let cats out");
-                        } else if (cmd.at(2) == "dogs") {
-                            LOG_FARM(LogLevel::INFO, "CMD --> let dogs out");
-                        } else if (cmd.at(2) == "pigs") {
-                            LOG_FARM(LogLevel::INFO, "CMD --> let dogs out");
-                        } else {
-                            LOG_FARM(LogLevel::INFO,
-                                     "CMD --> let specific animal out");
-                        }
-                    } else if (cmd.at(2) == "back") {
-                        if (cmd.at(2) == "animals") {
-                            LOG_FARM(LogLevel::INFO,
-                                     "CMD --> let animals back");
-                        } else if (cmd.at(2) == "chickens") {
-                            LOG_FARM(LogLevel::INFO,
-                                     "CMD --> let chickens back");
-                        } else if (cmd.at(2) == "cats") {
-                            LOG_FARM(LogLevel::INFO, "CMD --> let cats back");
-                        } else if (cmd.at(2) == "dogs") {
-                            LOG_FARM(LogLevel::INFO, "CMD --> let dogs back");
-                        } else if (cmd.at(2) == "pigs") {
-                            LOG_FARM(LogLevel::INFO, "CMD --> let dogs back");
-                        } else {
-                            LOG_FARM(LogLevel::INFO,
-                                     "CMD --> let specific animal back");
-                        }
-                    } else {
-                        LOG_CONSOLE(LogLevel::INFO,
-                                    "Command doesn't support --> You must "
-                                    "specify \"out\" or \"back\"\n");
+                std::stringstream ss;
+                ss << "CMD --> ";
+                for (std::string str : cmd) {
+                    ss << str << " ";
+                }
+                LOG_FARM(LogLevel::INFO, ss.str());
+                if (cmd.size() >= 3) {
+                    std::string sIsOut = cmd.at(cmd.size() - 1);
+                    if (sIsOut == "out" || sIsOut == "in") {
+                        bool isOut;
+                        isOut = (sIsOut == "out") ? true : false;
+                        letAnimalGoBackOut(
+                            std::next(cmd.begin(), 1),
+                            std::next(cmd.begin(), cmd.size() - 1), isOut);
                     }
+                } else {
+                    LOG_CONSOLE(LogLevel::INFO,
+                                "Command doesn't support --> You must "
+                                "specify \"out\" or \"back\"\n");
                 }
             } else if (cmd.at(0) == "buy") {
                 if (cmd.size() >= 3) {
@@ -260,20 +240,6 @@ void MacDonald::incAgeAll() {
     for (Animal *animal : this->mAnimalList) {
         animal->incAge();
     }
-    std::vector<std::string> removeList{};
-    if (this->mAnimalList.size() > 0) {
-        LOG_FARM(LogLevel::DEBUG, "Checking animal's age");
-        for (Animal *animal : mAnimalList) {
-            if (animal->exceedLifeTime()) {
-                std::ostringstream os;
-                os << "Animal[" << animal->getName() << "] Exceeded life time";
-                LOG_FARM(LogLevel::INFO, os.str());
-                animal->killAnimal();
-                removeList.emplace_back(animal->getName());
-            }
-        }
-        removeAnimals(removeList);
-    }
 }
 
 Animal *MacDonald::isAnimalExist(const char *name) {
@@ -355,6 +321,12 @@ void MacDonald::registerTimer(void) {
     timeLists.push_back(std::make_pair(0, [this]() {
         std::lock_guard<std::mutex> lock(this->mMutexAnimals);
         this->incAgeAll();
+    }));
+
+    /* Should be checked after scanAnimal & incAgeAll(). */
+    timeLists.push_back(std::make_pair(0, [this]() {
+        std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+        this->checkAnimalSurvivalCondition();
     }));
 
     /* Reproduction handling. */
@@ -500,15 +472,16 @@ void MacDonald::updateDashboard(void) const {
 
 std::string MacDonald::getAnimalsStatus(void) const {
     VariadicTable<std::string, const char *, const uint16_t, double, int,
-                  std::string, std::string>
+                  std::string, std::string, int>
         vt({"Name", "Type", "Age", "Weight", "FedDays", "FedToday",
-            "SoundHeard"},
+            "GoOutStatus", "HappyIndex"},
            10);
     for (Animal *animal : this->mAnimalList) {
         vt.addRow(animal->getName(), getAnimalName(animal), animal->getAge(),
                   animal->getWeight(), animal->getFeedConsecutiveDays(),
                   (animal->getFedToday() == false) ? "False" : "True",
-                  animal->getSoundStatusStrings());
+                  animal->getGoOutStatus() ? "Out" : "In",
+                  animal->getHappyIndex());
     }
     std::stringstream ss;
     vt.print(ss);
@@ -614,7 +587,8 @@ void MacDonald::AnimalReproduction(void) {
         if (num != 0) {
             ss.clear();
             ss.str(std::string());
-            ss << "["  << animal->getName() << "] reproduced " << num << " child(s)" << std::endl;
+            ss << "[" << animal->getName() << "] reproduced " << num
+               << " child(s)" << std::endl;
             LOG_FARM(LogLevel::INFO, ss.str());
             LOG_CONSOLE(LogLevel::INFO, ss.str());
         }
@@ -625,4 +599,108 @@ void MacDonald::AnimalReproduction(void) {
     }
 }
 
+void MacDonald::letAnimalGoBackOut(std::vector<std::string>::iterator begin,
+                                   std::vector<std::string>::iterator end,
+                                   bool isOut) {
+    LOG_FARM(LogLevel::INFO, "Let all vector animals go ",
+             isOut ? "out" : "back");
+    auto it = begin;
+    while (it != end) {
+        const auto typeIt = AnimalTypeFromStrings.find(*it);
+        if (typeIt != AnimalTypeFromStrings.end()) {
+            if (typeIt->second == AnimalType::ANIMAL) {
+                letAnimalGoBackOut(isOut);
+                break;
+            }
+            letAnimalGoBackOut(typeIt->second, isOut);
+        } else {
+            letAnimalGoBackOut(*it, isOut);
+        }
+        it++;
+    }
+}
+
+void MacDonald::letAnimalGoBackOut(bool isOut) {
+    LOG_FARM(LogLevel::INFO, "Let all animals go ", isOut ? "out" : "back");
+    AnimalType animalType =
+        static_cast<AnimalType>(AnimalType::CAT | AnimalType::CHICKEN |
+                                AnimalType::DOG | AnimalType::PIG);
+    letAnimalGoBackOut(animalType, isOut);
+}
+
+/**
+ * @brief Let Specific Animal Type Go In/Out.
+ * @param Type Type can be multiple animal type.
+ */
+void MacDonald::letAnimalGoBackOut(AnimalType Type, bool isOut) {
+    LOG_FARM(LogLevel::INFO, "Let all {", Animal::animalTypeToString(Type),
+             "} go ", isOut ? "out" : "back");
+    std::stringstream ss;
+    for (Animal *animal : mAnimalList) {
+        if (animal->getType() & Type) {
+            letAnimalGoBackOut(animal->getName(), isOut);
+        }
+    }
+}
+
+void MacDonald::letAnimalGoBackOut(std::string name, bool isOut) {
+    bool isFound{false};
+    for (Animal *animal : mAnimalList) {
+        if (animal->getName() == name) {
+            LOG_FARM(LogLevel::INFO, "Found [", name, "] to let go ",
+                     isOut ? "out" : "back");
+            letAnimalGoBackOut(animal, isOut);
+            isFound = true;
+            break;
+        }
+    }
+    if (isFound == false) {
+        std::stringstream ss;
+        ss << "[" << name << "] can not be found" << std::endl;
+        LOG_CONSOLE(LogLevel::INFO, ss.str());
+        LOG_FARM(LogLevel::INFO, ss.str());
+    }
+}
+
+void MacDonald::letAnimalGoBackOut(Animal *animal, bool isOut) {
+    if (animal->getType() == AnimalType::CHICKEN ||
+        animal->getType() == AnimalType::DOG) {
+        if (mTimeManager->getHour() < Animal::TIME_TO_GO_OUT_BEGIN) {
+            std::stringstream ss;
+            ss << "[" << animal->getName() << " ] can not go out this time"
+               << std::endl;
+            LOG_FARM(LogLevel::INFO, ss.str());
+            LOG_CONSOLE(LogLevel::INFO, ss.str());
+            return;
+        }
+    }
+
+    Animal::AnimalError ae =
+        isOut == true ? animal->letAnimalGoOut() : animal->letAnimalGoBack();
+    std::stringstream ss;
+    ss << "[" << animal->getName() << "] letAnimalGoOut(" << isOut
+       << ") <= " << Animal::AnimalErrorToStrings.at(ae) << std::endl;
+    LOG_FARM(LogLevel::DEBUG, ss.str());
+    LOG_CONSOLE(LogLevel::DEBUG, ss.str());
+
+}
+
+void MacDonald::checkAnimalSurvivalCondition(void) {
+    std::vector<std::string> removeList{};
+    if (this->mAnimalList.size() > 0) {
+        LOG_FARM(LogLevel::DEBUG, "Checking animal's survival conditions");
+        for (Animal *animal : mAnimalList) {
+            if (animal->isDead()) {
+                std::ostringstream os;
+                os << "Animal[" << animal->getName()
+                   << "] Exceeded life time or Reached the happy index "
+                      "conditions";
+                LOG_FARM(LogLevel::INFO, os.str());
+                animal->killAnimal();
+                removeList.emplace_back(animal->getName());
+            }
+        }
+        removeAnimals(removeList);
+    }
+}
 } // namespace Farm

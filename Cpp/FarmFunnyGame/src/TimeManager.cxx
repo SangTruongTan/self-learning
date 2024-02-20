@@ -36,4 +36,8 @@ void TimeManager::start(
     }
     LOG_CLOCK(LogLevel::INFO, "Exit TimeManager::start() thread");
 }
+
+int TimeManager::getHour(void) {
+    return mHour;
+}
 } // namespace Farm

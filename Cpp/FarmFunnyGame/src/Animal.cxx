@@ -4,7 +4,9 @@ namespace Farm {
 
 Animal::Animal(std::string Name, SharedObjects &shared)
     : mName(Name), mAge(0), mWeight(0), mFeedConsecutiveDays(0),
-      mGoOutStatus(false), mShared(shared), mHappyIndex(HAPPY_INDEX_DEFAULT),
+      mShared(shared), mIsOutdoor(false), mNotGoOutdoorConsecutiveDays(0),
+      mIsWentOutToday(false), mZeroHappyIndexConsecutiveDays(0),
+      mHappyIndex(HAPPY_INDEX_DEFAULT),
       mChildrenRemark(CHILDREN_NAMING_NUMBER) {
     std::stringstream ss;
     ss << "New Animal named: " << mName;
@@ -46,7 +48,11 @@ const std::unordered_map<Animal::AnimalError, std::string>
         {AnimalNoError, "AnimalNoError"},
         {AnimalAlreadyFed, "AnimalAlreadyFed"},
         {AnimalNotExist, "AnimalNotExist"},
-        {AnimalAgeNotAdequate, "AnimalAgeNotAdequate"}};
+        {AnimalAgeNotAdequate, "AnimalAgeNotAdequate"},
+        {AnimalIsOutdoor, "AnimalIsOutdoor"},
+        {AnimalIsIndoor, "AnimalIsIndoor"},
+        {AnimalAlreadyWentOutdoorToday, "AnimalAlreadyWentOutdoorToday"},
+        {AnimalHappyIndexAlert, "AnimalHappyIndexAlert"}};
 
 const std::unordered_map<AnimalType, std::string> Animal::AnimalTypeToStrings{
     {AnimalType::ANIMAL, "ANIMAL"},
@@ -71,10 +77,14 @@ void Animal::clearSound(void) {
 }
 
 void Animal::gainSound(AnimalType type, int num) {
-    numOfSounds.at(type) += num;
-    LOG_ANIMAL(LogLevel::INFO, "[", mName, "] gain ", num, " sounds from ",
-               Animal::AnimalTypeToStrings.at(type), " => ",
-               numOfSounds.at(type));
+    if (mIsOutdoor == true) {
+        numOfSounds.at(type) += num;
+        LOG_ANIMAL(LogLevel::INFO, "[", mName, "] gain ", num, " sounds from ",
+                   Animal::AnimalTypeToStrings.at(type), " => ",
+                   numOfSounds.at(type));
+    } else {
+        LOG_ANIMAL(LogLevel::DEBUG, "[", mName, "] is outdoor");
+    }
 }
 
 std::string Animal::getSoundStatusStrings(void) {
@@ -111,4 +121,93 @@ int Animal::reproduce(AnimalList &childList) {
     return retval;
 }
 
+Animal::AnimalError Animal::letAnimalGoOut(void) {
+    Animal::AnimalError retval{AnimalNoError};
+    if (mIsOutdoor == true) {
+        LOG_ANIMAL(LogLevel::ERROR, "[", mName, "] already went outdoor");
+        retval = Animal::AnimalError::AnimalIsOutdoor;
+    } else if (mIsWentOutToday == true) {
+        LOG_ANIMAL(LogLevel::ERROR, "[", mName, "] already went outdoor today");
+        retval = Animal::AnimalError::AnimalAlreadyWentOutdoorToday;
+    } else {
+        LOG_ANIMAL(LogLevel::INFO, "let [", mName, "] went outdoor");
+        mIsOutdoor = true;
+        mNotGoOutdoorConsecutiveDays = 0;
+        mIsWentOutToday = true;
+        gainHappyIndex(GAIN_HAPPY_INDEX);
+    }
+    return retval;
+}
+
+Animal::AnimalError Animal::letAnimalGoBack(void) {
+    Animal::AnimalError retval{AnimalNoError};
+    if (mIsOutdoor == false) {
+        LOG_ANIMAL(LogLevel::ERROR, "[", mName, "] is already indoor");
+        retval = Animal::AnimalError::AnimalIsIndoor;
+    } else {
+        LOG_ANIMAL(LogLevel::INFO, "let [", mName, "] go back home");
+        mIsOutdoor = false;
+    }
+    return retval;
+}
+
+bool Animal::getGoOutStatus(void) { return mIsOutdoor; }
+
+// Define a function to convert AnimalType to string
+std::string Animal::animalTypeToString(AnimalType type) {
+    // Handle individual values
+    auto it = AnimalTypeToStrings.find(type);
+    if (it != AnimalTypeToStrings.end()) {
+        return it->second;
+    }
+
+    // Check if the type is a combination of multiple values
+    bool isChicken = (type & AnimalType::CHICKEN) == AnimalType::CHICKEN;
+    bool isDog = (type & AnimalType::DOG) == AnimalType::DOG;
+    bool isCat = (type & AnimalType::CAT) == AnimalType::CAT;
+    bool isPig = (type & AnimalType::PIG) == AnimalType::PIG;
+    if (isChicken || isDog || isCat || isPig) {
+        LOG_ANIMAL(LogLevel::DEBUG, "MULTIPLE_ANIMALS <= ", isChicken, isDog,
+                   isCat, isPig);
+        return "MULTIPLE_ANIMALS";
+    }
+    // Handle unknown values
+    return "UNKNOWN";
+}
+
+int Animal::gainHappyIndex(int offset) {
+    LOG_ANIMAL(LogLevel::DEBUG, "Changed mHappyIndex (not aligned) from ",
+               mHappyIndex, " to ", mHappyIndex + offset);
+    int retval{-1};
+    if (mType == AnimalType::PIG) {
+        LOG_ANIMAL(LogLevel::DEBUG, "Pigs don't have the happy index");
+    } else {
+        mHappyIndex += offset;
+        if (mHappyIndex < HAPPY_INDEX_MIN) {
+            mHappyIndex = HAPPY_INDEX_MIN;
+        } else if (mHappyIndex > HAPPY_INDEX_MAX) {
+            mHappyIndex = HAPPY_INDEX_MAX;
+            retval = mHappyIndex;
+        }
+    }
+
+    return retval;
+}
+
+int Animal::getHappyIndex(void) {
+    int retval = mHappyIndex;
+    if (mType == AnimalType::PIG) {
+        retval = -1;
+    }
+    return retval;
+}
+
+int Animal::getZeroHappyIndexConsecutiveDays(void) {
+    return mZeroHappyIndexConsecutiveDays;
+}
+
+bool Animal::isDead(void) {
+    return exceedLifeTime() |
+           (mZeroHappyIndexConsecutiveDays >= DIE_WHEN_HAPPY_INDEX_ZERO);
+}
 } // namespace Farm

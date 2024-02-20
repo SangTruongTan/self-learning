@@ -56,6 +56,28 @@ void Chicken::scanAnimal(void) {
     }
     mFedToday = false;
     LOG_ANIMAL(LogLevel::DEBUG, "[", mName, "] Weight => ", mWeight);
+
+    /* Check go out status. */
+    if (mIsOutdoor == true) {
+        /* Remark: except Cats. */
+        letAnimalGoBack();
+    }
+    if (mIsWentOutToday == true) {
+        mNotGoOutdoorConsecutiveDays = 0;
+        mIsWentOutToday = false;
+    } else {
+        mNotGoOutdoorConsecutiveDays += 1;
+    }
+
+    if (mNotGoOutdoorConsecutiveDays >= Animal::NOT_GO_OUT_CONSECUTIVE) {
+        gainHappyIndex(Animal::GAIN_ON_CONSECUTIVE_INDOOR);
+    }
+
+    if (mHappyIndex == 0) {
+        mZeroHappyIndexConsecutiveDays += 1;
+    } else {
+        mZeroHappyIndexConsecutiveDays = 0;
+    }
 }
 
 bool Chicken::isSalable(void) const { return (mWeight == CHICKEN_MAX_WEIGHT); }
@@ -79,13 +101,19 @@ int Chicken::checkHappyReductionBySounds(void) {
         CHICKEN_REDUCTION_CONDITION_BY_SOUND;
     LOG_ANIMAL(LogLevel::INFO, "Happy Index new = ", mHappyIndex, " - ",
                offset);
-    mHappyIndex -= offset;
+    gainHappyIndex(-1*offset);
     return mHappyIndex;
 }
 
 Animal::AnimalError Chicken::isEdible(void) {
-    return (mAge >= CHICKEN_AGE_TO_EAT) ? AnimalError::AnimalNoError
-                                        : AnimalError::AnimalAgeNotAdequate;
+    AnimalError retval{AnimalNoError};
+    if (mHappyIndex < Animal::HAPPY_INDEX_CONDITION_TO_EAT) {
+        retval = AnimalError::AnimalHappyIndexAlert;
+    } else if (mAge < CHICKEN_AGE_TO_EAT) {
+        retval = AnimalError::AnimalAgeNotAdequate;
+    }
+
+    return retval;
 }
 
 bool Chicken::isReproducible(void) {

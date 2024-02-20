@@ -51,6 +51,12 @@ private:
     bool updateFoodUnits(int offset);
     void soundHandler(AnimalType type, int num);
     void AnimalReproduction(void);
+    void letAnimalGoBackOut(std::vector<std::string>::iterator begin, std::vector<std::string>::iterator end, bool isOut);
+    void letAnimalGoBackOut(bool isOut);
+    void letAnimalGoBackOut(AnimalType Type, bool isOut);
+    void letAnimalGoBackOut(std::string name, bool isOut);
+    void letAnimalGoBackOut(Animal *animal, bool isOut);
+    void checkAnimalSurvivalCondition(void);
 
 public:
     std::vector<Animal *> mAnimalList;

@@ -11,8 +11,8 @@ namespace Farm {
 class TimeManager {
 private:
     bool mRunning;
-    int mHour;
-    int mDay;
+    std::atomic<int> mHour;
+    std::atomic<int> mDay;
 
 public:
     static constexpr const int CONTINUOUS = -1;
@@ -32,6 +32,8 @@ public:
 
     void start(std::vector<std::pair<const int, std::function<void(void)>>>
                    &timeLists);
+
+    int getHour(void);
 };
 };     // namespace Farm
 #endif /* __TIME_MANAGER_H__ */
