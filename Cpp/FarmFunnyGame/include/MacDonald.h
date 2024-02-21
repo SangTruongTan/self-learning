@@ -25,6 +25,7 @@ private:
 
     static constexpr int DEFAULT_ACCOUNT_BALANCE = 20;
     static constexpr int DEFAULT_FOOD_UNIT = 50;
+    static constexpr int FOOD_FACTOR = 10;
 
     Farm::TimeManager *mTimeManager;
     Farm::UserInterface *mUserInterface;
@@ -67,6 +68,7 @@ private:
     bool gainBudget(int offset);
     bool gainFoodUnits(int offset);
     bool checkIfFoodAdequate(int minus);
+    bool buyFood(std::vector<std::string>::iterator begin);
 
 public:
     std::vector<Animal *> mAnimalList;

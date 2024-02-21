@@ -122,8 +122,7 @@ void MacDonald::handleCommands() {
                     ss << str << " ";
                 }
                 LOG_FARM(LogLevel::INFO, ss.str());
-                feedAnimals(std::next(cmd.begin(), 1),
-                            cmd.end());
+                feedAnimals(std::next(cmd.begin(), 1), cmd.end());
             } else if (cmd.at(0) == "let") {
                 std::stringstream ss;
                 ss << "CMD --> ";
@@ -147,32 +146,36 @@ void MacDonald::handleCommands() {
                 }
             } else if (cmd.at(0) == "buy") {
                 if (cmd.size() >= 3) {
-                    std::stringstream ss;
-                    const auto typeIt = AnimalTypeFromStrings.find(cmd.at(1));
-                    if (typeIt != AnimalTypeFromStrings.end()) {
-                        ss << "CMD --> buy "
-                           << AnimalStrings.at((*typeIt).second) << " named:";
-                        auto it = std::next(cmd.begin(), 2);
-                        if (it < cmd.end()) {
-                            auto debugIt = it;
-                            while (debugIt != cmd.end()) {
-                                ss << " " << (*debugIt).c_str();
-                                debugIt++;
+                    bool isBuyFood = buyFood(std::next(cmd.begin(), 1));
+                    if (isBuyFood == false) {
+                        std::stringstream ss;
+                        const auto typeIt =
+                            AnimalTypeFromStrings.find(cmd.at(1));
+                        if (typeIt != AnimalTypeFromStrings.end()) {
+                            ss << "CMD --> buy "
+                               << AnimalStrings.at((*typeIt).second)
+                               << " named:";
+                            auto it = std::next(cmd.begin(), 2);
+                            if (it < cmd.end()) {
+                                auto debugIt = it;
+                                while (debugIt != cmd.end()) {
+                                    ss << " " << (*debugIt).c_str();
+                                    debugIt++;
+                                }
+                                LOG_FARM(LogLevel::INFO, ss.str().c_str());
+                                buyAnimal((*typeIt).second, it, cmd.end());
+                            } else {
+                                LOG_FARM(LogLevel::ERROR,
+                                         "Interator is out of range");
                             }
-                            LOG_FARM(LogLevel::INFO, ss.str().c_str());
-                            buyAnimal((*typeIt).second, it, cmd.end());
-                        } else {
-                            LOG_FARM(LogLevel::ERROR,
-                                     "Interator is out of range");
                         }
-                    } else {
-                        LOG_CONSOLE(
-                            LogLevel::INFO,
-                            "Command doesn't support --> You must choose one "
-                            "of animal types (chickens|cats|dogs|pigs)\n");
                     }
                 } else {
-                    LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
+                    LOG_CONSOLE(
+                        LogLevel::INFO,
+                        "Command doesn't support --> You must choose one "
+                        "of animal types (chickens|cats|dogs|pigs) or buy "
+                        "food <dollars>\n");
                 }
             } else if (cmd.at(0) == "sell") {
                 if (cmd.size() >= 2) {
@@ -769,6 +772,31 @@ bool MacDonald::checkIfFoodAdequate(int minus) {
     bool retval{true};
     if (mFoodUnits - minus < 0) {
         retval = false;
+    }
+    return retval;
+}
+
+bool MacDonald::buyFood(std::vector<std::string>::iterator begin) {
+    bool retval{false};
+    if ((*begin) == "food" || (*begin) == "foods") {
+        int money = stoi(*std::next(begin, 1));
+        std::stringstream ss{};
+        if (gainBudget(-1 * money) == false) {
+            ss << "Account Balance is not adequate to buy more foods: Current "
+                  "= "
+               << mAccountBalance << " USD, Requested = " << money << " USD"
+               << std::endl;
+            LOG_FARM(LogLevel::ERROR, ss.str());
+            LOG_CONSOLE(LogLevel::ERROR, ss.str());
+        } else {
+            int gainFood{money * FOOD_FACTOR};
+            gainFoodUnits(gainFood);
+            ss << "Bought " << gainFood << " Food Units by " << money << " USD"
+               << std::endl;
+            LOG_FARM(LogLevel::INFO, ss.str());
+            LOG_CONSOLE(LogLevel::INFO, ss.str());
+        }
+        retval = true;
     }
     return retval;
 }
