@@ -101,13 +101,15 @@ int Chicken::checkHappyReductionBySounds(void) {
         CHICKEN_REDUCTION_CONDITION_BY_SOUND;
     LOG_ANIMAL(LogLevel::INFO, "Happy Index new = ", mHappyIndex, " - ",
                offset);
-    gainHappyIndex(-1*offset);
+    gainHappyIndex(-1 * offset);
     return mHappyIndex;
 }
 
 Animal::AnimalError Chicken::isEdible(void) {
     AnimalError retval{AnimalNoError};
-    if (mHappyIndex < Animal::HAPPY_INDEX_CONDITION_TO_EAT) {
+    if (mFedToday == true) {
+        retval = AnimalError::AnimalAlreadyFed;
+    } else if (mHappyIndex < Animal::HAPPY_INDEX_CONDITION_TO_EAT) {
         retval = AnimalError::AnimalHappyIndexAlert;
     } else if (mAge < CHICKEN_AGE_TO_EAT) {
         retval = AnimalError::AnimalAgeNotAdequate;
@@ -134,8 +136,6 @@ int Chicken::getNumberOfChilds(void) {
     return distribution(generator);
 }
 
-void Chicken::soundWhenBorn(void) {
-    sound(CHICKEN_NUM_SOUND_WHEN_BORN);
-}
+void Chicken::soundWhenBorn(void) { sound(CHICKEN_NUM_SOUND_WHEN_BORN); }
 
 } // namespace Farm

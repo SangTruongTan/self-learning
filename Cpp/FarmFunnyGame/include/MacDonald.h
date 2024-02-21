@@ -23,6 +23,9 @@ private:
     static constexpr const char *CAT_NAME = "Cat";
     static constexpr const char *CURRENCY = "USD";
 
+    static constexpr int DEFAULT_ACCOUNT_BALANCE = 20;
+    static constexpr int DEFAULT_FOOD_UNIT = 50;
+
     Farm::TimeManager *mTimeManager;
     Farm::UserInterface *mUserInterface;
 
@@ -37,11 +40,14 @@ private:
     const char *getAnimalName(Animal *ani) const;
     void reportAnimals() const;
 
-    void buyAnimal(AnimalType type,
-                   std::vector<std::string>::iterator start,
+    void buyAnimal(AnimalType type, std::vector<std::string>::iterator start,
                    std::vector<std::string>::iterator end);
     void registerTimer(void);
-    void feedAnimals(AnimalType Type, std::string name = "");
+    void feedAnimals(std::vector<std::string>::iterator begin,
+                     std::vector<std::string>::iterator end);
+    void feedAnimals(std::string name);
+    void feedAnimals(AnimalType Type);
+    bool feedAnimals(Animal *animal);
     void scanAnimal(void);
     void updateDashboard(void) const;
     std::string getAnimalsStatus(void) const;
@@ -51,22 +57,27 @@ private:
     bool updateFoodUnits(int offset);
     void soundHandler(AnimalType type, int num);
     void AnimalReproduction(void);
-    void letAnimalGoBackOut(std::vector<std::string>::iterator begin, std::vector<std::string>::iterator end, bool isOut);
+    void letAnimalGoBackOut(std::vector<std::string>::iterator begin,
+                            std::vector<std::string>::iterator end, bool isOut);
     void letAnimalGoBackOut(bool isOut);
     void letAnimalGoBackOut(AnimalType Type, bool isOut);
     void letAnimalGoBackOut(std::string name, bool isOut);
     void letAnimalGoBackOut(Animal *animal, bool isOut);
     void checkAnimalSurvivalCondition(void);
+    bool gainBudget(int offset);
+    bool gainFoodUnits(int offset);
+    bool checkIfFoodAdequate(int minus);
 
 public:
     std::vector<Animal *> mAnimalList;
     Farm::SharedObjects mShared;
 
-    static const std::unordered_map<AnimalType, const char *>
-        AnimalStrings;
+    static const std::unordered_map<AnimalType, const char *> AnimalStrings;
 
     static const std::unordered_map<std::string, AnimalType>
         AnimalTypeFromStrings;
+
+    static const std::unordered_map<AnimalType, int> AnimalTypeFoodConsume;
 
     MacDonald();
     void start();

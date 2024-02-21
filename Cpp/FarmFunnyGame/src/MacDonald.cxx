@@ -22,7 +22,15 @@ const std::unordered_map<std::string, AnimalType>
         {"animals", AnimalType::ANIMAL},
 };
 
-MacDonald::MacDonald() : mTimeManager(nullptr), mUserInterface(nullptr) {
+const std::unordered_map<AnimalType, int> MacDonald::AnimalTypeFoodConsume = {
+    {AnimalType::CHICKEN, Animal::CHICKEN_EAT_UNIT},
+    {AnimalType::PIG, Animal::PIG_EAT_UNIT},
+    {AnimalType::DOG, Animal::DOG_EAT_UNIT},
+    {AnimalType::CAT, Animal::CAT_EAT_UNIT}};
+
+MacDonald::MacDonald()
+    : mTimeManager(nullptr), mUserInterface(nullptr),
+      mAccountBalance(DEFAULT_ACCOUNT_BALANCE), mFoodUnits(DEFAULT_FOOD_UNIT) {
     LOG_FARM(LogLevel::INFO, "New Mac Donal Farm has been created");
     mShared.soundCallback =
         std::bind(&MacDonald::soundHandler, this, std::placeholders::_1,
@@ -109,16 +117,13 @@ void MacDonald::handleCommands() {
                 }
             } else if (cmd.at(0) == "feed") {
                 std::stringstream ss;
-                const auto typeIt = AnimalTypeFromStrings.find(cmd.at(1));
-                if (typeIt != AnimalTypeFromStrings.end()) {
-                    ss << "CMD --> feed " << cmd.at(1);
-                    LOG_FARM(LogLevel::INFO, ss.str().c_str());
-                    feedAnimals(typeIt->second);
-                } else {
-                    ss << "CMD --> feed [" << cmd.at(1) << "]";
-                    LOG_FARM(LogLevel::INFO, ss.str().c_str());
-                    feedAnimals(AnimalType::SPECIFIC_ANIMAL, cmd.at(1));
+                ss << "CMD --> ";
+                for (std::string str : cmd) {
+                    ss << str << " ";
                 }
+                LOG_FARM(LogLevel::INFO, ss.str());
+                feedAnimals(std::next(cmd.begin(), 1),
+                            cmd.end());
             } else if (cmd.at(0) == "let") {
                 std::stringstream ss;
                 ss << "CMD --> ";
@@ -276,11 +281,21 @@ void MacDonald::buyAnimal(AnimalType type,
         ss.clear();
         ss.str(std::string());
         if (this->isAnimalExist((*i).c_str()) == nullptr) {
-            bool retval = true;
+            bool retval{false};
             switch (type) {
             case AnimalType::CHICKEN:
-                this->mAnimalList.emplace_back(
-                    new Chicken((*i).c_str(), this->mShared));
+                if (gainBudget(-1 * Animal::CHICKEN_BUY_PRICE)) {
+                    this->mAnimalList.emplace_back(
+                        new Chicken((*i).c_str(), this->mShared));
+                    retval = true;
+                } else {
+                    std::stringstream ss;
+                    ss << "Account balance isn't adequate to buy new chickens ["
+                       << (*i) << "] = > " << mAccountBalance << " USD"
+                       << std::endl;
+                    LOG_FARM(LogLevel::INFO, ss.str());
+                    LOG_CONSOLE(LogLevel::INFO, ss.str());
+                }
                 break;
             case AnimalType::CAT:
             case AnimalType::PIG:
@@ -401,52 +416,75 @@ void MacDonald::registerTimer(void) {
         }));
 }
 
-void MacDonald::feedAnimals(AnimalType Type, std::string name) {
+void MacDonald::feedAnimals(std::vector<std::string>::iterator begin,
+                            std::vector<std::string>::iterator end) {
     if (mAnimalList.size() == 0) {
         std::string er = "Farm is empty";
         LOG_FARM(LogLevel::INFO, er.c_str());
         LOG_CONSOLE(LogLevel::INFO, er.c_str(), "\n");
         return;
     }
-    Animal::AnimalError ae{Animal::AnimalError::AnimalNoError};
-    if (Type == AnimalType::ANIMAL) {
-        LOG_FARM(LogLevel::INFO, "Feed all animals");
-        for (Animal *animal : this->mAnimalList) {
-            ae = animal->feedAnimal();
-            LOG_CONSOLE(LogLevel::INFO, "Feed Animal [", animal->getName(),
-                        "] <= ", AnimalErrorToStrings(ae), "\n");
+    auto it = begin;
+    while (it != end) {
+        auto typeIt = AnimalTypeFromStrings.find(*it);
+        if (typeIt != AnimalTypeFromStrings.end()) {
+            feedAnimals(typeIt->second);
+        } else {
+            feedAnimals(*it);
         }
-    } else if (Type == AnimalType::CHICKEN) {
-        LOG_FARM(LogLevel::INFO, "Feed all chickens");
-        for (Animal *animal : this->mAnimalList) {
-            if (dynamic_cast<Chicken *>(animal) != nullptr) {
-                ae = animal->feedAnimal();
-                LOG_CONSOLE(LogLevel::INFO, "Feed Chicken [", animal->getName(),
-                            "] <= ", AnimalErrorToStrings(ae), "\n");
+        it++;
+    }
+}
+
+void MacDonald::feedAnimals(std::string name) {
+    LOG_FARM(LogLevel::INFO, "Try feeding [", name, "]");
+    Animal *ani{nullptr};
+    if ((ani = isAnimalExist(name.c_str())) != nullptr) {
+        feedAnimals(ani);
+    } else {
+        std::stringstream msg;
+        msg << "Feeding failed [" << name << "] does not exist" << std::endl;
+        LOG_FARM(LogLevel::INFO, msg.str());
+        LOG_CONSOLE(LogLevel::INFO, msg.str(), "\n");
+    }
+}
+
+void MacDonald::feedAnimals(AnimalType Type) {
+    LOG_FARM(LogLevel::INFO, "Feed all ", Animal::AnimalTypeToStrings.at(Type));
+    for (Animal *animal : this->mAnimalList) {
+        if ((animal->getType() == Type) || Type == AnimalType::ANIMAL) {
+            if (feedAnimals(animal) != true) {
+                break;
             }
         }
-    } else if (Type == AnimalType::PIG) {
-        LOG_CONSOLE(LogLevel::INFO, "Not support yet");
-    } else if (Type == AnimalType::DOG) {
-        LOG_CONSOLE(LogLevel::INFO, "Not support yet");
-    } else if (Type == AnimalType::CAT) {
-        LOG_CONSOLE(LogLevel::INFO, "Not support yet");
-    } else if (Type == AnimalType::SPECIFIC_ANIMAL) {
-        LOG_FARM(LogLevel::INFO, "Try feeding [", name, "]");
-        Animal *ani{nullptr};
-        if ((ani = isAnimalExist(name.c_str())) != nullptr) {
-            ae = ani->feedAnimal();
-            LOG_CONSOLE(LogLevel::INFO, "Feed [", ani->getName(),
-                        "] <= ", AnimalErrorToStrings(ae), "\n");
-        } else {
-            ae = Animal::AnimalError::AnimalNotExist;
-            std::stringstream msg;
-            msg << "Feeding failed [" << name << "] does not exist"
-                << std::endl;
-            LOG_FARM(LogLevel::INFO, msg.str());
-            LOG_CONSOLE(LogLevel::INFO, msg.str(), "\n");
-        }
     }
+}
+
+bool MacDonald::feedAnimals(Animal *animal) {
+    bool retval{true};
+    Animal::AnimalError ae{Animal::AnimalError::AnimalNoError};
+    auto const it = MacDonald::AnimalTypeFoodConsume.find(animal->getType());
+    if (it != MacDonald::AnimalTypeFoodConsume.end()) {
+        if (checkIfFoodAdequate(it->second)) {
+            ae = animal->feedAnimal();
+            LOG_CONSOLE(LogLevel::INFO, "Feed [", animal->getName(),
+                        "] <= ", AnimalErrorToStrings(ae), "\n");
+            if (ae == Animal::AnimalError::AnimalNoError) {
+                gainFoodUnits(-1 * (it->second));
+            }
+        } else {
+            std::stringstream ss;
+            ss << "Feeding [" << animal->getName()
+               << "] Error => Food warehouse isn't adequate" << std::endl;
+            LOG_FARM(LogLevel::ERROR, ss.str());
+            LOG_CONSOLE(LogLevel::ERROR, ss.str());
+            retval = false;
+        }
+    } else {
+        LOG_FARM(LogLevel::FATAL, "Animal Type isn't supported");
+        retval = false;
+    }
+    return retval;
 }
 
 std::string MacDonald::AnimalErrorToStrings(Animal::AnimalError er) {
@@ -682,7 +720,6 @@ void MacDonald::letAnimalGoBackOut(Animal *animal, bool isOut) {
        << ") <= " << Animal::AnimalErrorToStrings.at(ae) << std::endl;
     LOG_FARM(LogLevel::DEBUG, ss.str());
     LOG_CONSOLE(LogLevel::DEBUG, ss.str());
-
 }
 
 void MacDonald::checkAnimalSurvivalCondition(void) {
@@ -703,4 +740,37 @@ void MacDonald::checkAnimalSurvivalCondition(void) {
         removeAnimals(removeList);
     }
 }
+
+bool MacDonald::gainBudget(int offset) {
+    bool retval{true};
+    LOG_FARM(LogLevel::INFO, "Account balance changed ", mAccountBalance,
+             " USD => ", mAccountBalance + offset, " USD");
+    if (mAccountBalance + offset >= 0) {
+        mAccountBalance += offset;
+    } else {
+        retval = false;
+    }
+    return retval;
+}
+
+bool MacDonald::gainFoodUnits(int offset) {
+    bool retval{true};
+    LOG_FARM(LogLevel::INFO, "Food Units changed ", mFoodUnits, " Unit => ",
+             mFoodUnits + offset, " Unit");
+    if (mFoodUnits + offset >= 0) {
+        mFoodUnits += offset;
+    } else {
+        retval = false;
+    }
+    return retval;
+}
+
+bool MacDonald::checkIfFoodAdequate(int minus) {
+    bool retval{true};
+    if (mFoodUnits - minus < 0) {
+        retval = false;
+    }
+    return retval;
+}
+
 } // namespace Farm
