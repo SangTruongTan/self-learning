@@ -84,14 +84,14 @@ public:
     static constexpr uint16_t PIG_BUY_PRICE = 6;
 
     /* Sound. */
-    static constexpr const char *CHICKENS_SOUND = "Bawk!";
+    static constexpr const char *CHICKEN_SOUND = "Bawk!";
     static constexpr const char *CAT_SOUND = "Meow!";
     static constexpr const char *DOG_SOUND = "Woof!";
     static constexpr const char *PIG_SOUND = "Oink!";
 
     /* Time to sound. */
     static constexpr int CHICKEN_SOUND_TIME = 6;
-    static constexpr int CAT_SOUND_TIME = 13;
+    static constexpr int CAT_SOUND_TIME = 1;
     static constexpr int DOG_SOUND_TIME = 20;
     static constexpr int PIG_SOUND_TIME = 0; /* If hungry. */
 

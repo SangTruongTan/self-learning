@@ -168,6 +168,8 @@ void MacDonald::handleCommands() {
                                 LOG_FARM(LogLevel::ERROR,
                                          "Interator is out of range");
                             }
+                        } else {
+                            
                         }
                     }
                 } else {
@@ -264,13 +266,6 @@ Animal *MacDonald::isAnimalExist(const char *name) {
     return retval;
 }
 
-const char *MacDonald::getAnimalName(Animal *ani) const {
-    if (dynamic_cast<Chicken *>(ani) != nullptr) {
-        return MacDonald::CHICKEN_NAME;
-    }
-    return MacDonald::ANIMAL_NAME;
-}
-
 void MacDonald::reportAnimals() const {
     LOG_CONSOLE(LogLevel::INFO, "Animals status\n");
     LOG_CONSOLE(LogLevel::INFO, getAnimalsStatus());
@@ -294,13 +289,28 @@ void MacDonald::buyAnimal(AnimalType type,
                 } else {
                     std::stringstream ss;
                     ss << "Account balance isn't adequate to buy new chickens ["
-                       << (*i) << "] = > " << mAccountBalance << " USD"
+                       << (*i) << "] = > "
+                       << mAccountBalance - Animal::CHICKEN_BUY_PRICE << " USD"
                        << std::endl;
                     LOG_FARM(LogLevel::INFO, ss.str());
                     LOG_CONSOLE(LogLevel::INFO, ss.str());
                 }
                 break;
             case AnimalType::CAT:
+                if (gainBudget(-1 * Animal::CAT_BUY_PRICE)) {
+                    this->mAnimalList.emplace_back(
+                        new Cat((*i).c_str(), this->mShared));
+                    retval = true;
+                } else {
+                    std::stringstream ss;
+                    ss << "Account balance isn't adequate to buy new cats ["
+                       << (*i) << "] = > "
+                       << mAccountBalance - Animal::CAT_BUY_PRICE << " USD"
+                       << std::endl;
+                    LOG_FARM(LogLevel::INFO, ss.str());
+                    LOG_CONSOLE(LogLevel::INFO, ss.str());
+                }
+                break;
             case AnimalType::PIG:
             case AnimalType::DOG:
             case AnimalType::ANIMAL:
@@ -507,17 +517,18 @@ void MacDonald::updateDashboard(void) const {
 }
 
 std::string MacDonald::getAnimalsStatus(void) const {
-    VariadicTable<std::string, const char *, const uint16_t, double, int,
+    VariadicTable<std::string, std::string, const uint16_t, double, int,
                   std::string, std::string, int>
         vt({"Name", "Type", "Age", "Weight", "FedDays", "FedToday",
             "GoOutStatus", "HappyIndex"},
            10);
     for (Animal *animal : this->mAnimalList) {
-        vt.addRow(animal->getName(), getAnimalName(animal), animal->getAge(),
-                  animal->getWeight(), animal->getFeedConsecutiveDays(),
-                  (animal->getFedToday() == false) ? "False" : "True",
-                  animal->getGoOutStatus() ? "Out" : "In",
-                  animal->getHappyIndex());
+        vt.addRow(
+            animal->getName(),
+            Animal::AnimalTypeToStrings.at(animal->getType()), animal->getAge(),
+            animal->getWeight(), animal->getFeedConsecutiveDays(),
+            (animal->getFedToday() == false) ? "False" : "True",
+            animal->getGoOutStatus() ? "Out" : "In", animal->getHappyIndex());
     }
     std::stringstream ss;
     vt.print(ss);

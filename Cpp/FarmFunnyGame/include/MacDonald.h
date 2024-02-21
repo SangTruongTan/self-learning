@@ -6,6 +6,7 @@
 #include <sstream>
 #include <vector>
 
+#include "Cat.h"
 #include "Chicken.h"
 #include "Logger.h"
 #include "SharedObjects.h"
@@ -38,7 +39,6 @@ private:
     int mAccountBalance;
     int mFoodUnits;
 
-    const char *getAnimalName(Animal *ani) const;
     void reportAnimals() const;
 
     void buyAnimal(AnimalType type, std::vector<std::string>::iterator start,

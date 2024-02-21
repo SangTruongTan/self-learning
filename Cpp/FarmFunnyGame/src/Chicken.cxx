@@ -20,8 +20,8 @@ Chicken::~Chicken() {
 
 void Chicken::sound(int NumOfSound) {
     for (int i = 0; i < NumOfSound; i++) {
-        LOG_ANIMAL(LogLevel::INFO, std::string(CHICKENS_SOUND));
-        LOG_CONSOLE(LogLevel::INFO, "[", mName, "] => ", CHICKENS_SOUND, "\n");
+        LOG_ANIMAL(LogLevel::INFO, std::string(CHICKEN_SOUND));
+        LOG_CONSOLE(LogLevel::INFO, "[", mName, "] => ", CHICKEN_SOUND, "\n");
     }
     if (mShared.soundCallback) {
         LOG_ANIMAL(LogLevel::DEBUG, "Invoke sound callback function");
@@ -120,8 +120,8 @@ Animal::AnimalError Chicken::isEdible(void) {
 
 bool Chicken::isReproducible(void) {
     return (mAge == CHICKEN_AGE_TO_REPRODUCE) &&
-           (mWeight == CHICKEN_WEIGHT_TO_REPRODUCE) &&
-           (mHappyIndex == CHICKEN_HAPPY_INDEX_TO_REPRODUCE);
+           (mWeight >= CHICKEN_WEIGHT_TO_REPRODUCE) &&
+           (mHappyIndex >= CHICKEN_HAPPY_INDEX_TO_REPRODUCE);
 }
 
 Animal *Chicken::reproduce(std::string name) const {
