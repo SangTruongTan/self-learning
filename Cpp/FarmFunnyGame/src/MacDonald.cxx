@@ -28,6 +28,12 @@ const std::unordered_map<AnimalType, int> MacDonald::AnimalTypeFoodConsume = {
     {AnimalType::DOG, Animal::DOG_EAT_UNIT},
     {AnimalType::CAT, Animal::CAT_EAT_UNIT}};
 
+const std::unordered_map<AnimalType, int> MacDonald::AnimalTypeToPrice{
+    {AnimalType::CHICKEN, Animal::CHICKEN_BUY_PRICE},
+    {AnimalType::PIG, Animal::PIG_BUY_PRICE},
+    {AnimalType::DOG, Animal::DOG_BUY_PRICE},
+    {AnimalType::CAT, Animal::CAT_BUY_PRICE}};
+
 MacDonald::MacDonald()
     : mTimeManager(nullptr), mUserInterface(nullptr),
       mAccountBalance(DEFAULT_ACCOUNT_BALANCE), mFoodUnits(DEFAULT_FOOD_UNIT) {
@@ -74,7 +80,7 @@ void MacDonald::handleCommands() {
         LOG_FARM(LogLevel::DEBUG, "Enter parsing process");
 
         std::string tempString{};
-        std::stringstream ss;
+        std::stringstream ss{};
         int i{0};
         static uint16_t cmdCount = 0;
         LOG_CONSOLE(LogLevel::INFO, "\n\n==============\n", cmdCount++,
@@ -116,7 +122,7 @@ void MacDonald::handleCommands() {
                     LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
                 }
             } else if (cmd.at(0) == "feed") {
-                std::stringstream ss;
+                std::stringstream ss{};
                 ss << "CMD --> ";
                 for (std::string str : cmd) {
                     ss << str << " ";
@@ -124,7 +130,7 @@ void MacDonald::handleCommands() {
                 LOG_FARM(LogLevel::INFO, ss.str());
                 feedAnimals(std::next(cmd.begin(), 1), cmd.end());
             } else if (cmd.at(0) == "let") {
-                std::stringstream ss;
+                std::stringstream ss{};
                 ss << "CMD --> ";
                 for (std::string str : cmd) {
                     ss << str << " ";
@@ -145,10 +151,14 @@ void MacDonald::handleCommands() {
                                 "specify \"out\" or \"back\"\n");
                 }
             } else if (cmd.at(0) == "buy") {
+                std::string buyErr =
+                    "Command doesn't support --> You must choose one "
+                    "of animal types (chickens|cats|dogs|pigs) or buy "
+                    "food <dollars>\n";
                 if (cmd.size() >= 3) {
                     bool isBuyFood = buyFood(std::next(cmd.begin(), 1));
                     if (isBuyFood == false) {
-                        std::stringstream ss;
+                        std::stringstream ss{};
                         const auto typeIt =
                             AnimalTypeFromStrings.find(cmd.at(1));
                         if (typeIt != AnimalTypeFromStrings.end()) {
@@ -169,19 +179,15 @@ void MacDonald::handleCommands() {
                                          "Interator is out of range");
                             }
                         } else {
-                            
+                            LOG_CONSOLE(LogLevel::INFO, buyErr);
                         }
                     }
                 } else {
-                    LOG_CONSOLE(
-                        LogLevel::INFO,
-                        "Command doesn't support --> You must choose one "
-                        "of animal types (chickens|cats|dogs|pigs) or buy "
-                        "food <dollars>\n");
+                    LOG_CONSOLE(LogLevel::INFO, buyErr);
                 }
             } else if (cmd.at(0) == "sell") {
                 if (cmd.size() >= 2) {
-                    std::stringstream ss;
+                    std::stringstream ss{};
                     auto typeIt = AnimalTypeFromStrings.find(cmd.at(1));
                     if (typeIt == AnimalTypeFromStrings.end()) {
                         ss << "CMD --> sell animals named:";
@@ -199,7 +205,7 @@ void MacDonald::handleCommands() {
                                      "Interator is out of range");
                         }
                     } else {
-                        std::stringstream ss;
+                        std::stringstream ss{};
                         bool retval;
                         ss << "CMD --> sell Animal Type:";
                         long unsigned int i = 1;
@@ -257,7 +263,7 @@ Animal *MacDonald::isAnimalExist(const char *name) {
     for (Animal *ani : this->mAnimalList) {
         LOG_FARM(LogLevel::INFO, ani->getName().c_str());
         if (::strcmp(ani->getName().c_str(), name) == 0) {
-            std::stringstream ss;
+            std::stringstream ss{};
             ss << "Found (" << name << ") in Animal List";
             LOG_FARM(LogLevel::INFO, ss.str().c_str());
             retval = ani;
@@ -274,49 +280,35 @@ void MacDonald::reportAnimals() const {
 void MacDonald::buyAnimal(AnimalType type,
                           std::vector<std::string>::iterator start,
                           std::vector<std::string>::iterator end) {
-    std::stringstream ss;
+    std::stringstream ss{};
     for (auto i = start; i != end; i++) {
         ss.clear();
         ss.str(std::string());
         if (this->isAnimalExist((*i).c_str()) == nullptr) {
             bool retval{false};
-            switch (type) {
-            case AnimalType::CHICKEN:
-                if (gainBudget(-1 * Animal::CHICKEN_BUY_PRICE)) {
-                    this->mAnimalList.emplace_back(
-                        new Chicken((*i).c_str(), this->mShared));
+            int price = AnimalTypeToPrice.at(type);
+            if (checkIfBudgetAdequate(price)) {
+                Animal *newAnimal = buyAnimal(type, (*i), mShared);
+                if (newAnimal != nullptr) {
+                    this->mAnimalList.emplace_back(newAnimal);
+                    gainBudget(-1 * price);
                     retval = true;
                 } else {
-                    std::stringstream ss;
-                    ss << "Account balance isn't adequate to buy new chickens ["
-                       << (*i) << "] = > "
-                       << mAccountBalance - Animal::CHICKEN_BUY_PRICE << " USD"
-                       << std::endl;
+                    std::stringstream ss{};
+                    ss << "Animal Type {"
+                       << Animal::AnimalTypeToStrings.at(type)
+                       << "} doesn't supported yet" << std::endl;
                     LOG_FARM(LogLevel::INFO, ss.str());
                     LOG_CONSOLE(LogLevel::INFO, ss.str());
                 }
-                break;
-            case AnimalType::CAT:
-                if (gainBudget(-1 * Animal::CAT_BUY_PRICE)) {
-                    this->mAnimalList.emplace_back(
-                        new Cat((*i).c_str(), this->mShared));
-                    retval = true;
-                } else {
-                    std::stringstream ss;
-                    ss << "Account balance isn't adequate to buy new cats ["
-                       << (*i) << "] = > "
-                       << mAccountBalance - Animal::CAT_BUY_PRICE << " USD"
-                       << std::endl;
-                    LOG_FARM(LogLevel::INFO, ss.str());
-                    LOG_CONSOLE(LogLevel::INFO, ss.str());
-                }
-                break;
-            case AnimalType::PIG:
-            case AnimalType::DOG:
-            case AnimalType::ANIMAL:
-            case AnimalType::SPECIFIC_ANIMAL:
-                LOG_CONSOLE(LogLevel::INFO, "Animal doesn't support yet\n");
-                retval = false;
+            } else {
+                std::stringstream ss{};
+                ss << "Account balance requires to buy new {"
+                   << Animal::AnimalTypeToStrings.at(type)
+                   << "} > Current=" << mAccountBalance
+                   << " USD - Price=" << price << " USD" << std::endl;
+                LOG_FARM(LogLevel::INFO, ss.str());
+                LOG_CONSOLE(LogLevel::INFO, ss.str());
             }
             if (retval == true) {
                 LOG_CONSOLE(LogLevel::INFO, "New ", AnimalStrings.at(type),
@@ -329,6 +321,26 @@ void MacDonald::buyAnimal(AnimalType type,
                         "] has been existed\n");
         }
     }
+}
+
+Animal *MacDonald::buyAnimal(AnimalType type, std::string name,
+                             SharedObjects &shared) {
+    /* Remark: Add new animals type here. */
+    Animal *retval{nullptr};
+    switch (type) {
+    case AnimalType::CHICKEN:
+        retval = new Chicken(name, shared);
+        break;
+    case AnimalType::CAT:
+        retval = new Cat(name, shared);
+        break;
+    case AnimalType::PIG:
+    case AnimalType::DOG:
+    case AnimalType::ANIMAL:
+    case AnimalType::SPECIFIC_ANIMAL:
+        break;
+    }
+    return retval;
 }
 
 void MacDonald::scanAnimal(void) {
@@ -450,7 +462,7 @@ void MacDonald::feedAnimals(std::string name) {
     if ((ani = isAnimalExist(name.c_str())) != nullptr) {
         feedAnimals(ani);
     } else {
-        std::stringstream msg;
+        std::stringstream msg{};
         msg << "Feeding failed [" << name << "] does not exist" << std::endl;
         LOG_FARM(LogLevel::INFO, msg.str());
         LOG_CONSOLE(LogLevel::INFO, msg.str(), "\n");
@@ -481,7 +493,7 @@ bool MacDonald::feedAnimals(Animal *animal) {
                 gainFoodUnits(-1 * (it->second));
             }
         } else {
-            std::stringstream ss;
+            std::stringstream ss{};
             ss << "Feeding [" << animal->getName()
                << "] Error => Food warehouse isn't adequate" << std::endl;
             LOG_FARM(LogLevel::ERROR, ss.str());
@@ -501,7 +513,7 @@ std::string MacDonald::AnimalErrorToStrings(Animal::AnimalError er) {
 
 void MacDonald::updateDashboard(void) const {
     static int numOfLines{0};
-    std::stringstream ss;
+    std::stringstream ss{};
     RESET_CURSOR_DASHBOARD();
     ss << "Farm Resource Balance\n";
     ss << "Account Balance:" << mAccountBalance << " " << CURRENCY
@@ -530,7 +542,7 @@ std::string MacDonald::getAnimalsStatus(void) const {
             (animal->getFedToday() == false) ? "False" : "True",
             animal->getGoOutStatus() ? "Out" : "In", animal->getHappyIndex());
     }
-    std::stringstream ss;
+    std::stringstream ss{};
     vt.print(ss);
     return ss.str();
 }
@@ -543,7 +555,7 @@ bool MacDonald::sellAnimals(AnimalType Type, std::string name) {
         if ((ani = isAnimalExist(name.c_str())) != nullptr) {
             if (ani->isSalable() == true) {
                 updateBalance(ani->getSellPrice());
-                std::stringstream ss;
+                std::stringstream ss{};
                 ss << "Sold [" << ani->getName() << "] earned "
                    << ani->getSellPrice() << " " << CURRENCY << std::endl;
                 LOG_FARM(LogLevel::INFO, ss.str());
@@ -553,7 +565,7 @@ bool MacDonald::sellAnimals(AnimalType Type, std::string name) {
                 retval |= true;
             }
         } else {
-            std::stringstream msg;
+            std::stringstream msg{};
             msg << "Selling failed [" << name << "] does not exist"
                 << std::endl;
             LOG_FARM(LogLevel::INFO, msg.str());
@@ -628,7 +640,7 @@ void MacDonald::soundHandler(AnimalType type, int num) {
 
 void MacDonald::AnimalReproduction(void) {
     std::vector<Animal *> childList{};
-    std::stringstream ss;
+    std::stringstream ss{};
     for (Animal *animal : mAnimalList) {
         int num = animal->reproduce(childList);
         if (num != 0) {
@@ -682,7 +694,7 @@ void MacDonald::letAnimalGoBackOut(bool isOut) {
 void MacDonald::letAnimalGoBackOut(AnimalType Type, bool isOut) {
     LOG_FARM(LogLevel::INFO, "Let all {", Animal::animalTypeToString(Type),
              "} go ", isOut ? "out" : "back");
-    std::stringstream ss;
+    std::stringstream ss{};
     for (Animal *animal : mAnimalList) {
         if (animal->getType() & Type) {
             letAnimalGoBackOut(animal->getName(), isOut);
@@ -702,7 +714,7 @@ void MacDonald::letAnimalGoBackOut(std::string name, bool isOut) {
         }
     }
     if (isFound == false) {
-        std::stringstream ss;
+        std::stringstream ss{};
         ss << "[" << name << "] can not be found" << std::endl;
         LOG_CONSOLE(LogLevel::INFO, ss.str());
         LOG_FARM(LogLevel::INFO, ss.str());
@@ -713,7 +725,7 @@ void MacDonald::letAnimalGoBackOut(Animal *animal, bool isOut) {
     if (animal->getType() == AnimalType::CHICKEN ||
         animal->getType() == AnimalType::DOG) {
         if (mTimeManager->getHour() < Animal::TIME_TO_GO_OUT_BEGIN) {
-            std::stringstream ss;
+            std::stringstream ss{};
             ss << "[" << animal->getName() << " ] can not go out this time"
                << std::endl;
             LOG_FARM(LogLevel::INFO, ss.str());
@@ -724,7 +736,7 @@ void MacDonald::letAnimalGoBackOut(Animal *animal, bool isOut) {
 
     Animal::AnimalError ae =
         isOut == true ? animal->letAnimalGoOut() : animal->letAnimalGoBack();
-    std::stringstream ss;
+    std::stringstream ss{};
     ss << "[" << animal->getName() << "] letAnimalGoOut(" << isOut
        << ") <= " << Animal::AnimalErrorToStrings.at(ae) << std::endl;
     LOG_FARM(LogLevel::DEBUG, ss.str());
@@ -757,6 +769,14 @@ bool MacDonald::gainBudget(int offset) {
     if (mAccountBalance + offset >= 0) {
         mAccountBalance += offset;
     } else {
+        retval = false;
+    }
+    return retval;
+}
+
+bool MacDonald::checkIfBudgetAdequate(int minus) {
+    bool retval{true};
+    if (mAccountBalance - minus < 0) {
         retval = false;
     }
     return retval;

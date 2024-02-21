@@ -25,7 +25,7 @@ void UserInterface::start() {
         }
         this->mIss.clear();
         this->mIss.str(userInput);
-        std::stringstream ss;
+        std::stringstream ss{};
 
         ss << "User Input is: " << userInput;
         LOG_USER(LogLevel::DEBUG, ss.str().c_str());

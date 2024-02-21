@@ -17,7 +17,7 @@ void TimeManager::start(
             LOG_CLOCK(LogLevel::INFO, "The poison signal received");
             break;
         }
-        std::stringstream sstr;
+        std::stringstream sstr{};
         sstr << "mDay=" << this->mDay << "; mHour=" << this->mHour << ":00  ";
         LOG_CLOCK_SCREEN(sstr.str().c_str());
 

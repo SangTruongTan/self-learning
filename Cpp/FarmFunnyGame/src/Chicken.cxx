@@ -6,14 +6,14 @@ namespace Farm {
 
 Chicken::Chicken(std::string Name, SharedObjects &shared)
     : Animal(Name, shared) {
-    std::stringstream ss;
+    std::stringstream ss{};
     ss << "A new Chicken named: \"" << this->mName << "\" has been born";
     LOG_ANIMAL(LogLevel::INFO, ss.str());
     mType = AnimalType::CHICKEN;
 }
 
 Chicken::~Chicken() {
-    std::stringstream ss;
+    std::stringstream ss{};
     ss << "Chicken [" << this->mName << "] instance is destroying!";
     LOG_ANIMAL(LogLevel::INFO, ss.str());
 }
@@ -83,7 +83,7 @@ void Chicken::scanAnimal(void) {
 bool Chicken::isSalable(void) const { return (mWeight == CHICKEN_MAX_WEIGHT); }
 
 void Chicken::killAnimal(void) {
-    std::stringstream ss;
+    std::stringstream ss{};
     ss << "Animal [" << mName << "] is going to be dead\n";
     LOG_ANIMAL(LogLevel::INFO, ss.str());
     LOG_CONSOLE(LogLevel::INFO, ss.str());

@@ -8,7 +8,7 @@ Animal::Animal(std::string Name, SharedObjects &shared)
       mIsWentOutToday(false), mZeroHappyIndexConsecutiveDays(0),
       mHappyIndex(HAPPY_INDEX_DEFAULT),
       mChildrenRemark(CHILDREN_NAMING_NUMBER) {
-    std::stringstream ss;
+    std::stringstream ss{};
     ss << "New Animal named: " << mName;
     LOG_ANIMAL(LogLevel::DEBUG, ss.str());
     numOfSounds[AnimalType::CAT] = 0;
@@ -24,7 +24,7 @@ const std::string Animal::getName(void) const { return this->mName; }
 uint16_t Animal::getAge(void) const { return this->mAge; }
 
 void Animal::incAge() {
-    std::stringstream ss;
+    std::stringstream ss{};
     ss << "[" << this->mName << "] Inc Age to => " << ++this->mAge;
     LOG_ANIMAL(LogLevel::INFO, ss.str());
 }
@@ -33,7 +33,7 @@ Animal::AnimalError Animal::feedAnimal(void) {
     AnimalError retval{AnimalNoError};
     retval = isEdible();
     if (retval == AnimalNoError) {
-        std::stringstream ss;
+        std::stringstream ss{};
         ss << "[" << this->mName << "] Inc feed consecutive days to => "
            << ++mFeedConsecutiveDays;
         LOG_ANIMAL(LogLevel::INFO, ss.str());
@@ -88,7 +88,7 @@ void Animal::gainSound(AnimalType type, int num) {
 }
 
 std::string Animal::getSoundStatusStrings(void) {
-    std::stringstream ss;
+    std::stringstream ss{};
     auto it = numOfSounds.begin();
     while (it != numOfSounds.end()) {
         if ((it->first != AnimalType::ANIMAL) &&
@@ -102,7 +102,7 @@ std::string Animal::getSoundStatusStrings(void) {
 
 int Animal::reproduce(AnimalList &childList) {
     int retval{0};
-    std::stringstream name;
+    std::stringstream name{};
     if (isReproducible() == false) {
         LOG_ANIMAL(LogLevel::DEBUG, "[", mName,
                    "]'s condition hasn't been appropriate to reproduce");

@@ -5,14 +5,14 @@
 namespace Farm {
 
 Cat::Cat(std::string Name, SharedObjects &shared) : Animal(Name, shared) {
-    std::stringstream ss;
+    std::stringstream ss{};
     ss << "A new Cat named: \"" << this->mName << "\" has been born";
     LOG_ANIMAL(LogLevel::INFO, ss.str());
     mType = AnimalType::CAT;
 }
 
 Cat::~Cat() {
-    std::stringstream ss;
+    std::stringstream ss{};
     ss << "Cat [" << this->mName << "] instance is destroying!";
     LOG_ANIMAL(LogLevel::INFO, ss.str());
 }
@@ -78,7 +78,7 @@ void Cat::scanAnimal(void) {
 bool Cat::isSalable(void) const { return (mAge > CAT_AGE_TO_SELL); }
 
 void Cat::killAnimal(void) {
-    std::stringstream ss;
+    std::stringstream ss{};
     ss << "Animal [" << mName << "] is going to be dead\n";
     LOG_ANIMAL(LogLevel::INFO, ss.str());
     LOG_CONSOLE(LogLevel::INFO, ss.str());

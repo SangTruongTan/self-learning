@@ -43,6 +43,8 @@ private:
 
     void buyAnimal(AnimalType type, std::vector<std::string>::iterator start,
                    std::vector<std::string>::iterator end);
+    static Animal *buyAnimal(AnimalType type, std::string name,
+                             SharedObjects &shared);
     void registerTimer(void);
     void feedAnimals(std::vector<std::string>::iterator begin,
                      std::vector<std::string>::iterator end);
@@ -66,6 +68,7 @@ private:
     void letAnimalGoBackOut(Animal *animal, bool isOut);
     void checkAnimalSurvivalCondition(void);
     bool gainBudget(int offset);
+    bool checkIfBudgetAdequate(int minus);
     bool gainFoodUnits(int offset);
     bool checkIfFoodAdequate(int minus);
     bool buyFood(std::vector<std::string>::iterator begin);
@@ -80,6 +83,8 @@ public:
         AnimalTypeFromStrings;
 
     static const std::unordered_map<AnimalType, int> AnimalTypeFoodConsume;
+
+    static const std::unordered_map<AnimalType, int> AnimalTypeToPrice;
 
     MacDonald();
     void start();
