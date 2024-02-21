@@ -204,7 +204,7 @@ public:
     Animal(std::string Name, SharedObjects &shared);
     virtual ~Animal();
     const std::string getName(void) const;
-    const uint16_t getAge(void) const;
+    uint16_t getAge(void) const;
     virtual void incAge(void);
     virtual bool exceedLifeTime(void) = 0;
     AnimalError feedAnimal(void);

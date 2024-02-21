@@ -21,7 +21,7 @@ Animal::~Animal() { LOG_ANIMAL(LogLevel::DEBUG, "This animal will be dead"); }
 
 const std::string Animal::getName(void) const { return this->mName; }
 
-const uint16_t Animal::getAge(void) const { return this->mAge; }
+uint16_t Animal::getAge(void) const { return this->mAge; }
 
 void Animal::incAge() {
     std::stringstream ss;

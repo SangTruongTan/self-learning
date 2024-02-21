@@ -356,67 +356,62 @@ void MacDonald::registerTimer(void) {
     /* Check at specific moment. */
     /* Time to sound. */
     /* Cats. */
-    timeLists.push_back(std::make_pair(
-        static_cast<const int>(Animal::CAT_SOUND_TIME), [this]() {
-            AnimalType type = AnimalType::CAT;
-            std::lock_guard<std::mutex> lock(this->mMutexAnimals);
-            LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
-                     Animal::AnimalTypeToStrings.at(type), "}");
-            for (Animal *animal : this->mAnimalList) {
-                if (animal->getType() == type) {
-                    animal->sound();
-                }
+    timeLists.push_back(std::make_pair(Animal::CAT_SOUND_TIME, [this]() {
+        AnimalType type = AnimalType::CAT;
+        std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+        LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
+                 Animal::AnimalTypeToStrings.at(type), "}");
+        for (Animal *animal : this->mAnimalList) {
+            if (animal->getType() == type) {
+                animal->sound();
             }
-        }));
+        }
+    }));
 
     /* Chickens. */
-    timeLists.push_back(std::make_pair(
-        static_cast<const int>(Animal::CHICKEN_SOUND_TIME), [this]() {
-            AnimalType type = AnimalType::CHICKEN;
-            std::lock_guard<std::mutex> lock(this->mMutexAnimals);
-            LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
-                     Animal::AnimalTypeToStrings.at(type), "}");
-            for (Animal *animal : this->mAnimalList) {
-                if (animal->getType() == type) {
-                    animal->sound();
-                }
+    timeLists.push_back(std::make_pair(Animal::CHICKEN_SOUND_TIME, [this]() {
+        AnimalType type = AnimalType::CHICKEN;
+        std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+        LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
+                 Animal::AnimalTypeToStrings.at(type), "}");
+        for (Animal *animal : this->mAnimalList) {
+            if (animal->getType() == type) {
+                animal->sound();
             }
-        }));
+        }
+    }));
 
     /* Dog. */
-    timeLists.push_back(std::make_pair(
-        static_cast<const int>(Animal::DOG_SOUND_TIME), [this]() {
-            AnimalType type = AnimalType::DOG;
-            std::lock_guard<std::mutex> lock(this->mMutexAnimals);
-            LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
-                     Animal::AnimalTypeToStrings.at(type), "}");
-            for (Animal *animal : this->mAnimalList) {
-                if (animal->getType() == type) {
-                    animal->sound();
-                }
+    timeLists.push_back(std::make_pair(Animal::DOG_SOUND_TIME, [this]() {
+        AnimalType type = AnimalType::DOG;
+        std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+        LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
+                 Animal::AnimalTypeToStrings.at(type), "}");
+        for (Animal *animal : this->mAnimalList) {
+            if (animal->getType() == type) {
+                animal->sound();
             }
-        }));
+        }
+    }));
 
     /* Pigs. */
-    timeLists.push_back(std::make_pair(
-        static_cast<const int>(Animal::PIG_SOUND_TIME), [this]() {
-            AnimalType type = AnimalType::PIG;
-            std::lock_guard<std::mutex> lock(this->mMutexAnimals);
-            LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
-                     Animal::AnimalTypeToStrings.at(type), "}");
-            for (Animal *animal : this->mAnimalList) {
-                if (animal->getType() == type) {
-                    animal->sound();
-                }
+    timeLists.push_back(std::make_pair(Animal::PIG_SOUND_TIME, [this]() {
+        AnimalType type = AnimalType::PIG;
+        std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+        LOG_FARM(LogLevel::DEBUG, "It's time to sound for {",
+                 Animal::AnimalTypeToStrings.at(type), "}");
+        for (Animal *animal : this->mAnimalList) {
+            if (animal->getType() == type) {
+                animal->sound();
             }
-        }));
+        }
+    }));
 
     /* Continuos Executing */
-    timeLists.push_back(
-        std::make_pair(static_cast<const int>(TimeManager::CONTINUOUS), [this] {
-            std::lock_guard<std::mutex> lock(this->mMutexAnimals);
-            this->updateDashboard();
-        }));
+    timeLists.push_back(std::make_pair(TimeManager::CONTINUOUS, [this] {
+        std::lock_guard<std::mutex> lock(this->mMutexAnimals);
+        this->updateDashboard();
+    }));
 }
 
 void MacDonald::feedAnimals(std::vector<std::string>::iterator begin,
