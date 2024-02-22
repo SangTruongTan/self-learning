@@ -197,7 +197,7 @@ int Animal::gainHappyIndex(int offset) {
 int Animal::getHappyIndex(void) {
     int retval = mHappyIndex;
     if (mType == AnimalType::PIG) {
-        retval = -1;
+        retval = HAPPY_INDEX_NOT_APPLICABLE;
     }
     return retval;
 }

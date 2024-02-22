@@ -99,6 +99,7 @@ public:
     static constexpr int CHICKEN_HAPPY_INDEX_REDUCTION_BY_SOUND = 1;
     static constexpr int CAT_HAPPY_INDEX_REDUCTION_BY_SOUND = 1;
     static constexpr int DOG_HAPPY_INDEX_REDUCTION_BY_SOUND = 1;
+    static constexpr int HAPPY_INDEX_NOT_APPLICABLE = -1;
 
     /* Condition to reduce happy index by sounds. */
     static constexpr int CHICKEN_REDUCTION_CONDITION_BY_SOUND =

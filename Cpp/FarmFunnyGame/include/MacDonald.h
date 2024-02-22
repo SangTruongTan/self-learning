@@ -9,6 +9,7 @@
 #include "Cat.h"
 #include "Chicken.h"
 #include "Logger.h"
+#include "Pig.h"
 #include "SharedObjects.h"
 #include "TimeManager.h"
 #include "UserInterface.h"
@@ -72,6 +73,7 @@ private:
     bool gainFoodUnits(int offset);
     bool checkIfFoodAdequate(int minus);
     bool buyFood(std::vector<std::string>::iterator begin);
+    std::string happyIndexToString(int index) const;
 
 public:
     std::vector<Animal *> mAnimalList;

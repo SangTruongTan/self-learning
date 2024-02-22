@@ -1,7 +1,5 @@
 #include "Cat.h"
 
-#include <random>
-
 namespace Farm {
 
 Cat::Cat(std::string Name, SharedObjects &shared) : Animal(Name, shared) {

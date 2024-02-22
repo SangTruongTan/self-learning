@@ -335,6 +335,8 @@ Animal *MacDonald::buyAnimal(AnimalType type, std::string name,
         retval = new Cat(name, shared);
         break;
     case AnimalType::PIG:
+        retval = new Pig(name, shared);
+        break;
     case AnimalType::DOG:
     case AnimalType::ANIMAL:
     case AnimalType::SPECIFIC_ANIMAL:
@@ -530,17 +532,18 @@ void MacDonald::updateDashboard(void) const {
 
 std::string MacDonald::getAnimalsStatus(void) const {
     VariadicTable<std::string, std::string, const uint16_t, double, int,
-                  std::string, std::string, int>
+                  std::string, std::string, std::string>
         vt({"Name", "Type", "Age", "Weight", "FedDays", "FedToday",
             "GoOutStatus", "HappyIndex"},
            10);
     for (Animal *animal : this->mAnimalList) {
-        vt.addRow(
-            animal->getName(),
-            Animal::AnimalTypeToStrings.at(animal->getType()), animal->getAge(),
-            animal->getWeight(), animal->getFeedConsecutiveDays(),
-            (animal->getFedToday() == false) ? "False" : "True",
-            animal->getGoOutStatus() ? "Out" : "In", animal->getHappyIndex());
+        vt.addRow(animal->getName(),
+                  Animal::AnimalTypeToStrings.at(animal->getType()),
+                  animal->getAge(), animal->getWeight(),
+                  animal->getFeedConsecutiveDays(),
+                  (animal->getFedToday() == false) ? "False" : "True",
+                  animal->getGoOutStatus() ? "Out" : "In",
+                  happyIndexToString(animal->getHappyIndex()));
     }
     std::stringstream ss{};
     vt.print(ss);
@@ -823,6 +826,16 @@ bool MacDonald::buyFood(std::vector<std::string>::iterator begin) {
             LOG_CONSOLE(LogLevel::INFO, ss.str());
         }
         retval = true;
+    }
+    return retval;
+}
+
+std::string MacDonald::happyIndexToString(int index) const {
+    std::string retval{};
+    if (index == Animal::HAPPY_INDEX_NOT_APPLICABLE) {
+        retval = "NA";
+    } else {
+        retval = std::to_string(index);
     }
     return retval;
 }
