@@ -1,16 +1,16 @@
-#ifndef __CAT_H__
-#define __CAT_H__
+#ifndef __DOG_H__
+#define __DOG_H__
 
 #include "Animal.h"
 
 namespace Farm {
-class Cat : public Animal {
+class Dog : public Animal {
 private:
     AnimalError isEdible(void) override;
 
 public:
-    Cat(std::string Name, Farm::SharedObjects &shared);
-    ~Cat();
+    Dog(std::string Name, Farm::SharedObjects &shared);
+    ~Dog();
     void sound(int NumOfSound = 1) override;
     bool exceedLifeTime(void) override;
     void scanAnimal(void) override;
@@ -28,4 +28,4 @@ public:
 };
 }; // namespace Farm
 
-#endif /* __CAT_H__ */
+#endif /* __DOG_H__ */

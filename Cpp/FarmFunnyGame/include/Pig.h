@@ -23,6 +23,8 @@ public:
     Animal *reproduce(std::string name) const override;
     int getNumberOfChilds(void) override;
     void soundWhenBorn(void) override;
+    int gainIntelligentIndex(int offset) override;
+    int getIntelligentIndex(void) const override;
 };
 }; // namespace Farm
 

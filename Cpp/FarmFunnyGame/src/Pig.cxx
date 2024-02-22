@@ -117,4 +117,12 @@ int Pig::getNumberOfChilds(void) {
 
 void Pig::soundWhenBorn(void) { sound(PIG_NUM_SOUND_WHEN_BORN); }
 
+int Pig::gainIntelligentIndex([[maybe_unused]] int offset) {
+    return INTELLIGENT_INDEX_NOT_APPLICABLE;
+}
+
+int Pig::getIntelligentIndex(void) const {
+    return INTELLIGENT_INDEX_NOT_APPLICABLE;
+}
+
 } // namespace Farm

@@ -6,10 +6,8 @@
 #include <sstream>
 #include <vector>
 
-#include "Cat.h"
-#include "Chicken.h"
+#include "Animal.h"
 #include "Logger.h"
-#include "Pig.h"
 #include "SharedObjects.h"
 #include "TimeManager.h"
 #include "UserInterface.h"

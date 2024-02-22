@@ -138,4 +138,12 @@ int Chicken::getNumberOfChilds(void) {
 
 void Chicken::soundWhenBorn(void) { sound(CHICKEN_NUM_SOUND_WHEN_BORN); }
 
+int Chicken::gainIntelligentIndex([[maybe_unused]] int offset) {
+    return INTELLIGENT_INDEX_NOT_APPLICABLE;
+}
+
+int Chicken::getIntelligentIndex(void) const {
+    return INTELLIGENT_INDEX_NOT_APPLICABLE;
+}
+
 } // namespace Farm

@@ -124,4 +124,12 @@ int Cat::getNumberOfChilds(void) { return CAT_NUM_REPRODUCE; }
 
 void Cat::soundWhenBorn(void) { sound(CAT_NUM_SOUND_WHEN_BORN); }
 
+int Cat::gainIntelligentIndex([[maybe_unused]] int offset) {
+    return INTELLIGENT_INDEX_NOT_APPLICABLE;
+}
+
+int Cat::getIntelligentIndex(void) const {
+    return INTELLIGENT_INDEX_NOT_APPLICABLE;
+}
+
 } // namespace Farm

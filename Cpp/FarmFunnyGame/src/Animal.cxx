@@ -6,8 +6,8 @@ Animal::Animal(std::string Name, SharedObjects &shared)
     : mName(Name), mAge(0), mWeight(0), mFeedConsecutiveDays(0),
       mShared(shared), mIsOutdoor(false), mNotGoOutdoorConsecutiveDays(0),
       mIsWentOutToday(false), mZeroHappyIndexConsecutiveDays(0),
-      mHappyIndex(HAPPY_INDEX_DEFAULT),
-      mChildrenRemark(CHILDREN_NAMING_NUMBER) {
+      mHappyIndex(HAPPY_INDEX_DEFAULT), mChildrenRemark(CHILDREN_NAMING_NUMBER),
+      mIntelligentIndex(INTELLIGENT_INDEX_DEFAULT) {
     std::stringstream ss{};
     ss << "New Animal named: " << mName;
     LOG_ANIMAL(LogLevel::DEBUG, ss.str());

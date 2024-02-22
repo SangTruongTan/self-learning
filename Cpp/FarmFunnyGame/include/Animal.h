@@ -63,6 +63,9 @@ public:
     static constexpr int8_t INTELLIGENT_INDEX_MAX = 10;
     static constexpr int8_t INTELLIGENT_INDEX_MIN = 0;
     static constexpr int8_t INTELLIGENT_INDEX_DEFAULT = 0;
+    static constexpr int8_t INTELLIGENT_INDEX_GAIN_SELL_PRICE = 10;
+    static constexpr int8_t INTELLIGENT_INDEX_REPRODUCIBLE = 10;
+    static constexpr int8_t INTELLIGENT_INDEX_NOT_APPLICABLE = -1;
 
     /* Prices. Units in USD. */
     static constexpr uint16_t CHICKEN_SELL_PRICE = 2;          /* Per unit */
@@ -194,6 +197,7 @@ protected:
     std::map<AnimalType, int> numOfSounds;
     int mHappyIndex;
     int mChildrenRemark;
+    int mIntelligentIndex;
 
 public:
     static const std::unordered_map<AnimalError, std::string>
@@ -235,6 +239,8 @@ public:
     int getHappyIndex(void);
     int getZeroHappyIndexConsecutiveDays(void);
     bool isDead(void);
+    virtual int gainIntelligentIndex(int offset) = 0;
+    virtual int getIntelligentIndex(void) const = 0;
 
 protected:
     virtual AnimalError isEdible(void) = 0;

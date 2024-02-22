@@ -1,10 +1,15 @@
 #include "MacDonald.h"
 
-#include "VariadicTable.h"
 #include <algorithm>
 #include <cstring>
 #include <thread>
 #include <typeinfo>
+
+#include "Cat.h"
+#include "Chicken.h"
+#include "Dog.h"
+#include "Pig.h"
+#include "VariadicTable.h"
 
 namespace Farm {
 
@@ -106,7 +111,7 @@ void MacDonald::handleCommands() {
         }
 
         std::lock_guard<std::mutex> lockAnimal(this->mMutexAnimals);
-        if (cmd.size() <= 1) {
+        if (cmd.size() == 0) {
             LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
         } else {
             if (cmd.at(0) == "report") {
@@ -228,22 +233,13 @@ void MacDonald::handleCommands() {
                         LOG_FARM(LogLevel::INFO, ss.str().c_str());
                     }
                 } else {
-                    LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
-                }
-
-                if (cmd.at(1) == "chickens") {
-                    LOG_FARM(LogLevel::INFO, "CMD --> sell all chickens");
-                } else if (cmd.at(1) == "cats") {
-                    LOG_FARM(LogLevel::INFO, "CMD --> sell all cats");
-                } else if (cmd.at(1) == "dogs") {
-                    LOG_FARM(LogLevel::INFO, "CMD --> sell all dogs");
-                } else if (cmd.at(1) == "pigs") {
-                    LOG_FARM(LogLevel::INFO, "CMD --> sell all pigs");
-                } else {
-                    LOG_FARM(LogLevel::INFO, "CMD --> sell a specific animal");
+                    LOG_CONSOLE(
+                        LogLevel::INFO,
+                        "Command doesn't support.\nsell <type_of_animals> "
+                        "or\nsell <name_of_animals>\n");
                 }
             } else {
-                LOG_CONSOLE(LogLevel::INFO, "Command doesn't support\n");
+                LOG_CONSOLE(LogLevel::INFO, "Command doesn't support.\n");
             }
         }
         cmd.clear();
@@ -338,6 +334,8 @@ Animal *MacDonald::buyAnimal(AnimalType type, std::string name,
         retval = new Pig(name, shared);
         break;
     case AnimalType::DOG:
+        retval = new Dog(name, shared);
+        break;
     case AnimalType::ANIMAL:
     case AnimalType::SPECIFIC_ANIMAL:
         break;
