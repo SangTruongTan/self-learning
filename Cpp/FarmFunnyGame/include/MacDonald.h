@@ -38,6 +38,8 @@ private:
     int mAccountBalance;
     int mFoodUnits;
 
+    void reportAll() const;
+    void reportResources() const;
     void reportAnimals() const;
 
     void buyAnimal(AnimalType type, std::vector<std::string>::iterator start,
@@ -52,6 +54,7 @@ private:
     bool feedAnimals(Animal *animal);
     void scanAnimal(void);
     void updateDashboard(void) const;
+    std::string getResourceStatus(void) const;
     std::string getAnimalsStatus(void) const;
     bool sellAnimals(AnimalType Type, std::string name = "");
     void removeAnimals(std::vector<std::string> nameList);
