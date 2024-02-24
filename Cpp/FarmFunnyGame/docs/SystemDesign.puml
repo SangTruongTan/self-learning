@@ -1,0 +1,35 @@
+@startuml System Design
+
+title "System Design"
+
+skin rose
+
+package "Linux Ubuntu" {
+[DLT Daemon] as dlt
+[Application] as app
+
+
+() "Logging" as tcp
+
+}
+
+package "Host Machine (Ubuntu|MacOs)" {
+    () "SSH Tunnels" as ssh
+    [DLT Viewer] as view
+}
+
+app ..> tcp
+tcp -- dlt
+
+dlt .l.> ssh
+ssh -u- view
+
+skinparam LegendBackgroundColor #White
+skinparam LegendBorderColor #Blue
+legend left
+Project: Funny Farm
+Author: Sang, Tan Truong
+File: SystemDesign.puml
+endlegend
+
+@enduml
