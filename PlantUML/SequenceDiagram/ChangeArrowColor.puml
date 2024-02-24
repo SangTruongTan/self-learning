@@ -1,0 +1,7 @@
+@startuml Change Arrow Color
+skin rose
+scale 2
+
+Bob -[#red]> Alice : Hello
+Alice -[#0000FF]-> Bob : Okay
+@enduml

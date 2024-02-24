@@ -1,0 +1,17 @@
+@startuml Anchors And Duration
+skin rose
+scale 2
+/'
+With teoz it is possible to add anchors to the diagram and
+use the anchors to specify duration time.
+'/
+!pragma teoz true
+
+{start} Alice -> Bob : start doing things during duration
+Bob -> Max : something
+Max -> Bob : something else
+{end} Bob -> Alice : finish
+
+{start} <-> {end} : some time
+
+@enduml

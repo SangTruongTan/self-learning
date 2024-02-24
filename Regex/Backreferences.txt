@@ -1,0 +1,10 @@
+Exercise files: us_presidents.csv
+List of U.S. Presidents as comma-separated values
+Use captures, backreferences, and find-and-replace
+Create a new list in the format "start-end: full name"
+
+Challenge:
+/^\d+,((?:\w| |\.)+),(\d+),(\d*).+$/  -> 3.2ms
+
+Solution:
+/^\d+,(.+),(\d{4}),(\d{0,4}),.+,.+,https:.+$/      -> 3.5ms

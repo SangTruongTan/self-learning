@@ -1,0 +1,13 @@
+@startuml More Information On Titles
+
+title __Simple__ **communication** example\nWith Multi-lines
+
+Alice -> Bob: Authentication Request
+Bob -> Alice: Authentication Response
+
+newpage
+title
+Hello
+Multi-lines title
+end title
+@enduml

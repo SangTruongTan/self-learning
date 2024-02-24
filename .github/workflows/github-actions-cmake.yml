@@ -1,0 +1,54 @@
+name: GitHub Actions CMake on a single platform
+run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+env:
+  # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
+  BUILD_TYPE: Release
+
+jobs:
+  Explore-GitHub-Actions:
+    # The CMake configure and build commands are platform agnostic and should work equally well on Windows or Mac.
+    # You can convert this to a matrix build if you need cross-platform coverage.
+    # See: https://docs.github.com/en/free-pro-team@latest/actions/learn-github-actions/managing-complex-workflows#using-a-build-matrix
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+
+      - name: Install neccessary dependencies for CMake.
+        run: source ${{ github.workspace }}/build.sh install cmake
+
+      - name: Install dependencies for FreeRTOS.
+        run: source ${{ github.workspace }}/build.sh install freertos
+
+      - name: Setup environments.
+        run: source ${{ github.workspace }}/build.sh setup freertos amd
+
+      - name: Show CMake Version.
+        run: cmake --version
+
+      - name: Run all Cmake Projects  of Cmake Tutorial.
+        run: source ${{ github.workspace }}/build.sh build_cmake
+
+      - name: Run all FreeRTOS Projects.
+        run: source ${{ github.workspace }}/build.sh build_freertos
+
+      # - name: Test
+      #   working-directory: ${{github.workspace}}/build
+      #   # Execute tests defined by the CMake configuration.
+      #   # See https://cmake.org/cmake/help/latest/manual/ctest.1.html for more detail
+      #   run: ctest -C ${{env.BUILD_TYPE}}

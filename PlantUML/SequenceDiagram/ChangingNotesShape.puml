@@ -1,0 +1,12 @@
+@startuml Chaning Notes Shape
+skin rose
+scale 2
+/'
+You can use hnote and rnote keywords to change note shapes :
+hnote for hexagonal note;
+rnote for rectangle note.
+'/
+caller -> server : Hello
+hnote over caller: idle
+rnote over server : Server note
+@enduml

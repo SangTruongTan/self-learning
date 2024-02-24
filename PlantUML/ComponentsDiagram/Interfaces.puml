@@ -1,0 +1,18 @@
+@startuml Interfaces
+
+/'
+Interface can be defined using the () symbol (because this looks like a circle).
+You can also use the interface keyword to define an interface.
+And you can define an alias, using the as keyword.
+This alias will be used latter, when defining relations.
+We will see latter that interface definition is optional.
+'/
+
+() "First Interface"
+() "Another interface" as Interf2
+interface Interf3
+interface "Last\ninterface" as Interf4
+
+[component]
+footer //Adding "component" to force diagram to be a **component diagram**//
+@enduml

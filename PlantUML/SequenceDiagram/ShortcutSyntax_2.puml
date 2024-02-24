@@ -1,0 +1,11 @@
+@startuml Shortcut syntax for activation, deactivation, creation
+skin rose
+scale 2
+/'
+Then you can mix activation and deactivation, on same line:
+'/
+alice   ->  bob     ++   : hello1
+bob     ->  charlie --++ : hello2
+charlie --> alice   --   : ok
+
+@enduml

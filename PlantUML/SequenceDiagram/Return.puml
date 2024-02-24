@@ -1,0 +1,13 @@
+@startuml Return
+skin rose
+scale 2
+/'
+Command return generates a return message with optional text label.
+The return point is that which caused the most recent life-line activation.
+The syntax is return label where label if provided is any string acceptable for conventional messages.
+'/
+Bob -> Alice : hello
+activate Alice
+Alice -> Alice : some action
+return bye
+@enduml

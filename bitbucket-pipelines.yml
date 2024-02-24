@@ -1,0 +1,21 @@
+# Template C++ Application
+
+# This template allows you to validate your C++ application.
+# The workflow allows running tests and code linting on the default branch.
+
+
+image: gcc:10.2
+
+
+pipelines:
+  default:
+     - step:
+        script:
+        - echo "*** Automated CI/CD ***"
+        - apt-get update && apt-get -y install cmake
+        - export CMAKE_FILES="$(find -name "CMakeLists.txt" | head -n 1)"
+        - export CMAKE_BUILD_PATH="$(dirname ${CMAKE_FILES})/build"
+        - cd ${CMAKE_BUILD_PATH}
+        - pwd
+        - cmake ..
+        - cmake --build . --target all

@@ -1,0 +1,24 @@
+@startuml Slanted or Odd Arrows
+/'
+You can use the (nn) option (before or after arrow) to make the arrows slanted,
+where nn is the number of shift pixels.
+'/
+footer Page %page% of %lastpage%
+A ->(10) B: text 10
+B ->(10) A: text 10
+
+A ->(10) B: text 10
+A (10)<- B: text 10
+
+...
+
+A ->(40) B++: Rq
+B -->(20) A--: Rs
+
+...
+
+!pragma teoz true
+A ->(50) C: Starts\nwhen 'B' sends
+& B ->(25) C: \nBut B's message\n arrives before A's
+
+@enduml

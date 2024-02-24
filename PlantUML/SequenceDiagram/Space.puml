@@ -1,0 +1,17 @@
+@startuml Space
+skin rose
+scale 2
+/'
+You can use ||| to indicate some spacing in the diagram.
+It is also possible to specify a number of pixel to be used.
+'/
+Alice -> Bob : message 1
+Bob --> Alice: ok
+|||
+Alice -> Bob : message 2
+Bob --> Alice: ok
+||45||
+Alice -> Bob : message 3
+Bob --> Alice: ok
+
+@enduml

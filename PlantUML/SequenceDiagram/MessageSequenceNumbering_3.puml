@@ -1,0 +1,37 @@
+@startuml Message Sequence Numbering 3
+skin rose
+scale 2
+/'
+Your startnumber can also be a 2 or 3 digit sequence using a field delimiter
+such as ., ;, ,, : or a mix of these. For example: 1.1.1 or 1.1:1.
+Automatically the last digit will increment.
+To increment the first digit, use: autonumber inc A.
+To increment the second digit, use: autonumber inc B.
+'/
+autonumber 1.1.1.1
+Alice -> Bob : Authentication Request
+Alice <- Bob : Resonse
+
+autonumber inc A
+Alice -> Bob : Another Authentication Request
+Alice <-- Bob : Response
+
+autonumber inc B
+Alice -> Bob : Another Authentication Request
+Alice <-- Bob : Response
+
+autonumber inc C
+Alice -> Bob : Another Authentication Request
+Alice <-- Bob : Response
+
+/'
+You can also use the value of autonumber with the %autonumber% variable:
+'/
+autonumber 10
+Alice -> Bob
+note right
+    the <U+0025>autonumber<U+0025> works everywhere.
+    Here, its value is ** %autonumber% **
+end note
+
+@enduml

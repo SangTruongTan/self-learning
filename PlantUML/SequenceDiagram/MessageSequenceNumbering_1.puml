@@ -1,0 +1,42 @@
+@startuml Message Sequence Numbering
+skin rose
+
+/'
+The keyword autonumber is used to automatically add
+an incrementing number to messages.
+'/
+autonumber
+Bob -> Alice : Authentication Request
+Bob <- Alice : Authentication Response
+
+/'
+You can specify a startnumber with autonumber <start> ,
+and also an increment with autonumber <start> <increment>.
+'/
+autonumber 15
+Bob -> Alice : Authentication Request
+Bob <- Alice : Authentication Response
+
+autonumber 40 10
+Bob -> Alice : Authentication Request
+Bob <- Alice : Authentication Response
+
+/'
+You can specify a format for your number by using between double-quote.
+The formatting is done with the Java class DecimalFormat
+(0 means digit, # means digit and zero if absent).
+You can use some html tag in the format.
+'/
+autonumber "<b>[000]"
+Bob -> Alice : Authentication Request
+Bob <- Alice : Authentication Response
+
+autonumber 15 "<b>(<u>##</u>)"
+Bob -> Alice : Authentication Request
+Bob <- Alice : Authentication Response
+
+autonumber 40 10 "<font color=red><b>Message 0 "
+Bob -> Alice : Authentication Request
+Bob <- Alice : Authentication Response
+
+@enduml

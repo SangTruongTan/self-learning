@@ -1,0 +1,28 @@
+var searchData=
+[
+  ['u16_0',['u16',['../group__CMSIS__core__DebugFunctions.html#ga962a970dfd286cad7f8a8577e87d4ad3',1,'ITM_Type::u16()'],['../group__CMSIS__core__DebugFunctions.html#ga5314281722bb27ee6f98b49b5883fb67',1,'ITM_Type::@10::u16()']]],
+  ['u32_1',['u32',['../group__CMSIS__core__DebugFunctions.html#ga5834885903a557674f078f3b71fa8bc8',1,'ITM_Type::u32()'],['../group__CMSIS__core__DebugFunctions.html#ga313363adf6b2afd59397d438ecbdf159',1,'ITM_Type::@10::u32()']]],
+  ['u8_2',['u8',['../group__CMSIS__core__DebugFunctions.html#gae773bf9f9dac64e6c28b14aa39f74275',1,'ITM_Type::u8()'],['../group__CMSIS__core__DebugFunctions.html#ga896b4b9aa8935a84b44ae87fc1af6504',1,'ITM_Type::@10::u8()']]],
+  ['uart0_5faddr_3',['UART0_ADDR',['../syscall_8c.html#af803a039f56e1f568bcf0e877c1e8515',1,'syscall.c']]],
+  ['uart_5fctrl_5frx_5fen_4',['UART_CTRL_RX_EN',['../syscall_8c.html#afd8c0fb8f54c2a932ed6f04a43d90ccd',1,'syscall.c']]],
+  ['uart_5fctrl_5ftx_5fen_5',['UART_CTRL_TX_EN',['../syscall_8c.html#a96f06e7fd55b5185446caf54112ce13e',1,'syscall.c']]],
+  ['uart_5fdr_6',['UART_DR',['../syscall_8c.html#a45f8fe56c3f605161d9b7a87939d116b',1,'syscall.c']]],
+  ['uart_5finit_7',['uart_init',['../startup_8c.html#a01f5996cfbcef121abc486e732b208c7',1,'uart_init():&#160;syscall.c'],['../syscall_8c.html#a01f5996cfbcef121abc486e732b208c7',1,'uart_init():&#160;syscall.c']]],
+  ['uart_5fstate_5ftxfull_8',['UART_STATE_TXFULL',['../syscall_8c.html#afb0160b036e7b1514e8fd4b74273eaeb',1,'syscall.c']]],
+  ['uart_5ft_9',['UART_t',['../syscall_8c.html#abc3c1b8b133c786af87f3332294125e4',1,'UART_t():&#160;syscall.c'],['../structUART__t.html',1,'UART_t']]],
+  ['uartovf_5firqn_10',['UARTOVF_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083a398b5337b1cf51a216cfe7d981da2c13',1,'CMSDK_CM3.h']]],
+  ['uartrx0_5firqn_11',['UARTRX0_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083a9d5c9c89014e4342d5398dc7b594812c',1,'CMSDK_CM3.h']]],
+  ['uartrx1_5firqn_12',['UARTRX1_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083a5fa03a5b1530fd136df87cd76702d317',1,'CMSDK_CM3.h']]],
+  ['uartrx2_5firqn_13',['UARTRX2_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083a8643115dbb3cddbabc10d023d7acfb55',1,'CMSDK_CM3.h']]],
+  ['uartrx3_5firqn_14',['UARTRX3_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083a39e9a85c1cfa3285da9acb50a414de6f',1,'CMSDK_CM3.h']]],
+  ['uartrx4_5firqn_15',['UARTRX4_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083a4aaae874a81d9b86c8a04198e786f56f',1,'CMSDK_CM3.h']]],
+  ['uarttx0_5firqn_16',['UARTTX0_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083afd6da0bb34ca17800153c27cdd2e6f6f',1,'CMSDK_CM3.h']]],
+  ['uarttx1_5firqn_17',['UARTTX1_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083a815c0d0b8f5fd63b2dee5c1e777be102',1,'CMSDK_CM3.h']]],
+  ['uarttx2_5firqn_18',['UARTTX2_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083a7706516704e94c1a339dbf50faba9412',1,'CMSDK_CM3.h']]],
+  ['uarttx3_5firqn_19',['UARTTX3_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083acc498d6cbf0a2eecf9513afb25e520b4',1,'CMSDK_CM3.h']]],
+  ['uarttx4_5firqn_20',['UARTTX4_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083abb4af27598e7b3c48662d16d531ca2bd',1,'CMSDK_CM3.h']]],
+  ['ub_5fmasked_21',['UB_MASKED',['../structCMSDK__GPIO__TypeDef.html#a6673caa4f81c0aa8e2aa047aabca8304',1,'CMSDK_GPIO_TypeDef']]],
+  ['ulgetruntimecountervalue_22',['ulGetRunTimeCounterValue',['../FreeRTOSConfig_8h.html#a6385cb7f582b798fe48856677284e2ee',1,'FreeRTOSConfig.h']]],
+  ['usagefault_5firqn_23',['UsageFault_IRQn',['../CMSDK__CM3_8h.html#a666eb0caeb12ec0e281415592ae89083a6895237c9443601ac832efa635dd8bbf',1,'CMSDK_CM3.h']]],
+  ['uxtimertaskstack_24',['uxTimerTaskStack',['../main_8c.html#af9fe642f3d18526be6f8488df25ac3ce',1,'main.c']]]
+];

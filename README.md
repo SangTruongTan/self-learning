@@ -1,3 +1,21 @@
+# SELF-LEARNING
+
+[![Static Badge](https://img.shields.io/badge/License-MIT-purpel?logo=unlicense&logoColor=blue)](https://raw.githubusercontent.com/SangTruongTan/self-learning/master/LICENSE)
+[![Deployment](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml)
+[![Build](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml)
+
+## Code Coverage report
+[![Static Badge](https://img.shields.io/badge/LCOV-Code_Coverage_Report-blue?logo=c%2B%2B&logoColor=blue)](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_lcov)
+[![Static Badge](https://img.shields.io/badge/GCOVR-Code_Coverage_Report-green?logo=c%2B%2B&logoColor=blue)](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_gcovr)
+
+## FreeRTOS guidelines
+[![Static Badge](https://img.shields.io/badge/FreeRTOS-Usage-blue)](https://sangtruongtan.github.io/self-learning/FreeRTOS)
+
+## Doxygen Documentation
+[![Static Badge](https://img.shields.io/badge/Doxygen-PeriodicTimer-red?logo=Oxygen)](https://sangtruongtan.github.io/self-learning/FreeRTOS/Timers/PeriodicTimer/html)
+
+## Guidelines
+
 **Edit a file, create a new file, and clone from Bitbucket in under 2 minutes**
 
 When you're done, you can delete the content in this README and update the file with details for others getting started with your repository.
@@ -43,3 +61,65 @@ Use these steps to clone from SourceTree, our client for using the repository co
 4. Open the directory you just created to see your repository’s files.
 
 Now that you're more familiar with your Bitbucket repository, go ahead and add a new file locally. You can [push your change back to Bitbucket with SourceTree](https://confluence.atlassian.com/x/iqyBMg), or you can [add, commit,](https://confluence.atlassian.com/x/8QhODQ) and [push from the command line](https://confluence.atlassian.com/x/NQ0zDQ).
+Sponsor by AWS EC1 Instances with Jira Key.
+
+## Folder tree
+
+```bash
+├── Cmake
+│   ├── CMakeTutorial
+│   │   ├── Step1
+│   │   ├── Step2
+│   │   ├── Step3
+│   │   ├── Step4
+│   │   ├── Step5
+│   │   ├── Step6
+│   │   └── Version
+│   ├── CMakeTutorial_CodeTech
+│   │   ├── EP1_UnderstandingTheBasics
+│   │   ├── EP2_Libraries_Installing_PairingWithExecutables
+│   │   ├── EP3_GitSubmodules
+│   │   ├── EP4_VersioningSourceCode
+│   │   ├── EP5_MakingLibsOptional
+│   │   ├── EP6_InstallingYourSoftware
+│   │   ├── EP7_InstallingWithCPack
+│   │   ├── EP8_FindLibrary
+│   │   └── EP9_FindPackage
+│   └── CMakeTutorial_SelfDefined
+│       └── CodeCoverage
+├── Cpp
+│   ├── Hacker-Rank
+│   │   ├── abstract-classes-polymorphism
+│   │   ├── accessing-inherited-functions
+│   │   ├── attending-workshop
+│   │   ├── bit-array
+│   │   ├── class-template-specialization
+│   │   ├── cpp-variadic
+│   │   ├── magic-spells
+│   │   └── messages-order
+│   ├── Learning-Cpp
+│   │   └── build
+│   ├── SocketProgramming
+│   │   ├── Client
+│   │   └── Server
+│   └── SWCPT
+│       └── LGEDVOJ
+├── FreeRTOS
+│   ├── Demo
+│   │   ├── build
+│   │   ├── CMSIS
+│   │   ├── init
+│   │   └── scripts
+│   └── Tasks
+│       ├── Basic-Tasks-Management
+│       ├── Dead-Lock
+│       └── Thread-Safety
+├── Libraries
+├── PlantUML
+│   ├── ComponentsDiagram
+│   └── SequenceDiagram
+├── Regex
+│   └── Ex_Files_Learning_Regular_Expressions
+│       └── Exercise Files
+└── TagQuestionExercises
+```

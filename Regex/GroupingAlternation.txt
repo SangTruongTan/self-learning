@@ -1,0 +1,14 @@
+Self-Reliance
+
+Challenge:
+1. Match "myself", "yourself", "thyself", but not "himself", "itself"
+=> /(my|thy|your)self/ - 14 times
+2. Match "good", "goodness", and "goods" without typing "good" more than once
+=> /good(ness|s)?/ - 25 times
+3. Match "do" or "does" followed by "no", "not", or "nothing", even when it occurs at the start of a sentence
+=> /do(es)? no(thing|t)?/ - 35 times
+
+Solution:
+1. /(my|thy|your)self/ - 14 times
+2. /good(ness|s)?/ + Case sensitive - 23 times
+3. /[Dd]o(es)? no(t(hing)?)?/ - 35 times
