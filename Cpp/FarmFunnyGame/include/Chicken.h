@@ -25,6 +25,7 @@ public:
     void soundWhenBorn(void) override;
     int gainIntelligentIndex(int offset) override;
     int getIntelligentIndex(void) const override;
+    AnimalError trainAnimal(void) override;
 
 };
 }; // namespace Farm

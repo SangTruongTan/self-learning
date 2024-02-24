@@ -7,7 +7,7 @@ Animal::Animal(std::string Name, SharedObjects &shared)
       mShared(shared), mIsOutdoor(false), mNotGoOutdoorConsecutiveDays(0),
       mIsWentOutToday(false), mZeroHappyIndexConsecutiveDays(0),
       mHappyIndex(HAPPY_INDEX_DEFAULT), mChildrenRemark(CHILDREN_NAMING_NUMBER),
-      mIntelligentIndex(INTELLIGENT_INDEX_DEFAULT) {
+      mIntelligentIndex(INTELLIGENT_INDEX_DEFAULT), isTrainedToday(false) {
     std::stringstream ss{};
     ss << "New Animal named: " << mName;
     LOG_ANIMAL(LogLevel::DEBUG, ss.str());
@@ -52,7 +52,9 @@ const std::unordered_map<Animal::AnimalError, std::string>
         {AnimalIsOutdoor, "AnimalIsOutdoor"},
         {AnimalIsIndoor, "AnimalIsIndoor"},
         {AnimalAlreadyWentOutdoorToday, "AnimalAlreadyWentOutdoorToday"},
-        {AnimalHappyIndexAlert, "AnimalHappyIndexAlert"}};
+        {AnimalHappyIndexAlert, "AnimalHappyIndexAlert"},
+        {AnimalAlreadyTrainedToday, "AnimalAlreadyTrainedToday"},
+        {AnimalNotSupportedTraining, "AnimalNotSupportedTraining"}};
 
 const std::unordered_map<AnimalType, std::string> Animal::AnimalTypeToStrings{
     {AnimalType::ANIMAL, "ANIMAL"},

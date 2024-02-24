@@ -72,6 +72,14 @@ private:
     bool checkIfFoodAdequate(int minus);
     bool buyFood(std::vector<std::string>::iterator begin);
     std::string happyIndexToString(int index) const;
+    AnimalType getSupportedTraining(void);
+    void trainAnimals(void);
+    void trainAnimals(std::vector<std::string>::iterator begin,
+                      std::vector<std::string>::iterator end);
+    void trainAnimals(std::string name);
+    void trainAnimals(AnimalType type);
+    Animal::AnimalError trainAnimals(Animal *animal);
+    std::string intelligentIndexToString(int index) const;
 
 public:
     std::vector<Animal *> mAnimalList;

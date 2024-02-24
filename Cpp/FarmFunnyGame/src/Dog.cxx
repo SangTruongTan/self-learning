@@ -75,6 +75,9 @@ void Dog::scanAnimal(void) {
     } else {
         mZeroHappyIndexConsecutiveDays = 0;
     }
+
+    /* Intelligent Index reset flag. */
+    isTrainedToday = false;
 }
 
 bool Dog::isSalable(void) const { return (mAge > 12); }
@@ -148,6 +151,20 @@ int Dog::gainIntelligentIndex(int offset) {
 
 int Dog::getIntelligentIndex(void) const {
     return mIntelligentIndex;
+}
+
+Animal::AnimalError Dog::trainAnimal(void) {
+    Animal::AnimalError retval{AnimalNoError};
+    if (isTrainedToday == true) {
+        retval = Animal::AnimalError::AnimalAlreadyTrainedToday;
+        LOG_ANIMAL(LogLevel::INFO,
+                   "[", mName, "] has already been trained today");
+    } else {
+        isTrainedToday = true;
+        gainIntelligentIndex(Animal::INTELLIGENT_GAIN_FACTOR);
+        LOG_ANIMAL(LogLevel::INFO, "[", mName, "] is beeing trained");
+    }
+    return retval;
 }
 
 } // namespace Farm

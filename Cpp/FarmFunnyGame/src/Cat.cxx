@@ -132,4 +132,10 @@ int Cat::getIntelligentIndex(void) const {
     return INTELLIGENT_INDEX_NOT_APPLICABLE;
 }
 
+Animal::AnimalError Cat::trainAnimal(void) {
+    LOG_FARM(LogLevel::ERROR,
+             "This service isn't supported for the functionality");
+    return Animal::AnimalError::AnimalNotSupportedTraining;
+}
+
 } // namespace Farm

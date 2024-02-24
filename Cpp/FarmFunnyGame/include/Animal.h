@@ -23,7 +23,9 @@ public:
         AnimalIsOutdoor,
         AnimalIsIndoor,
         AnimalAlreadyWentOutdoorToday,
-        AnimalHappyIndexAlert
+        AnimalHappyIndexAlert,
+        AnimalAlreadyTrainedToday,
+        AnimalNotSupportedTraining
     };
 
     typedef std::vector<Animal *> AnimalList;
@@ -66,6 +68,7 @@ public:
     static constexpr int8_t INTELLIGENT_INDEX_GAIN_SELL_PRICE = 10;
     static constexpr int8_t INTELLIGENT_INDEX_REPRODUCIBLE = 10;
     static constexpr int8_t INTELLIGENT_INDEX_NOT_APPLICABLE = -1;
+    static constexpr int8_t INTELLIGENT_GAIN_FACTOR = 2;
 
     /* Prices. Units in USD. */
     static constexpr uint16_t CHICKEN_SELL_PRICE = 2;          /* Per unit */
@@ -198,6 +201,7 @@ protected:
     int mHappyIndex;
     int mChildrenRemark;
     int mIntelligentIndex;
+    bool isTrainedToday;
 
 public:
     static const std::unordered_map<AnimalError, std::string>
@@ -241,6 +245,7 @@ public:
     bool isDead(void);
     virtual int gainIntelligentIndex(int offset) = 0;
     virtual int getIntelligentIndex(void) const = 0;
+    virtual AnimalError trainAnimal(void) = 0;
 
 protected:
     virtual AnimalError isEdible(void) = 0;

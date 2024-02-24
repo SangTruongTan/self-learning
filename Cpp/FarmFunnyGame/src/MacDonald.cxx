@@ -238,6 +238,15 @@ void MacDonald::handleCommands() {
                         "Command doesn't support.\nsell <type_of_animals> "
                         "or\nsell <name_of_animals>\n");
                 }
+            } else if (cmd.at(0) == "train") {
+                LOG_FARM(LogLevel::INFO,
+                         "CMD -> train command is going to be executed");
+                if (cmd.size() == 1) {
+                    trainAnimals();
+                } else {
+                    trainAnimals(std::next(cmd.begin(), 1), cmd.end());
+                }
+
             } else {
                 LOG_CONSOLE(LogLevel::INFO, "Command doesn't support.\n");
             }
@@ -530,9 +539,9 @@ void MacDonald::updateDashboard(void) const {
 
 std::string MacDonald::getAnimalsStatus(void) const {
     VariadicTable<std::string, std::string, const uint16_t, double, int,
-                  std::string, std::string, std::string>
+                  std::string, std::string, std::string, std::string>
         vt({"Name", "Type", "Age", "Weight", "FedDays", "FedToday",
-            "GoOutStatus", "HappyIndex"},
+            "GoOutStatus", "HappyIndex", "IntelligentIndex"},
            10);
     for (Animal *animal : this->mAnimalList) {
         vt.addRow(animal->getName(),
@@ -541,7 +550,8 @@ std::string MacDonald::getAnimalsStatus(void) const {
                   animal->getFeedConsecutiveDays(),
                   (animal->getFedToday() == false) ? "False" : "True",
                   animal->getGoOutStatus() ? "Out" : "In",
-                  happyIndexToString(animal->getHappyIndex()));
+                  happyIndexToString(animal->getHappyIndex()),
+                  intelligentIndexToString(animal->getIntelligentIndex()));
     }
     std::stringstream ss{};
     vt.print(ss);
@@ -564,6 +574,9 @@ bool MacDonald::sellAnimals(AnimalType Type, std::string name) {
                 std::vector<std::string> removeList{ani->getName()};
                 removeAnimals(removeList);
                 retval |= true;
+            } else {
+                LOG_CONSOLE(LogLevel::INFO, "[", name,
+                            "]  isn't suitable to be sold.\n");
             }
         } else {
             std::stringstream msg{};
@@ -831,6 +844,105 @@ bool MacDonald::buyFood(std::vector<std::string>::iterator begin) {
 std::string MacDonald::happyIndexToString(int index) const {
     std::string retval{};
     if (index == Animal::HAPPY_INDEX_NOT_APPLICABLE) {
+        retval = "NA";
+    } else {
+        retval = std::to_string(index);
+    }
+    return retval;
+}
+
+AnimalType MacDonald::getSupportedTraining(void) { return AnimalType::DOG; }
+
+void MacDonald::trainAnimals(void) {
+    int cnt{0};
+    LOG_FARM(LogLevel::INFO,
+             "Training all animals that supports training program");
+    for (Animal *animal : mAnimalList) {
+        Animal::AnimalError ae = trainAnimals(animal);
+        if (ae != Animal::AnimalError::AnimalNotSupportedTraining) {
+            cnt++;
+        }
+    }
+    if (cnt == 0) {
+        LOG_CONSOLE(LogLevel::INFO,
+                    "There is no animals that supports for training.\n");
+    }
+}
+
+void MacDonald::trainAnimals(std::vector<std::string>::iterator begin,
+                             std::vector<std::string>::iterator end) {
+    LOG_FARM(LogLevel::INFO,
+             "Trained supported animals as per the requested command");
+    auto it = begin;
+    while (it != end) {
+        const auto typeIt = AnimalTypeFromStrings.find(*it);
+        if (typeIt != AnimalTypeFromStrings.end()) {
+            trainAnimals(typeIt->second);
+        } else {
+            trainAnimals(*it);
+        }
+        it++;
+    }
+}
+
+void MacDonald::trainAnimals(std::string name) {
+    bool isFound{false};
+    for (Animal *animal : mAnimalList) {
+        if (animal->getName() == name) {
+            LOG_FARM(LogLevel::INFO, "Found [", name, "] to be trained");
+            Animal::AnimalError ae = trainAnimals(animal);
+            if (ae == Animal::AnimalError::AnimalNotSupportedTraining) {
+                LOG_CONSOLE(LogLevel::INFO, "[", animal->getName(),
+                            "] with type as "
+                            "{",
+                            Animal::AnimalTypeToStrings.at(animal->getType()),
+                            "} doesn't support to be trained.\n");
+            }
+            isFound = true;
+            break;
+        }
+    }
+    if (isFound == false) {
+        std::stringstream ss{};
+        ss << "[" << name << "] can not be found to be trained." << std::endl;
+        LOG_CONSOLE(LogLevel::INFO, ss.str());
+        LOG_FARM(LogLevel::INFO, ss.str());
+    }
+}
+void MacDonald::trainAnimals(AnimalType type) {
+    int cnt{0};
+    if (type & getSupportedTraining()) {
+        for (Animal *animal : mAnimalList) {
+            if (type & animal->getType()) {
+                trainAnimals(animal);
+                cnt++;
+            }
+        }
+        if (cnt == 0) {
+            LOG_CONSOLE(LogLevel::INFO, "There is no {",
+                        Animal::AnimalTypeToStrings.at(type),
+                        "} to be trained.\n");
+        }
+    } else {
+        LOG_CONSOLE(LogLevel::INFO, "{", Animal::AnimalTypeToStrings.at(type),
+                    "} doesn't support to be trained.\n");
+    }
+}
+Animal::AnimalError MacDonald::trainAnimals(Animal *animal) {
+    Animal::AnimalError ae{Animal::AnimalError::AnimalNoError};
+    if (animal->getType() & getSupportedTraining()) {
+        ae = animal->trainAnimal();
+        LOG_CONSOLE(LogLevel::INFO, "Train [", animal->getName(),
+                    "] <= ", AnimalErrorToStrings(ae), "\n");
+    } else {
+        ae = Animal::AnimalError::AnimalNotSupportedTraining;
+    }
+    return ae;
+}
+
+std::string MacDonald::intelligentIndexToString(int index) const {
+    std::string retval{};
+    if (index == Animal::INTELLIGENT_INDEX_NOT_APPLICABLE) {
         retval = "NA";
     } else {
         retval = std::to_string(index);
