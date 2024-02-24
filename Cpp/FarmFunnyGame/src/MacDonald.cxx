@@ -117,10 +117,12 @@ void MacDonald::handleCommands() {
             if (cmd.at(0) == "report") {
                 if (cmd.at(1) == "all") {
                     LOG_FARM(LogLevel::INFO, "CMD --> report all");
-
-                } else if (cmd.at(1) == "resource") {
+                    reportAll();
+                } else if (cmd.at(1) == "resource" ||
+                           cmd.at(1) == "resources") {
                     LOG_FARM(LogLevel::INFO, "CMD --> report resource");
-                } else if (cmd.at(1) == "animals") {
+                    reportResources();
+                } else if (cmd.at(1) == "animal" || cmd.at(1) == "animals") {
                     LOG_FARM(LogLevel::INFO, "CMD --> report animals");
                     reportAnimals();
                 } else {
@@ -275,6 +277,17 @@ Animal *MacDonald::isAnimalExist(const char *name) {
         }
     }
     return retval;
+}
+
+void MacDonald::reportAll() const {
+    LOG_CONSOLE(LogLevel::INFO, "Report all\n");
+    LOG_CONSOLE(LogLevel::INFO, getResourceStatus());
+    LOG_CONSOLE(LogLevel::INFO, getAnimalsStatus());
+}
+
+void MacDonald::reportResources() const {
+    LOG_CONSOLE(LogLevel::INFO, "Resource status\n");
+    LOG_CONSOLE(LogLevel::INFO, getResourceStatus());
 }
 
 void MacDonald::reportAnimals() const {
@@ -524,17 +537,25 @@ void MacDonald::updateDashboard(void) const {
     static int numOfLines{0};
     std::stringstream ss{};
     RESET_CURSOR_DASHBOARD();
-    ss << "Farm Resource Balance\n";
-    ss << "Account Balance:" << mAccountBalance << " " << CURRENCY
-       << "\tFood Units:" << mFoodUnits << " Unit\n\n";
-    ss << "DashBoard\n";
+
+    std::string resource = getResourceStatus();
     std::string table = getAnimalsStatus();
+
+    ss << resource;
     ss << table;
     if (countLines(ss.str()) <= numOfLines) {
         CLEAN_DASHBOARD();
     }
     numOfLines = countLines(ss.str());
     LOG_DASHBOARD(ss.str());
+}
+
+std::string MacDonald::getResourceStatus(void) const {
+    std::stringstream ss{};
+    ss << "Farm Resource Balance\n";
+    ss << "Account Balance:" << mAccountBalance << " " << CURRENCY
+       << "\tFood Units:" << mFoodUnits << " Unit\n\n";
+    return ss.str();
 }
 
 std::string MacDonald::getAnimalsStatus(void) const {
@@ -554,6 +575,7 @@ std::string MacDonald::getAnimalsStatus(void) const {
                   intelligentIndexToString(animal->getIntelligentIndex()));
     }
     std::stringstream ss{};
+    ss << "DashBoard\n";
     vt.print(ss);
     return ss.str();
 }
