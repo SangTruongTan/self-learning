@@ -68,58 +68,27 @@ Sponsor by AWS EC1 Instances with Jira Key.
 ```bash
 ├── Cmake
 │   ├── CMakeTutorial
-│   │   ├── Step1
-│   │   ├── Step2
-│   │   ├── Step3
-│   │   ├── Step4
-│   │   ├── Step5
-│   │   ├── Step6
-│   │   └── Version
 │   ├── CMakeTutorial_CodeTech
-│   │   ├── EP1_UnderstandingTheBasics
-│   │   ├── EP2_Libraries_Installing_PairingWithExecutables
-│   │   ├── EP3_GitSubmodules
-│   │   ├── EP4_VersioningSourceCode
-│   │   ├── EP5_MakingLibsOptional
-│   │   ├── EP6_InstallingYourSoftware
-│   │   ├── EP7_InstallingWithCPack
-│   │   ├── EP8_FindLibrary
-│   │   └── EP9_FindPackage
 │   └── CMakeTutorial_SelfDefined
-│       └── CodeCoverage
 ├── Cpp
+│   ├── FarmFunnyGame
 │   ├── Hacker-Rank
-│   │   ├── abstract-classes-polymorphism
-│   │   ├── accessing-inherited-functions
-│   │   ├── attending-workshop
-│   │   ├── bit-array
-│   │   ├── class-template-specialization
-│   │   ├── cpp-variadic
-│   │   ├── magic-spells
-│   │   └── messages-order
 │   ├── Learning-Cpp
-│   │   └── build
 │   ├── SocketProgramming
-│   │   ├── Client
-│   │   └── Server
-│   └── SWCPT
-│       └── LGEDVOJ
+│   ├── SWCPT
+│   └── work-space
 ├── FreeRTOS
 │   ├── Demo
-│   │   ├── build
-│   │   ├── CMSIS
-│   │   ├── init
-│   │   └── scripts
-│   └── Tasks
-│       ├── Basic-Tasks-Management
-│       ├── Dead-Lock
-│       └── Thread-Safety
+│   ├── external
+│   ├── IntertaskCommunication
+│   ├── MemoryManagement
+│   ├── Tasks
+│   └── Timers
 ├── Libraries
 ├── PlantUML
 │   ├── ComponentsDiagram
 │   └── SequenceDiagram
 ├── Regex
 │   └── Ex_Files_Learning_Regular_Expressions
-│       └── Exercise Files
 └── TagQuestionExercises
 ```
