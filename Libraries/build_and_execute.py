@@ -40,6 +40,11 @@ def build_and_execute_cpp(file_name):
 
     prGreen("Execute the compiled program")
     execute_command = f"./{file_name + '.o'}"
+    if len(sys.argv) > 2:
+        for i in range(2, len(sys.argv)):
+            execute_command = f"{execute_command + ' ' + sys.argv[i]}"
+            i = i + 1
+    prCyan(execute_command)
     os.system(execute_command)
 
 # Usage example
