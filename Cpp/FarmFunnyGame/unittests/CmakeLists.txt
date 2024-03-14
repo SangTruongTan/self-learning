@@ -1,0 +1,21 @@
+cmake_minimum_required(VERSION 3.21.7)
+
+# Add Google Test as a subdirectory
+add_subdirectory(/path/to/gtest/source gtest)
+
+# Chicken Coverage
+SET(CHICKEN chicken_test)
+
+# Add your project's source files
+add_executable(${CHICKEN}
+    ${CMAKE_CURRENT_SOURCE_DIR}/testscripts/gtest_main.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/testscripts/UT_GMOCK_CHICKEN.cpp
+)
+
+# Add your project's include directories
+# target_include_directories(${CHICKEN} PRIVATE include)
+
+# Link your project with Google Test
+target_link_libraries(${CHICKEN} PRIVATE gtest)
+
+
