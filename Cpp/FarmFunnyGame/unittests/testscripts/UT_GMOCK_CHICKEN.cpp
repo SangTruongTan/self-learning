@@ -18,11 +18,17 @@ protected:
 TEST_F(MyTestSuite, TestCase1) {
     // Test code and assertions for TestCase1
     EXPECT_EQ(2 + 2, 4);
-    ASSERT_TRUE(true);
+    ASSERT_EQ(2 + 2, 4);
 }
 
 TEST_F(MyTestSuite, TestCase2) {
     // Test code and assertions for TestCase2
     EXPECT_NE(5, 10);
-    ASSERT_FALSE(false);
+    ASSERT_NE(5, 10);
+}
+
+TEST_F(MyTestSuite, TestCase3) {
+    // Test code and assertions for TestCase3
+    EXPECT_EQ(2 * 2, 4);
+    ASSERT_TRUE(true);
 }
