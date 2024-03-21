@@ -25,6 +25,18 @@ if(NOT WIN32)
     set(BoldWhite "${Esc}[1;37m")
 endif()
 
+# Set CXX Standard flag
+set(CXX_STANDARD_REQUIRED 11)
+
+# Set Optimization flag
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
+
+# Set Debug flag
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
+
+# Set other flags as needed
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+
 # Number of Processing Core
 include(ProcessorCount)
 ProcessorCount(PROCESSOR_COUNT)
@@ -51,25 +63,40 @@ if(GIT_FOUND AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/../../../.git")
     endif()
 endif()
 
+# MacDonald library Set the library name as a variable
+set(MACDONALD_LIB MacDonald)
+
+# Get all source files in the src directory
+file(GLOB MACDONALD_LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../src/*.cxx")
+
+# Add your source files to the project
+add_library(${MACDONALD_LIB} SHARED ${MACDONALD_LIB_SOURCES})
+
+# Include directories
+target_include_directories(${MACDONALD_LIB}
+                           PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
+
 # Chicken Coverage
 set(CHICKEN chicken_test)
 
 # Add your project's source files
 add_executable(
-    ${CHICKEN} ${CMAKE_CURRENT_SOURCE_DIR}/testscripts/gtest_main.cpp
-               ${CMAKE_CURRENT_SOURCE_DIR}/testscripts/UT_GMOCK_CHICKEN.cpp)
+    ${CHICKEN} "${CMAKE_CURRENT_SOURCE_DIR}/testscripts/gtest_main.cpp"
+               "${CMAKE_CURRENT_SOURCE_DIR}/testscripts/UT_GMOCK_CHICKEN.cpp")
 
 # Add your project's include directories
 target_include_directories(
     ${CHICKEN}
     PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/../../../external/googletest/googletest/include
-)
+        "${CMAKE_CURRENT_SOURCE_DIR}/../../../external/googletest/googletest/include"
+        "${CMAKE_CURRENT_SOURCE_DIR}/testscripts/fake/"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../src/"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
 
 # Link target directories
 target_link_directories(
     ${CHICKEN} PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/../../../external/googletest/build/lib)
+    "${CMAKE_CURRENT_SOURCE_DIR}/../../../external/googletest/build/lib")
 
 # Link target libraries
-target_link_libraries(${CHICKEN} PRIVATE gtest)
+target_link_libraries(${CHICKEN} PRIVATE gtest ncurses pthread ${MACDONALD_LIB})
