@@ -23,11 +23,8 @@ add_subdirectory(src)
 add_executable(${PROJECT_NAME} main.cxx)
 
 target_include_directories(${PROJECT_NAME}
-    PRIVATE "${PROJECT_SOURCE_DIR}/include")
+                           PRIVATE "${PROJECT_SOURCE_DIR}/include")
 
-target_link_directories(${PROJECT_NAME}
-    PRIVATE "${PROJECT_SOURCE_DIR}/src")
+target_link_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/src")
 
-target_link_libraries(${PROJECT_NAME}
-    PRIVATE MacDonald dlt ncurses pthread)
-
+target_link_libraries(${PROJECT_NAME} PRIVATE MacDonald dlt ncurses pthread)
