@@ -7,6 +7,8 @@
  ******************************************************************************
  * @attention
  *
+ * BSD 3-Clause License
+ *
  * <h2><center>&copy; Copyright (c) 2024 friedmud.
  * All rights reserved.</center></h2>
  *
