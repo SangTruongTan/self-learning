@@ -1,7 +1,7 @@
 /**
  ******************************************************************************
- * @file           : SharedObjects.h
- * @brief          : SharedObjects' header file.
+ * @file           : UT_GMOCK_CHICKEN.cpp
+ * @brief          : The GMock Test for the chicken class.
  ******************************************************************************
  * @attention
  *
@@ -36,27 +36,58 @@
  *
  ******************************************************************************
  */
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __SHARED_OBJECTS_H__
-#define __SHARED_OBJECTS_H__
-
 /* Includes ------------------------------------------------------------------*/
-#include <functional>
+#include <gtest/gtest.h>
 
-/* Declarations --------------------------------------------------------------*/
-namespace Farm {
-/* Enum definiton. */
-enum AnimalType {
-    CHICKEN = 0x01,
-    CAT = 0x02,
-    PIG = 0x04,
-    DOG = 0x08,
-    ANIMAL = 0x10,
-    SPECIFIC_ANIMAL = 0x20
-};
-struct SharedObjects {
-    std::function<void(AnimalType, int)> soundCallback;
+/* Standard libraries. */
+#include <string>
+
+/* Include source file. */
+#include "Chicken.cxx"
+
+/* Include other dependencies. */
+#include "SharedObjects.h"
+
+/* Include Fake and Mock files. */
+#include "dlt/dlt_fake.h"
+
+/* The fixture for testing a specific class or functionality -----------------*/
+class MyTestSuite : public ::testing::Test {
+protected:
+    // Set up the test environment (optional)
+    void SetUp() override {
+        // Perform any necessary setup actions before each test case
+    }
+
+    // Tear down the test environment (optional)
+    void TearDown() override {
+        // Perform any necessary cleanup actions after each test case
+    }
 };
 
-}; // namespace Farm
-#endif
+/* Test case(s) within the test suite ----------------------------------------*/
+TEST_F(MyTestSuite, TestCase1) {
+    // Test code and assertions for TestCase1
+    EXPECT_EQ(2 + 2, 4);
+    ASSERT_EQ(2 + 2, 4);
+}
+
+TEST_F(MyTestSuite, TestCase2) {
+    // Test code and assertions for TestCase2
+    EXPECT_NE(5, 10);
+    ASSERT_NE(5, 10);
+}
+
+TEST_F(MyTestSuite, TestCase3) {
+    // Test code and assertions for TestCase3
+    EXPECT_EQ(2 * 2, 4);
+    ASSERT_TRUE(true);
+}
+
+TEST_F(MyTestSuite, TestCase4) {
+    Farm::SharedObjects shared;
+    std::string name = "Chicken";
+    Farm::Chicken *obj = new Farm::Chicken(name, shared);
+    delete obj;
+    obj = nullptr;
+}

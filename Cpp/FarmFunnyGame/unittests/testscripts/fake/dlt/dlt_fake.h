@@ -1,7 +1,8 @@
 /**
  ******************************************************************************
- * @file           : SharedObjects.h
- * @brief          : SharedObjects' header file.
+ * @file           : dlt_logger.h
+ * @brief          : Header file to fake the dlt logger in order to reduce the
+ *                   cost of the executation.
  ******************************************************************************
  * @attention
  *
@@ -37,26 +38,60 @@
  ******************************************************************************
  */
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __SHARED_OBJECTS_H__
-#define __SHARED_OBJECTS_H__
+#ifndef __DLT_LOGGER_H
+#define __DLT_LOGGER_H
 
 /* Includes ------------------------------------------------------------------*/
-#include <functional>
+#include <dlt/dlt_user.h>
 
-/* Declarations --------------------------------------------------------------*/
-namespace Farm {
-/* Enum definiton. */
-enum AnimalType {
-    CHICKEN = 0x01,
-    CAT = 0x02,
-    PIG = 0x04,
-    DOG = 0x08,
-    ANIMAL = 0x10,
-    SPECIFIC_ANIMAL = 0x20
-};
-struct SharedObjects {
-    std::function<void(AnimalType, int)> soundCallback;
-};
+/* Definitions ---------------------------------------------------------------*/
+DltReturnValue dlt_unregister_app(void) {
+    DltReturnValue retval{DLT_RETURN_TRUE};
+    return retval;
+}
 
-}; // namespace Farm
-#endif
+DltReturnValue dlt_register_app([[maybe_unused]] const char *apid,
+                                [[maybe_unused]] const char *description) {
+    DltReturnValue retval{DLT_RETURN_TRUE};
+    return retval;
+}
+
+DltReturnValue dlt_register_context([[maybe_unused]] DltContext *handle,
+                                    [[maybe_unused]] const char *contextid,
+                                    [[maybe_unused]] const char *description) {
+    DltReturnValue retval{DLT_RETURN_TRUE};
+    return retval;
+}
+
+DltReturnValue
+dlt_check_library_version([[maybe_unused]] const char *user_major_version,
+                          [[maybe_unused]] const char *user_minor_version) {
+    DltReturnValue retval{DLT_RETURN_TRUE};
+    return retval;
+}
+
+DltReturnValue
+dlt_user_log_write_start([[maybe_unused]] DltContext *handle,
+                         [[maybe_unused]] DltContextData *log,
+                         [[maybe_unused]] DltLogLevelType loglevel) {
+    DltReturnValue retval{DLT_RETURN_TRUE};
+    return retval;
+}
+
+DltReturnValue dlt_unregister_context([[maybe_unused]] DltContext *handle) {
+    DltReturnValue retval{DLT_RETURN_TRUE};
+    return retval;
+}
+
+DltReturnValue
+dlt_user_log_write_constant_string([[maybe_unused]] DltContextData *log,
+                                   [[maybe_unused]] const char *text) {
+    DltReturnValue retval{DLT_RETURN_TRUE};
+    return retval;
+}
+DltReturnValue dlt_user_log_write_finish([[maybe_unused]] DltContextData *log) {
+    DltReturnValue retval{DLT_RETURN_TRUE};
+    return retval;
+}
+
+#endif /* __DLT_LOGGER_H */

@@ -17,3 +17,6 @@
 [submodule "FreeRTOS/external/FreeRTOS"]
 	path = FreeRTOS/external/FreeRTOS
 	url = https://github.com/FreeRTOS/FreeRTOS.git
+[submodule "external/googletest"]
+	path = external/googletest
+	url = https://github.com/google/googletest

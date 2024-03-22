@@ -1,7 +1,7 @@
 /**
  ******************************************************************************
- * @file           : SharedObjects.h
- * @brief          : SharedObjects' header file.
+ * @file           : gtest_main.cpp
+ * @brief          : Main function of the Google Test
  ******************************************************************************
  * @attention
  *
@@ -36,27 +36,11 @@
  *
  ******************************************************************************
  */
-/* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __SHARED_OBJECTS_H__
-#define __SHARED_OBJECTS_H__
-
 /* Includes ------------------------------------------------------------------*/
-#include <functional>
+#include <gtest/gtest.h>
 
-/* Declarations --------------------------------------------------------------*/
-namespace Farm {
-/* Enum definiton. */
-enum AnimalType {
-    CHICKEN = 0x01,
-    CAT = 0x02,
-    PIG = 0x04,
-    DOG = 0x08,
-    ANIMAL = 0x10,
-    SPECIFIC_ANIMAL = 0x20
-};
-struct SharedObjects {
-    std::function<void(AnimalType, int)> soundCallback;
-};
-
-}; // namespace Farm
-#endif
+/* Entry point for running the tests -----------------------------------------*/
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
+}
