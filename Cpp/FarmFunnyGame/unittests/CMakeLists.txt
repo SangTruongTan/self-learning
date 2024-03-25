@@ -100,3 +100,21 @@ target_link_directories(
 
 # Link target libraries
 target_link_libraries(${CHICKEN} PRIVATE gtest ncurses pthread ${MACDONALD_LIB})
+
+# Code Coverage
+LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/external/cmake-modules)
+
+if(CMAKE_COMPILER_IS_GNUCXX)
+    include(CodeCoverage)
+    APPEND_COVERAGE_COMPILER_FLAGS()
+    #set(COVERAGE_EXCLUDES '*/usr/*' '*unittests*/testscripts*' '*.h*')
+    # set(COVERAGE_LCOV_EXCLUDES '*/usr/*' '*unittests*/testscripts*' '*.h*') # this is optional if you want to exclude some directory from the report
+    set(LCOV_EXCLUDES "/usr/include/*" "*.h")
+    setup_target_for_coverage_lcov(NAME ${CHICKEN}_coverage_lcov
+                                   EXECUTABLE ${CHICKEN} -j ${PROCESSOR_COUNT}
+                                   DEPENDENCIES ${CHICKEN})
+
+    setup_target_for_coverage_gcovr_html(NAME ${CHICKEN}_coverage_gcovr
+                                         EXECUTABLE ${CHICKEN} -j ${PROCESSOR_COUNT}
+                                         DEPENDENCIES ${CHICKEN})
+endif()
