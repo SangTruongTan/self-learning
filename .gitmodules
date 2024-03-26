@@ -21,7 +21,3 @@
 [submodule "external/googletest"]
 	path = external/googletest
 	url = https://github.com/google/googletest
-
-[submodule "Cpp/FarmFunnyGame/unittests/external/cmake-modules"]
-	path = Cpp/FarmFunnyGame/unittests/external/cmake-modules
-	url = https://github.com/bilke/cmake-modules.git

@@ -35,7 +35,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 # Set other flags as needed
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -fprofile-arcs -ftest-coverage")
 
 # Number of Processing Core
 include(ProcessorCount)
@@ -67,17 +67,24 @@ endif()
 set(MACDONALD_LIB MacDonald)
 
 # Get all source files in the src directory
-file(GLOB MACDONALD_LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../src/*.cxx")
+# file(GLOB MACDONALD_LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../src/*.cxx")
 
 # Add your source files to the project
-add_library(${MACDONALD_LIB} SHARED ${MACDONALD_LIB_SOURCES})
+add_library(${MACDONALD_LIB} SHARED ${MACDONALD_LIB_SOURCES}
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/Animal.cxx"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/Cat.cxx"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/Chicken.cxx"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../src/Logger.cxx")
 
 # Include directories
 target_include_directories(${MACDONALD_LIB}
                            PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
 
+# Target link libraries
+target_link_libraries(${MACDONALD_LIB} PRIVATE ncurses pthread gcov)
+
 # Chicken Coverage
-set(CHICKEN chicken_test)
+set(CHICKEN Chicken)
 
 # Add your project's source files
 add_executable(
@@ -99,22 +106,22 @@ target_link_directories(
     "${CMAKE_CURRENT_SOURCE_DIR}/../../../external/googletest/build/lib")
 
 # Link target libraries
-target_link_libraries(${CHICKEN} PRIVATE gtest ncurses pthread ${MACDONALD_LIB})
+target_link_libraries(${CHICKEN} PRIVATE gtest gcov ncurses pthread ${MACDONALD_LIB})
 
 # Code Coverage
-LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/external/cmake-modules)
+LIST(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 
 if(CMAKE_COMPILER_IS_GNUCXX)
     include(CodeCoverage)
     APPEND_COVERAGE_COMPILER_FLAGS()
-    #set(COVERAGE_EXCLUDES '*/usr/*' '*unittests*/testscripts*' '*.h*')
-    # set(COVERAGE_LCOV_EXCLUDES '*/usr/*' '*unittests*/testscripts*' '*.h*') # this is optional if you want to exclude some directory from the report
-    set(LCOV_EXCLUDES "/usr/include/*" "*.h")
+    set(COVERAGE_EXCLUDES "/usr/include/*" "/*/*.h" "/*/unittests/testscripts/*")
+
+    set(LCOV_CONF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lcovrc")
+    set(Coverage_LCOV_ARGS "--config-file;${LCOV_CONF_PATH}"  STRING "Description of MY_VARIABLE")
+    set(aa_ABCDDDaa "--config-file;${LCOV_CONF_PATH}}}}}" STRING "Hello")
+    set(Coverage_GENHTML_ARGS "--branch-coverage" CACHE STRING "Description of Coverage_GENHTML_ARGS")
+    set(Coverage_BASE_DIRECTORY "${CMAKE_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/${CHICKEN}.dir" CACHE STRING "Description of Coverage_GENHTML_ARGS")
     setup_target_for_coverage_lcov(NAME ${CHICKEN}_coverage_lcov
                                    EXECUTABLE ${CHICKEN} -j ${PROCESSOR_COUNT}
                                    DEPENDENCIES ${CHICKEN})
-
-    setup_target_for_coverage_gcovr_html(NAME ${CHICKEN}_coverage_gcovr
-                                         EXECUTABLE ${CHICKEN} -j ${PROCESSOR_COUNT}
-                                         DEPENDENCIES ${CHICKEN})
 endif()
