@@ -29,7 +29,7 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
-      - name: Install neccessary dependencies for CMake.
+      - name: Install necessary dependencies for CMake.
         run: source ${{ github.workspace }}/build.sh install cmake
 
       - name: Install dependencies for FreeRTOS.
