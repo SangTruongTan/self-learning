@@ -273,26 +273,36 @@ function(setup_target_for_coverage_lcov)
 
     # Setting up commands which will be run to generate coverage data.
     # Cleanup lcov
-    message(INFO "&&&&&&&&&&&&&&${Coverage_LCOV_ARGS}")
     set(LCOV_CLEAN_CMD
-        ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} --directory ${BASEDIR}  --zerocounters
+        ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} --directory
+        ${BASEDIR}  --zerocounters
     )
     # Create baseline to make sure untouched files show up in the report
     set(LCOV_BASELINE_CMD
-        ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} -c -i --directory ${BASEDIR}  -o ${Coverage_NAME}.base
+        ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} -c -i
+        --directory ${BASEDIR}  -o ${Coverage_NAME}.base
     )
     # Run tests
+    set(LCOV_CREATE_REPORT
+        ${CMAKE_COMMAND} -E make_directory reports)
+
+    # string (REPLACE ";" " " Coverage_EXECUTABLE_STR "${Coverage_EXECUTABLE}")
     set(LCOV_EXEC_TESTS_CMD
-        ${Coverage_EXECUTABLE} ${Coverage_EXECUTABLE_ARGS}
+        # ${Coverage_EXECUTABLE} ${Coverage_EXECUTABLE_ARGS}
+        ${CMAKE_COMMAND} -DTARGET_PATH=${CMAKE_BINARY_DIR}
+        -DTARGET_BIN="${Coverage_EXECUTABLE}"
+        -P ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules/TargetRun.cmake
     )
+
     # Capturing lcov counters and generating report
     set(LCOV_CAPTURE_CMD
-        ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} --directory ${BASEDIR}  --capture --output-file ${Coverage_NAME}.capture
+        ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} --directory
+        ${BASEDIR}  --capture --output-file ${Coverage_NAME}.capture
     )
     # add baseline counters
     set(LCOV_BASELINE_COUNT_CMD
-        ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} -a ${Coverage_NAME}.base
-        -a ${Coverage_NAME}.capture --output-file ${Coverage_NAME}.total
+        ${LCOV_PATH} ${Coverage_LCOV_ARGS} --gcov-tool ${GCOV_PATH} -a
+        ${Coverage_NAME}.base -a ${Coverage_NAME}.capture --output-file ${Coverage_NAME}.total
     )
     # filter collected data to final coverage report
     set(LCOV_FILTER_CMD
@@ -319,7 +329,6 @@ function(setup_target_for_coverage_lcov)
 
 
     if(CODE_COVERAGE_VERBOSE)
-        message(STATUS "@@@@@@@@@@@ ${Coverage_LCOV_ARGS} || ${COVERAGE_EXCLUDES} || ${aa_ABCDDDaa}")
         message(STATUS "Executed command report")
         message(STATUS "Command to clean up lcov: ")
         string(REPLACE ";" " " LCOV_CLEAN_CMD_SPACED "${LCOV_CLEAN_CMD}")
@@ -328,6 +337,10 @@ function(setup_target_for_coverage_lcov)
         message(STATUS "Command to create baseline: ")
         string(REPLACE ";" " " LCOV_BASELINE_CMD_SPACED "${LCOV_BASELINE_CMD}")
         message(STATUS "${LCOV_BASELINE_CMD_SPACED}")
+
+        message(STATUS "Command to create the the report: ")
+        string(REPLACE ";" " " LCOV_CREATE_REPORT_SPACED "${LCOV_CREATE_REPORT}")
+        message(STATUS "${LCOV_CREATE_REPORT_SPACED}")
 
         message(STATUS "Command to run the tests: ")
         string(REPLACE ";" " " LCOV_EXEC_TESTS_CMD_SPACED "${LCOV_EXEC_TESTS_CMD}")
@@ -360,6 +373,7 @@ function(setup_target_for_coverage_lcov)
     add_custom_target(${Coverage_NAME}
         COMMAND ${LCOV_CLEAN_CMD}
         COMMAND ${LCOV_BASELINE_CMD}
+        COMMAND ${LCOV_CREATE_REPORT}
         COMMAND ${LCOV_EXEC_TESTS_CMD}
         COMMAND ${LCOV_CAPTURE_CMD}
         COMMAND ${LCOV_BASELINE_COUNT_CMD}
@@ -377,7 +391,7 @@ function(setup_target_for_coverage_lcov)
             ${Coverage_NAME}/index.html
         WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
         DEPENDS ${Coverage_DEPENDENCIES}
-        VERBATIM # Protect arguments to commands
+        # VERBATIM # Protect arguments to commands # Argumets will be dropped down before ";"
         COMMENT "Resetting code coverage counters to zero.\nProcessing code coverage counters and generating report."
     )
 
