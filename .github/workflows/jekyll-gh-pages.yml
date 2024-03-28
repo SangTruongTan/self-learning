@@ -43,7 +43,7 @@ jobs:
         uses: actions/configure-pages@v3
 
       - name: Update git submodules.
-        run: source ${{ github.workspace }}/build.sh init
+        run: source ${{ github.workspace }}/build.sh --init
 
       - name: Install necessary dependencies for CMake.
         run: source ${{ github.workspace }}/build.sh --install cmake
