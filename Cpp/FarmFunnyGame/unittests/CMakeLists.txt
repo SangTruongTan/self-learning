@@ -68,8 +68,18 @@ file(GLOB MACDONALD_LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../src/*.cxx")
 add_library(${MACDONALD_LIB} SHARED ${MACDONALD_LIB_SOURCES})
 
 # Include directories
-target_include_directories(${MACDONALD_LIB}
-                           PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
+target_include_directories(
+    ${MACDONALD_LIB}
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../include/"
+            "${REPO_ROOT}/external/dlt-daemon/include/"
+            "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
+            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/"
+            "${REPO_ROOT}/external/dlt-daemon/build/include/")
+
+# Link target directories
+target_link_directories(
+    ${MACDONALD_LIB} PRIVATE "${REPO_ROOT}/external/googletest/build/lib/"
+    "${REPO_ROOT}/external/dlt-daemon/build/src/lib/")
 
 # Target link libraries
 target_link_libraries(${MACDONALD_LIB} PRIVATE ncurses pthread gcov)
@@ -119,6 +129,7 @@ target_include_directories(
             "${REPO_ROOT}/external/dlt-daemon/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
             "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/"
+            "${REPO_ROOT}/external/dlt-daemon/build/include/"
             "${CMAKE_CURRENT_SOURCE_DIR}/testscripts/fake/"
             "${CMAKE_CURRENT_SOURCE_DIR}/../src/"
             "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
