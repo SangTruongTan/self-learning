@@ -2,16 +2,8 @@
 cmake_minimum_required(VERSION 3.13)
 
 # Append CMake Module paths
-list(
-    APPEND
-    CMAKE_MODULE_PATH
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    /
-    unittests
-    /
-    cmake
-    -
-    modules)
+list(APPEND CMAKE_MODULE_PATH
+     "${CMAKE_CURRENT_SOURCE_DIR}/unittests/cmake-modules")
 
 # Include Git repo root module
 include(RepoRoot)
