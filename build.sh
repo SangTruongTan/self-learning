@@ -11,7 +11,7 @@ source $GIT_PROG_PATHECTORY/Libraries/libraries.sh
 
 ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 
-ECHO_HIGHLIGHT "🥗🥗🥗Number of Processors ==> $(nproc)" "GREEN"
+ECHO_HIGHLIGHT "Number of Processors ==> $(nproc) 🥗🥗🥗" "GREEN"
 
 # APT PACKAGES
 CMAKE_PACKAGE="make cmake gcc g++ libxss-dev libxxf86vm-dev libxkbfile-dev

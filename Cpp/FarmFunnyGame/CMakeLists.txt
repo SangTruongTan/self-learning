@@ -23,8 +23,30 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra")
 # Set the project name
 project(FarmFunnyGame)
 
-# Add the source directory
-add_subdirectory(src)
+# MacDonald library Set the library name as a variable
+set(MACDONALD_LIB MacDonald)
+
+# Get all source files in the src directory
+file(GLOB MACDONALD_LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cxx")
+
+# Add your source files to the project
+add_library(${MACDONALD_LIB} SHARED ${MACDONALD_LIB_SOURCES})
+
+# Include directories
+target_include_directories(
+    ${MACDONALD_LIB}
+    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include/"
+            "${REPO_ROOT}/external/dlt-daemon/include/"
+            "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
+            "${REPO_ROOT}/external/dlt-daemon/build/include/"
+            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/")
+
+# Link target directories
+target_link_directories(
+    ${MACDONALD_LIB} PRIVATE "${REPO_ROOT}/external/dlt-daemon/build/src/lib/")
+
+# Target link libraries
+target_link_libraries(${MACDONALD_LIB} PRIVATE ncurses pthread gcov)
 
 # Add your main executable and link with the target from src /
 add_executable(${PROJECT_NAME} main.cxx)
@@ -34,9 +56,10 @@ target_include_directories(
     PRIVATE "${PROJECT_SOURCE_DIR}/include"
             "${REPO_ROOT}/external/dlt-daemon/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
-            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/")
+            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/"
+            "${REPO_ROOT}/external/dlt-daemon/build/include/")
 
 target_link_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/src"
-                        "${REPO_ROOT}/external/dlt-daemon/build/src/lib/")
+    "${REPO_ROOT}/external/dlt-daemon/build/src/lib/")
 
-target_link_libraries(${PROJECT_NAME} PRIVATE MacDonald dlt ncurses pthread)
+target_link_libraries(${PROJECT_NAME} PRIVATE ${MACDONALD_LIB} dlt ncurses pthread)

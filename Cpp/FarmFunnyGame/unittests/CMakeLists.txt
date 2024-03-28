@@ -73,8 +73,8 @@ target_include_directories(
     PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../include/"
             "${REPO_ROOT}/external/dlt-daemon/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
-            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/"
-            "${REPO_ROOT}/external/dlt-daemon/build/include/")
+            "${REPO_ROOT}/external/dlt-daemon/build/include/"
+            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/")
 
 # Link target directories
 target_link_directories(
@@ -98,8 +98,8 @@ target_include_directories(
     PRIVATE "${REPO_ROOT}/external/googletest/googletest/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
-            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/"
             "${REPO_ROOT}/external/dlt-daemon/build/include/"
+            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/"
             "${CMAKE_CURRENT_SOURCE_DIR}/testscripts/fake/"
             "${CMAKE_CURRENT_SOURCE_DIR}/../src/"
             "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
@@ -128,8 +128,8 @@ target_include_directories(
     PRIVATE "${REPO_ROOT}/external/googletest/googletest/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
-            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/"
             "${REPO_ROOT}/external/dlt-daemon/build/include/"
+            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/"
             "${CMAKE_CURRENT_SOURCE_DIR}/testscripts/fake/"
             "${CMAKE_CURRENT_SOURCE_DIR}/../src/"
             "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
