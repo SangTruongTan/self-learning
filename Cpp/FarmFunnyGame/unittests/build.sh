@@ -24,4 +24,16 @@ if [[ $EXIT_CODE != "0" ]] ; then
     return $EXIT_CODE
 fi
 
+if [[ ! -d $PROG_PATH/coverages ]]
+then
+    ECHO_HIGHLIGHT "$PROG_PATH/coverages does not exist. Create coverages folder." "BLUE"
+    mkdir $PROG_PATH/coverages
+fi
+
+rsync -ah --progress $PROG_PATH/build/all_coverage_lcov $PROG_PATH/coverages/
+EXIT_CODE=$?
+if [[ $EXIT_CODE != "0" ]] ; then
+    return $EXIT_CODE
+fi
+
 ECHO_HIGHLIGHT "BUILD SUCCESSFULLY" "LINE" "GREEN"
