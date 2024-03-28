@@ -25,3 +25,4 @@
 [submodule "external/dlt-daemon"]
 	path = external/dlt-daemon
 	url = https://github.com/COVESA/dlt-daemon.git
+
