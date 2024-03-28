@@ -12,3 +12,9 @@ ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 install_freertos_enviroment
 
 make -C $PROG_PATH
+EXIT_CODE=$?
+if [[ $EXIT_CODE != "0" ]] ; then
+    return $EXIT_CODE
+fi
+
+ECHO_HIGHLIGHT "BUILD SUCCESSFULLY" "LINE" "GREEN"

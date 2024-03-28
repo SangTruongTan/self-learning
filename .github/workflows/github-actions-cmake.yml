@@ -29,14 +29,23 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
+      - name: Update git submodules.
+        run: source ${{ github.workspace }}/build.sh init
+
       - name: Install necessary dependencies for CMake.
         run: source ${{ github.workspace }}/build.sh install cmake
 
       - name: Install dependencies for FreeRTOS.
         run: source ${{ github.workspace }}/build.sh install freertos
 
-      - name: Setup environments.
+      - name: Setup environments for FreeeRTOS.
         run: source ${{ github.workspace }}/build.sh setup freertos amd
+
+      - name: Setup environments for Google Test.
+        run: source ${{ github.workspace }}/build.sh setup google
+
+      - name: Setup environments for DLT Daemon.
+        run: source ${{ github.workspace }}/build.sh setup dlt
 
       - name: Show CMake Version.
         run: cmake --version
@@ -45,7 +54,7 @@ jobs:
         run: source ${{ github.workspace }}/build.sh build_cmake
 
       - name: Run all FreeRTOS Projects.
-        run: source ${{ github.workspace }}/build.sh build_freertos
+        run: source ${{ github.workspace }}/build.sh build_farm
 
       # - name: Test
       #   working-directory: ${{github.workspace}}/build

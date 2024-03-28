@@ -13,6 +13,9 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake-modules)
 # Include Colorize module
 include(ColorizeMessage)
 
+# Include Git repo root module
+include(RepoRoot)
+
 # Set CXX Standard flag
 set(CXX_STANDARD_REQUIRED 11)
 
@@ -85,7 +88,11 @@ add_executable(
 target_include_directories(
     ${CHICKEN}
     PRIVATE
-        "${CMAKE_CURRENT_SOURCE_DIR}/../../../external/googletest/googletest/include"
+        "${REPO_ROOT}/external/googletest/googletest/include/"
+        "${REPO_ROOT}/external/dlt-daemon/include/"
+        "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
+        "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/"
+        "${REPO_ROOT}/external/dlt-daemon/build/include/"
         "${CMAKE_CURRENT_SOURCE_DIR}/testscripts/fake/"
         "${CMAKE_CURRENT_SOURCE_DIR}/../src/"
         "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
@@ -93,7 +100,8 @@ target_include_directories(
 # Link target directories
 target_link_directories(
     ${CHICKEN} PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../external/googletest/build/lib")
+    "${REPO_ROOT}/external/googletest/build/lib/"
+    "${REPO_ROOT}/external/dlt-daemon/build/src/lib/")
 
 # Link target libraries
 target_link_libraries(${CHICKEN} PRIVATE gtest gcov ncurses pthread
@@ -111,7 +119,10 @@ add_executable(
 target_include_directories(
     ${USER_INTERFACE}
     PRIVATE
-        "${CMAKE_CURRENT_SOURCE_DIR}/../../../external/googletest/googletest/include"
+        "${REPO_ROOT}/external/googletest/googletest/include/"
+        "${REPO_ROOT}/external/dlt-daemon/include/"
+        "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
+        "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/"
         "${CMAKE_CURRENT_SOURCE_DIR}/testscripts/fake/"
         "${CMAKE_CURRENT_SOURCE_DIR}/../src/"
         "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
@@ -119,7 +130,8 @@ target_include_directories(
 # Link target directories
 target_link_directories(
     ${USER_INTERFACE} PRIVATE
-    "${CMAKE_CURRENT_SOURCE_DIR}/../../../external/googletest/build/lib")
+    "${REPO_ROOT}/external/googletest/build/lib"
+    "${REPO_ROOT}/external/dlt-daemon/build/src/lib/")
 
 # Link target libraries
 target_link_libraries(${USER_INTERFACE} PRIVATE gtest gcov ncurses pthread
@@ -135,7 +147,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
 
     set(LCOV_CONF_PATH "${CMAKE_CURRENT_SOURCE_DIR}/lcovrc")
 
-    message("${Yellow}\nSetup for ${CHICKEN} target 🍕🍕🍕${ColourReset}")
+    message(STATUS "${Yellow}Setup for {${CHICKEN}} target 🍕🍕🍕${ColourReset}")
     setup_target_for_coverage_lcov(
         NAME
         ${CHICKEN}_coverage_lcov
@@ -154,7 +166,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
         GENHTML_ARGS
         "--branch-coverage")
 
-        message("${Yellow}\nSetup for ${USER_INTERFACE} target 🌭🌭🌭${ColourReset}")
+        message(STATUS "${Yellow}Setup for {${USER_INTERFACE}} target 🌭🌭🌭${ColourReset}")
         setup_target_for_coverage_lcov(
             NAME
             ${USER_INTERFACE}_coverage_lcov
@@ -173,7 +185,7 @@ if(CMAKE_COMPILER_IS_GNUCXX)
             GENHTML_ARGS
             "--branch-coverage")
 
-    message("${Yellow}\nSetup for ${ALL_TARGET} 🍔🍔🍔${ColourReset}")
+    message(STATUS "${Yellow}Setup for {${ALL_TARGET}} 🍔🍔🍔${ColourReset}")
     setup_target_for_coverage_lcov(
         NAME
         all_coverage_lcov

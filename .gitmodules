@@ -21,3 +21,7 @@
 [submodule "external/googletest"]
 	path = external/googletest
 	url = https://github.com/google/googletest
+
+[submodule "external/dlt-daemon"]
+	path = external/dlt-daemon
+	url = https://github.com/COVESA/dlt-daemon.git
