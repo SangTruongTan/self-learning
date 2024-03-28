@@ -56,8 +56,8 @@ target_include_directories(
     PRIVATE "${PROJECT_SOURCE_DIR}/include"
             "${REPO_ROOT}/external/dlt-daemon/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
-            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/"
-            "${REPO_ROOT}/external/dlt-daemon/build/include/")
+            "${REPO_ROOT}/external/dlt-daemon/build/include/"
+            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/")
 
 target_link_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/src"
     "${REPO_ROOT}/external/dlt-daemon/build/src/lib/")

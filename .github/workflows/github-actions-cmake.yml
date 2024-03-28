@@ -30,34 +30,34 @@ jobs:
       - run: echo "🍏 This job's status is ${{ job.status }}."
 
       - name: Update git submodules.
-        run: source ${{ github.workspace }}/build.sh init
+        run: source ${{ github.workspace }}/build.sh --init
 
       - name: Install necessary dependencies for CMake.
-        run: source ${{ github.workspace }}/build.sh install cmake
+        run: source ${{ github.workspace }}/build.sh --install cmake
 
       - name: Install dependencies for FreeRTOS.
-        run: source ${{ github.workspace }}/build.sh install freertos
+        run: source ${{ github.workspace }}/build.sh --install freertos
 
       - name: Setup environments for FreeeRTOS.
-        run: source ${{ github.workspace }}/build.sh setup freertos amd
+        run: source ${{ github.workspace }}/build.sh --setup freertos --architecture amd
 
       - name: Setup environments for Google Test.
-        run: source ${{ github.workspace }}/build.sh setup google
+        run: source ${{ github.workspace }}/build.sh --setup google
 
       - name: Setup environments for DLT Daemon.
-        run: source ${{ github.workspace }}/build.sh setup dlt
+        run: source ${{ github.workspace }}/build.sh --setup dlt
 
       - name: Show CMake Version.
         run: cmake --version
 
       - name: Run all Cmake Projects  of Cmake Tutorial.
-        run: source ${{ github.workspace }}/build.sh build_cmake
+        run: source ${{ github.workspace }}/build.sh --build cmake
 
       - name: Run all FreeRTOS Projects.
-        run: source ${{ github.workspace }}/build.sh build_freertos
+        run: source ${{ github.workspace }}/build.sh --build freertos
 
       - name: Run all Funny Farm Project.
-        run: source ${{ github.workspace }}/build.sh build_farm
+        run: source ${{ github.workspace }}/build.sh --build farm
 
       # - name: Test
       #   working-directory: ${{github.workspace}}/build
