@@ -8,7 +8,7 @@ project(CodeCoverage VERSION 1.0.0)
 add_executable(${PROJECT_NAME} main.cxx)
 include(ProcessorCount)
 ProcessorCount(PROCESSOR_COUNT)
-message("### Procesor count: ${PROCESSOR_COUNT}")
+message(STATUS "Procesor count: ${PROCESSOR_COUNT}")
 
 # Download all the submodules.
 if(GIT_UPDATE)

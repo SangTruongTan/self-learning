@@ -9,8 +9,8 @@ source $GIT_DIRECTORY/Libraries/libraries.sh
 
 ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 
-CONFIGURE="cmake -S $PROG_PATH -B $PROG_PATH/out/build"
-BUILD="cmake --build $PROG_PATH/out/build --target package"
+CONFIGURE="cmake -S $PROG_PATH -B $PROG_PATH/build"
+BUILD="cmake --build $PROG_PATH/build --target package"
 
 configure_cmake "$CONFIGURE"
 EXIT_CODE=$?

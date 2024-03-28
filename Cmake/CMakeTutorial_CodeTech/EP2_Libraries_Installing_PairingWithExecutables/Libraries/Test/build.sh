@@ -10,8 +10,8 @@ source $GIT_DIRECTORY/Libraries/libraries.sh
 ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 
 ECHO_HIGHLIGHT "Build libraries" "CYAN"
-LIB_CONFIGURE="cmake -S $PROG_PATH/../AdderLib -B $PROG_PATH/../AdderLib/out/build"
-LIB_BUILD="cmake --build $PROG_PATH/../AdderLib/out/build"
+LIB_CONFIGURE="cmake -S $PROG_PATH/../AdderLib -B $PROG_PATH/../AdderLib/build"
+LIB_BUILD="cmake --build $PROG_PATH/../AdderLib/build"
 
 configure_cmake "$LIB_CONFIGURE"
 EXIT_CODE=$?
@@ -26,8 +26,8 @@ if [[ $EXIT_CODE != "0" ]] ; then
 fi
 
 ECHO_HIGHLIGHT "Build Top CMakeLists.txt"
-CONFIGURE="cmake -S $PROG_PATH -B $PROG_PATH/out/build"
-BUILD="cmake --build $PROG_PATH/out/build"
+CONFIGURE="cmake -S $PROG_PATH -B $PROG_PATH/build"
+BUILD="cmake --build $PROG_PATH/build"
 
 configure_cmake "$CONFIGURE"
 EXIT_CODE=$?

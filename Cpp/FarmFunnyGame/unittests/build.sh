@@ -9,8 +9,8 @@ source $GIT_DIRECTORY/Libraries/libraries.sh
 
 ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 
-CONFIGURE="cmake -DCMAKE_BUILD_TYPE=Debug -S $PROG_PATH -B $PROG_PATH/out/build"
-BUILD="cmake --build $PROG_PATH/out/build --target all_coverage_lcov --parallel 2"
+CONFIGURE="cmake -DCMAKE_BUILD_TYPE=Debug -S $PROG_PATH -B $PROG_PATH/build"
+BUILD="cmake --build $PROG_PATH/build --target all_coverage_lcov --parallel 2"
 
 configure_cmake "$CONFIGURE"
 EXIT_CODE=$?

@@ -54,6 +54,9 @@ jobs:
         run: source ${{ github.workspace }}/build.sh build_cmake
 
       - name: Run all FreeRTOS Projects.
+        run: source ${{ github.workspace }}/build.sh build_freertos
+
+      - name: Run all Funny Farm Project.
         run: source ${{ github.workspace }}/build.sh build_farm
 
       # - name: Test
