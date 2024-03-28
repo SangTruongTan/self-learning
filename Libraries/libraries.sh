@@ -2,6 +2,7 @@
 
 LIB_NAME="$(basename -- "${BASH_SOURCE[0]}")"
 LIB_PATH="$(dirname $(readlink -f -- "${BASH_SOURCE[0]}"))"
+GIT_DIRECTORY="$(git rev-parse --show-toplevel)"
 
 ### Libraries
 # Color       #define       Value       RGB
@@ -63,6 +64,7 @@ function ECHO_HIGHLIGHT()
 function configure_cmake()
 {
     ECHO_HIGHLIGHT "Run Cmake configuration..." "MAGENTA"
+    ECHO_HIGHLIGHT "$1" "BLUE"
     $1
     local EXIT_CODE=$?
     if [ $EXIT_CODE != "0" ]
@@ -75,6 +77,7 @@ function configure_cmake()
 function build_cmake()
 {
     ECHO_HIGHLIGHT "Run Cmake building..." "MAGENTA"
+    ECHO_HIGHLIGHT "$1" "BLUE"
     $1
     EXIT_CODE=$?
     if [ $EXIT_CODE != "0" ]
@@ -109,17 +112,17 @@ function install_freertos_enviroment()
     then
         export FREERTOS_DIR="$GIT_DIRECTORY/FreeRTOS/external/FreeRTOS/FreeRTOS"
         ECHO_HIGHLIGHT "FreeRTOS source path: $FREERTOS_DIR" "GREEN"
-    else
-        ECHO_HIGHLIGHT "FreeRTOS source already exposed: $FREERTOS_DIR" "GREEN"
+    # else
+    #     # ECHO_HIGHLIGHT "FreeRTOS source already exposed: $FREERTOS_DIR" "GREEN"
     fi
 
-    if [[ "$PATH" == *"gcc-arm-none-eabi-10.3-2021.10"* ]]
+    if [[ "$PATH" != *"gcc-arm-none-eabi-10.3-2021.10"* ]]
     then
-        ECHO_HIGHLIGHT "Already install gcc arm:$PATH" "GREEN"
-    else
         GCC=$(find $HOME -name "gcc-arm-none-eabi-10.3-2021.10")
         export PATH="$PATH:$GCC/bin"
         ECHO_HIGHLIGHT "Export gcc arm tool to path: $GCC" "GREEN"
+    # else
+    #     # ECHO_HIGHLIGHT "Already install gcc arm:$PATH" "GREEN"
     fi
     # ECHO_HIGHLIGHT "Execute updating submodule" "GREEN"
     # git submodule update --init --recursive

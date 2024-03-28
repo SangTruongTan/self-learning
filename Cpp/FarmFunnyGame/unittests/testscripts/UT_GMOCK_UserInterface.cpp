@@ -1,28 +1,28 @@
 /**
  ******************************************************************************
- * @file           : UT_GMOCK_CHICKEN.cpp
- * @brief          : The GMock Test for the chicken class.
+ * @file           : UT_GMOCK_UserInterface.cpp
+ * @brief          : The GMock Test for the UserInterface class.
  ******************************************************************************
  * @attention
  *
  * BSD 3-Clause License
  *
- * Copyright (c) 2024, Sang Tan Truong.
+ * Copyright 2024, Sang Tan Truong
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions are met:
  *
- * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
+ * * Redistributions of source code must retain the above copyright
+ * notice, this list of conditions and the following disclaimer.
  *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
+ * * Redistributions in binary form must reproduce the above
+ * copyright notice, this list of conditions and the following disclaimer
+ * in the documentation and/or other materials provided with the distribution.
  *
- * 3. Neither the name of Sang Tan Truong nor the names of its contributors may
- *    be used to endorse or promote products derived from this software without
- *    specific prior written permission.
+ * * Neither the name of Sang Tan Truong nor the names of its contributors may
+ * be used to endorse or promote products derived from this software without
+ * specific prior written permission.
  *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
@@ -42,19 +42,19 @@
 #include <gtest/gtest.h>
 
 /* Standard libraries. */
+#include <mutex>
 #include <string>
 
 /* Include source file. */
-#include "Chicken.cxx"
+#include "UserInterface.cxx"
 
 /* Include other dependencies. */
-#include "SharedObjects.h"
 
 /* Include Fake and Mock files. */
 #include "dlt/dlt_fake.h"
 
 /* The fixture for testing a specific class or functionality -----------------*/
-class MyTestSuite : public ::testing::Test {
+class UserInterfaceTestSuite : public ::testing::Test {
 protected:
     // Set up the test environment (optional)
     void SetUp() override {
@@ -68,28 +68,9 @@ protected:
 };
 
 /* Test case(s) within the test suite ----------------------------------------*/
-TEST_F(MyTestSuite, TestCase1) {
-    // Test code and assertions for TestCase1
-    EXPECT_EQ(2 + 2, 4);
-    ASSERT_EQ(2 + 2, 4);
-}
-
-TEST_F(MyTestSuite, TestCase2) {
-    // Test code and assertions for TestCase2
-    EXPECT_NE(5, 10);
-    ASSERT_NE(5, 10);
-}
-
-TEST_F(MyTestSuite, TestCase3) {
-    // Test code and assertions for TestCase3
-    EXPECT_EQ(2 * 2, 4);
-    ASSERT_TRUE(true);
-}
-
-TEST_F(MyTestSuite, TestCase4) {
-    Farm::SharedObjects shared;
-    std::string name = "Chicken";
-    Farm::Chicken *obj = new Farm::Chicken(name, shared);
+TEST_F(UserInterfaceTestSuite, TestCase1) {
+    std::mutex mtx;
+    Farm::UserInterface *obj = new Farm::UserInterface(&mtx);
     delete obj;
     obj = nullptr;
 }

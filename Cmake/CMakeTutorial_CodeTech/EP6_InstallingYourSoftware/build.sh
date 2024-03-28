@@ -9,8 +9,8 @@ source $GIT_DIRECTORY/Libraries/libraries.sh
 
 ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 
-CONFIGURE="cmake -S $PROG_PATH -B $PROG_PATH/out/build -DCMAKE_INSTALL_PREFIX=$PROG_PATH/library"
-BUILD="cmake --build $PROG_PATH/out/build --target install"
+CONFIGURE="cmake -S $PROG_PATH -B $PROG_PATH/build -DCMAKE_INSTALL_PREFIX=$PROG_PATH/library"
+BUILD="cmake --build $PROG_PATH/build --target install"
 
 configure_cmake "$CONFIGURE"
 EXIT_CODE=$?
