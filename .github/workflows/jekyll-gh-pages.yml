@@ -52,7 +52,7 @@ jobs:
         run: source ${{ github.workspace }}/build.sh --install freertos
 
       - name: Setup environments for FreeeRTOS.
-        run: source ${{ github.workspace }}/build.sh --setup freertos amd
+        run: source ${{ github.workspace }}/build.sh --setup freertos --architecture amd
 
       - name: Setup environments for Google Test.
         run: source ${{ github.workspace }}/build.sh --setup google
