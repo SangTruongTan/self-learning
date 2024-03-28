@@ -32,14 +32,11 @@ add_executable(${PROJECT_NAME} main.cxx)
 target_include_directories(
     ${PROJECT_NAME}
     PRIVATE "${PROJECT_SOURCE_DIR}/include"
-            "${REPO_ROOT}/external/dlt-daemon/"
-            "include/"
-            "${REPO_ROOT}/external/dlt-daemon/"
-            "include/dlt/"
-            "${REPO_ROOT}/external/dlt-daemon/"
-            "build/include/dlt/")
+            "${REPO_ROOT}/external/dlt-daemon/include/"
+            "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
+            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/")
 
 target_link_directories(${PROJECT_NAME} PRIVATE "${PROJECT_SOURCE_DIR}/src"
-                        "${REPO_ROOT}/external/" "dlt-daemon/build/src/lib/")
+                        "${REPO_ROOT}/external/dlt-daemon/build/src/lib/")
 
 target_link_libraries(${PROJECT_NAME} PRIVATE MacDonald dlt ncurses pthread)
