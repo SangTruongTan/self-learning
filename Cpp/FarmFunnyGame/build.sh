@@ -10,7 +10,7 @@ source $GIT_DIRECTORY/Libraries/libraries.sh
 ECHO_HIGHLIGHT "Script path ==> $PROG_PATH" "BLUE"
 
 CONFIGURE="cmake -S $PROG_PATH -B $PROG_PATH/build"
-BUILD="cmake --build $PROG_PATH/build --target FarmFunnyGame"
+BUILD="cmake --build $PROG_PATH/build --target FarmFunnyGame --parallel $NUMBER_OF_PARALLEL"
 
 configure_cmake "$CONFIGURE"
 EXIT_CODE=$?

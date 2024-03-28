@@ -46,28 +46,28 @@ jobs:
         run: source ${{ github.workspace }}/build.sh init
 
       - name: Install necessary dependencies for CMake.
-        run: source ${{ github.workspace }}/build.sh install cmake
+        run: source ${{ github.workspace }}/build.sh --install cmake
 
       - name: Install dependencies for FreeRTOS.
-        run: source ${{ github.workspace }}/build.sh install freertos
+        run: source ${{ github.workspace }}/build.sh --install freertos
 
       - name: Setup environments for FreeeRTOS.
-        run: source ${{ github.workspace }}/build.sh setup freertos amd
+        run: source ${{ github.workspace }}/build.sh --setup freertos amd
 
       - name: Setup environments for Google Test.
-        run: source ${{ github.workspace }}/build.sh setup google
+        run: source ${{ github.workspace }}/build.sh --setup google
 
       - name: Setup environments for DLT Daemon.
-        run: source ${{ github.workspace }}/build.sh setup dlt
+        run: source ${{ github.workspace }}/build.sh --setup dlt
 
       - name: Show CMake Version.
         run: cmake --version
 
       - name: Build Artifacts
-        run: source ${{ github.workspace }}/build.sh build_all
+        run: source ${{ github.workspace }}/build.sh --build all
 
       - name: Remove unneccessary files.
-        run: source ${{ github.workspace }}/build.sh clean
+        run: source ${{ github.workspace }}/build.sh --clean
 
       - name: Build with Jekyll
         uses: actions/jekyll-build-pages@v1
