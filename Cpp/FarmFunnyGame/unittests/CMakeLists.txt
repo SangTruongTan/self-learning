@@ -163,9 +163,9 @@ if(CMAKE_COMPILER_IS_GNUCXX)
         LCOV_ARGS
         "--config-file;${LCOV_CONF_PATH}"
         EXCLUDE
-        "/usr/include/*"
-        "/*/*.h"
-        "/*/unittests/testscripts/*"
+        '/usr/include/*'
+        '/*/*.h'
+        '/*/unittests/testscripts/*'
         BASE_DIRECTORY
         "${CMAKE_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/${CHICKEN}.dir"
         GENHTML_ARGS
@@ -184,9 +184,9 @@ if(CMAKE_COMPILER_IS_GNUCXX)
         LCOV_ARGS
         "--config-file;${LCOV_CONF_PATH}"
         EXCLUDE
-        "/usr/include/*"
-        "/*/*.h"
-        "/*/unittests/testscripts/*"
+        '/usr/include/*'
+        '/*/*.h'
+        '/*/unittests/testscripts/*'
         BASE_DIRECTORY
         "${CMAKE_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}/${USER_INTERFACE}.dir"
         GENHTML_ARGS
@@ -203,9 +203,9 @@ if(CMAKE_COMPILER_IS_GNUCXX)
         LCOV_ARGS
         "--config-file;${LCOV_CONF_PATH}"
         EXCLUDE
-        "/usr/include/*"
-        "/*/*.h"
-        "/*/unittests/testscripts/*"
+        '/usr/include/*'
+        '/*/*.h'
+        '/*/unittests/testscripts/*'
         BASE_DIRECTORY
         "${CMAKE_BINARY_DIR}/${CMAKE_FILES_DIRECTORY}"
         GENHTML_ARGS
