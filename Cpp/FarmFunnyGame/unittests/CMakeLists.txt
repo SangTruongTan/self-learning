@@ -58,32 +58,6 @@ if(GIT_UPDATE)
     endif()
 endif()
 
-# MacDonald library Set the library name as a variable
-set(MACDONALD_LIB MacDonald)
-
-# Get all source files in the src directory
-file(GLOB MACDONALD_LIB_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/../src/*.cxx")
-
-# Add your source files to the project
-add_library(${MACDONALD_LIB} SHARED ${MACDONALD_LIB_SOURCES})
-
-# Include directories
-target_include_directories(
-    ${MACDONALD_LIB}
-    PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/../include/"
-            "${REPO_ROOT}/external/dlt-daemon/include/"
-            "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
-            "${REPO_ROOT}/external/dlt-daemon/build/include/"
-            "${REPO_ROOT}/external/dlt-daemon/build/include/dlt/")
-
-# Link target directories
-target_link_directories(
-    ${MACDONALD_LIB} PRIVATE "${REPO_ROOT}/external/googletest/build/lib/"
-    "${REPO_ROOT}/external/dlt-daemon/build/src/lib/")
-
-# Target link libraries
-target_link_libraries(${MACDONALD_LIB} PRIVATE ncurses pthread gcov)
-
 # Chicken Coverage
 set(CHICKEN Chicken)
 
@@ -95,7 +69,8 @@ add_executable(
 # Add your project's include directories
 target_include_directories(
     ${CHICKEN}
-    PRIVATE "${REPO_ROOT}/external/googletest/googletest/include/"
+    PRIVATE "${REPO_ROOT}/external/googletest/googlemock/include/"
+            "${REPO_ROOT}/external/googletest/googletest/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
             "${REPO_ROOT}/external/dlt-daemon/build/include/"
@@ -110,8 +85,7 @@ target_link_directories(
     "${REPO_ROOT}/external/dlt-daemon/build/src/lib/")
 
 # Link target libraries
-target_link_libraries(${CHICKEN} PRIVATE gtest gcov ncurses pthread
-                                         ${MACDONALD_LIB})
+target_link_libraries(${CHICKEN} PRIVATE gtest gmock gcov ncurses pthread)
 
 # User Interface coverage
 set(USER_INTERFACE UserInterface)
@@ -125,7 +99,8 @@ add_executable(
 # Add your project's include directories
 target_include_directories(
     ${USER_INTERFACE}
-    PRIVATE "${REPO_ROOT}/external/googletest/googletest/include/"
+    PRIVATE "${REPO_ROOT}/external/googletest/googlemock/include/"
+            "${REPO_ROOT}/external/googletest/googletest/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/"
             "${REPO_ROOT}/external/dlt-daemon/include/dlt/"
             "${REPO_ROOT}/external/dlt-daemon/build/include/"
@@ -140,8 +115,8 @@ target_link_directories(
     "${REPO_ROOT}/external/dlt-daemon/build/src/lib/")
 
 # Link target libraries
-target_link_libraries(${USER_INTERFACE} PRIVATE gtest gcov ncurses pthread
-                                                ${MACDONALD_LIB})
+target_link_libraries(${USER_INTERFACE} PRIVATE gtest gmock gcov ncurses
+                                                pthread)
 
 # Code Coverage Set Target list
 set(ALL_TARGET ${CHICKEN} ${USER_INTERFACE})

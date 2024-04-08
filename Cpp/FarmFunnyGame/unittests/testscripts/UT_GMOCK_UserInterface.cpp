@@ -39,6 +39,7 @@
  ******************************************************************************
  */
 /* Includes ------------------------------------------------------------------*/
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 /* Standard libraries. */
@@ -53,17 +54,22 @@
 /* Include Fake and Mock files. */
 #include "dlt/dlt_fake.h"
 
+/* Include Mock classes.*/
+#include "mock/Logger_mock.hpp"
+
 /* The fixture for testing a specific class or functionality -----------------*/
 class UserInterfaceTestSuite : public ::testing::Test {
 protected:
     // Set up the test environment (optional)
     void SetUp() override {
         // Perform any necessary setup actions before each test case
+        M_Logger = new ::testing::NiceMock<LoggerMock>();
     }
 
     // Tear down the test environment (optional)
     void TearDown() override {
         // Perform any necessary cleanup actions after each test case
+        delete static_cast<::testing::NiceMock<LoggerMock> *>(M_Logger);
     }
 };
 
