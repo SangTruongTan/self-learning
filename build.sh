@@ -14,13 +14,13 @@ function setup_arm_gcc()
         ECHO_HIGHLIGHT "Setting up GCC ARM for ARM architecture.🍗" "GREEN"
         wget https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2 \
         -O $HOME/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2
-        tar -xjvf $HOME/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2 -C $HOME
+        tar -xjf $HOME/gcc-arm-none-eabi-10.3-2021.10-aarch64-linux.tar.bz2 -C $HOME
         return 0
     elif [[ "$1" == "amd" ]] ; then
         ECHO_HIGHLIGHT "Setting up GCC ARM for AMD architecture.🥠" "GREEN"
         wget https://armkeil.blob.core.windows.net/developer/Files/downloads/gnu-rm/10.3-2021.10/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 \
         -O $HOME/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2
-        tar -xjvf $HOME/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 -C $HOME
+        tar -xjf $HOME/gcc-arm-none-eabi-10.3-2021.10-x86_64-linux.tar.bz2 -C $HOME
         return 0
     else
         ECHO_HIGHLIGHT "--archtecture option needs to be specified.🥠" "RED"
@@ -70,6 +70,19 @@ function setup_dlt()
     fi
 }
 
+function setup_lcov()
+{
+    ECHO_HIGHLIGHT "Setting up LCOV.🈚🈚🈚" "GREEN"
+    ECHO_HIGHLIGHT "Cloning lcov-1.16." "BLUE"
+    wget https://github.com/linux-test-project/lcov/releases/download/v1.16/lcov-1.16.tar.gz \
+    -O $HOME/lcov-1.16.tar.gz
+    ECHO_HIGHLIGHT "Extracting lcov-1.16." "BLUE"
+    tar -xvf $HOME/lcov-1.16.tar.gz -C $HOME
+    ECHO_HIGHLIGHT "Installing lcov-1.16." "BLUE"
+    sudo make install --directory=$HOME/lcov-1.16/
+    return 0
+}
+
 function display_help()
 {
     ECHO_HIGHLIGHT "**************************************" "YELLOW"
@@ -88,7 +101,7 @@ function display_help()
     ECHO_HIGHLIGHT
     ECHO_HIGHLIGHT "Arguments:"
     ECHO_HIGHLIGHT "  ins_arg            [cmake|freertos|doxygen|farm|all]."
-    ECHO_HIGHLIGHT "  set_arg            [freertos|google|dlt|all]."
+    ECHO_HIGHLIGHT "  set_arg            [freertos|google|dlt|lcov|all]."
     ECHO_HIGHLIGHT "  arch_arg           [arm|amd]."
     ECHO_HIGHLIGHT "  build_arg          [cmake|freertos|farm|all]."
     ECHO_HIGHLIGHT "  par_arg            Number of parallel jobs."
@@ -201,7 +214,7 @@ ECHO_HIGHLIGHT "NUMBER_OF_PARALLEL=${NUMBER_OF_PARALLEL} ♋♋♋" "GREEN"
 if [[ ! -z "$init_value" ]]
 then
     ECHO_HIGHLIGHT "Initialize git submodules" "LINE" "BLUE"
-    git submodule update --init --recursive
+    git submodule update --init --recursive --quiet
 fi
 
 # Intall packages.
@@ -247,6 +260,11 @@ if [[ ! -z "$setup_value" ]] ; then
         if [[ $? != "0" ]] ; then
             return 1
         fi
+    elif [[ "$setup_value" == "lcov" ]] ; then
+        setup_lcov
+        if [[ $? != "0" ]] ; then
+            return 1
+        fi
     elif [[ "$setup_value" == "all" ]] ; then
         ECHO_HIGHLIGHT "Setting up GCC ARM Tools." "LINE" "BLUE"
         setup_arm_gcc "$architecture_value"
@@ -260,6 +278,10 @@ if [[ ! -z "$setup_value" ]] ; then
         fi
         ECHO_HIGHLIGHT "Setting up DLT Daemon." "LINE" "BLUE"
         setup_dlt
+        if [[ $? != "0" ]] ; then
+            return 1
+        fi
+        setup_lcov
         if [[ $? != "0" ]] ; then
             return 1
         fi

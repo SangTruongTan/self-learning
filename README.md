@@ -4,15 +4,18 @@
 [![Deployment](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/jekyll-gh-pages.yml)
 [![Build](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml/badge.svg)](https://github.com/SangTruongTan/self-learning/actions/workflows/github-actions-cmake.yml)
 
-## Code Coverage report
-[![Static Badge](https://img.shields.io/badge/LCOV-Code_Coverage_Report-blue?logo=c%2B%2B&logoColor=blue)](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_lcov)
-[![Static Badge](https://img.shields.io/badge/GCOVR-Code_Coverage_Report-green?logo=c%2B%2B&logoColor=blue)](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_gcovr)
+## Funny Farm Code Coverage report
+[![Static Badge](https://img.shields.io/badge/LCOV-Code_Coverage_Report-blue?logo=c%2B%2B&logoColor=blue)](https://sangtruongtan.github.io/self-learning/Cpp/FarmFunnyGame/unittests/coverages/all_coverage_lcov/)
 
 ## FreeRTOS guidelines
 [![Static Badge](https://img.shields.io/badge/FreeRTOS-Usage-blue)](https://sangtruongtan.github.io/self-learning/FreeRTOS)
 
 ## Doxygen Documentation
 [![Static Badge](https://img.shields.io/badge/Doxygen-PeriodicTimer-red?logo=Oxygen)](https://sangtruongtan.github.io/self-learning/FreeRTOS/Timers/PeriodicTimer/html)
+
+## Template Code Coverage report
+[![Static Badge](https://img.shields.io/badge/LCOV-Code_Coverage_Report-blue?logo=c%2B%2B&logoColor=blue)](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_lcov)
+[![Static Badge](https://img.shields.io/badge/GCOVR-Code_Coverage_Report-green?logo=c%2B%2B&logoColor=blue)](https://sangtruongtan.github.io/self-learning/Cmake/CMakeTutorial_SelfDefined/CodeCoverage/coverages/CodeCoverage_coverage_gcovr)
 
 ## Guidelines
 

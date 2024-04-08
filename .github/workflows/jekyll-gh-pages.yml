@@ -60,6 +60,9 @@ jobs:
       - name: Setup environments for DLT Daemon.
         run: source ${{ github.workspace }}/build.sh --setup dlt
 
+      - name: Setup environments for LCOV(1.15).
+        run: source ${{ github.workspace }}/build.sh --setup lcov
+
       - name: Show CMake Version.
         run: cmake --version
 
