@@ -39,6 +39,7 @@
  ******************************************************************************
  */
 /* Includes ------------------------------------------------------------------*/
+#include <gmock/gmock.h>
 #include <gtest/gtest.h>
 
 /* Standard libraries. */
@@ -53,17 +54,25 @@
 /* Include Fake and Mock files. */
 #include "dlt/dlt_fake.h"
 
+/* Include Mock classes.*/
+#include "mock/Animal_mock.hpp"
+#include "mock/Logger_mock.hpp"
+
 /* The fixture for testing a specific class or functionality -----------------*/
 class ChickenTestSuite : public ::testing::Test {
 protected:
     // Set up the test environment (optional)
     void SetUp() override {
         // Perform any necessary setup actions before each test case
+        M_Animal = new ::testing::NiceMock<AnimalMock>();
+        M_Logger = new ::testing::NiceMock<LoggerMock>();
     }
 
     // Tear down the test environment (optional)
     void TearDown() override {
         // Perform any necessary cleanup actions after each test case
+        delete static_cast<::testing::NiceMock<AnimalMock> *>(M_Animal);
+        delete static_cast<::testing::NiceMock<LoggerMock> *>(M_Logger);
     }
 };
 
@@ -86,10 +95,34 @@ TEST_F(ChickenTestSuite, TestCase3) {
     ASSERT_TRUE(true);
 }
 
-TEST_F(ChickenTestSuite, TestCase4) {
+TEST_F(ChickenTestSuite, Contructor001) {
     Farm::SharedObjects shared;
     std::string name = "Chicken";
     Farm::Chicken *obj = new Farm::Chicken(name, shared);
+    delete obj;
+    obj = nullptr;
+}
+
+TEST_F(ChickenTestSuite, ExccedLifeTime001) {
+    Farm::SharedObjects shared;
+    std::string name = "Chicken";
+    Farm::Chicken *obj = new Farm::Chicken(name, shared);
+    EXPECT_CALL(*M_Animal, getAge())
+        .WillOnce(::testing::Return(Farm::Animal::CHICKEN_LIFE_TIME));
+    bool retval = obj->exceedLifeTime();
+    EXPECT_TRUE(retval);
+    delete obj;
+    obj = nullptr;
+}
+
+TEST_F(ChickenTestSuite, ExccedLifeTime002) {
+    Farm::SharedObjects shared;
+    std::string name = "Chicken";
+    Farm::Chicken *obj = new Farm::Chicken(name, shared);
+    EXPECT_CALL(*M_Animal, getAge())
+        .WillOnce(::testing::Return(Farm::Animal::CHICKEN_LIFE_TIME - 1));
+    bool retval = obj->exceedLifeTime();
+    EXPECT_FALSE(retval);
     delete obj;
     obj = nullptr;
 }
