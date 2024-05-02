@@ -30,7 +30,7 @@ def prWhite(skk): print(skk)
 
 def build_and_execute_cpp(file_name):
     prGreen("Build the C++ program using g++")
-    compile_command = f"g++ {file_name} -o {file_name + '.o'}"
+    compile_command = f"g++ -std=c++17 -g -Wall {file_name} -o {file_name + '.o'}"
     print(compile_command)
     compile_status = os.system(compile_command)
 
@@ -39,13 +39,14 @@ def build_and_execute_cpp(file_name):
         return
 
     prGreen("Execute the compiled program")
-    execute_command = f"./{file_name + '.o'}"
+    execute_command = f"./{file_name + '.o'} 2>&1"
     if len(sys.argv) > 2:
         for i in range(2, len(sys.argv)):
             execute_command = f"{execute_command + ' ' + sys.argv[i]}"
             i = i + 1
     prCyan(execute_command)
-    os.system(execute_command)
+    output = os.popen(execute_command).read()
+    print(output)
 
 # Usage example
 if len(sys.argv) < 2:
