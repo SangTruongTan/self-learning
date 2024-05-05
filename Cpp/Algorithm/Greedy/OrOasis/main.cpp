@@ -10,111 +10,102 @@
  * @copyright Copyright (c) 2024
  *
  */
+#include <cassert>
 #include <ctime>
 #include <iostream>
 #include <map>
-#include <cassert>
+#include <vector>
 // #include <bits/stdc++.h>
 
-
 #define TEST
+
+int32_t totalN;
+
+void ind() {}
+
+void outd() {}
+
+void solve() {
+    int32_t N;
+    std::cin >> N;
+    assert(N >= 2 && N <= 1e6);
+    totalN += N;
+    std::vector<int32_t> arr(N);
+    for (auto &element : arr) {
+        std::cin >> element;
+        assert(element >= 0 && element <= 1e9);
+    }
+
+    std::vector<std::vector<int32_t>> bitSum(30, std::vector<int32_t>(N));
+
+    for (int i = 0; i < N; i++) {
+        for (int bit = 0; bit < 30; bit++) {
+            bitSum[bit][i] = ((arr[i] & (1 << bit)) > 0);
+            if (i != 0) {
+                bitSum[bit][i] += bitSum[bit][i - 1];
+            }
+        }
+    }
+
+    auto getSum = [&](int bit, int l, int r) {
+        if (l == 0) return bitSum[bit][r];
+        return bitSum[bit][r] - bitSum[bit][l - 1];
+    };
+
+    auto check = [&](int l, int r) {
+        for (int bit = 0; bit < 30; bit++) {
+            if (bitSum[bit][N - 1] > 0 && getSum(bit, l, r) == 0) return false;
+        }
+        return true;
+    };
+
+    auto check2 = [&](int l, int r) {
+        for (int bit = 0; bit < 30; bit++) {
+            if (bitSum[bit][N - 1] > 0 &&
+                getSum(bit, l, r) == bitSum[bit][N - 1])
+                return false;
+        }
+        return true;
+    };
+
+    std::vector<int> min(N + 1);
+    int minLength{N + 1};
+
+    for (int i = 0, j = 0; i < N; i++) {
+        while (j < i && check(j + 1, i))
+            j++;
+        if (check(j, i) && check2(j, i)) {
+            minLength = std::min(minLength, i - j + 1);
+            // std::cout << i << "|" << j << "|" << minLength << std::endl;
+            min[i - j + 1] += 1;
+        }
+    }
+    if (minLength == N + 1) {
+        std::cout << -1 << std::endl;
+    } else {
+        std::cout << minLength << " " << min[minLength] << std::endl;
+    }
+}
 
 #ifdef TEST
 int main1() {
 #else
 int main() {
 #endif
-    using namespace std;
-    ios_base::sync_with_stdio(false);
-    cin.tie(NULL);
-    cout.tie(NULL);
-
-    int test;
-    cin>>test;
-
-    assert(test>=1 && test<=1e5);
-
-    int totalN = 0;
-
-    while(test--)
-    {
-        int N;
-        cin>>N;
-
-        assert(N>=2 && N<=1e6);
-        totalN += N;
-
-        vector<int> A(N);
-        for(auto &e: A)
-        {
-            cin>>e;
-            assert(e>0 && e<=1e9);
-        }
-
-        vector<vector<int>> bitSum(30, vector<int> (N));
-
-        for(int i=0; i<N; i++)
-        {
-            for(int bit=0; bit<30; bit++)
-            {
-                bitSum[bit][i] = (((1<<bit)&A[i]) > 0);
-                if(i)   bitSum[bit][i] += bitSum[bit][i-1];
-            }
-        }
-
-        auto getSum = [&](int bit, int l, int r)
-        {
-            if(l == 0)      return bitSum[bit][r];
-            return (bitSum[bit][r] - bitSum[bit][l-1]);
-        };
-
-        auto check = [&](int l, int r)
-        {
-            for(int bit=0; bit<30; bit++)
-            {
-                if(bitSum[bit][N-1]>0 && getSum(bit, l, r)==0)
-                    return false;
-            }
-
-            return true;
-        };
-
-        auto check2 = [&](int l, int r)
-        {
-            for(int bit=0; bit<30; bit++)
-            {
-                if(bitSum[bit][N-1]!=0 && getSum(bit, l, r)==bitSum[bit][N-1])
-                    return false;
-            }
-
-            return true;
-        };
-
-        int sm = N+1;
-        vector<int> val(N+1);
-
-        for(int i=0, j=0; i<N; i++)
-        {
-            while(j<i && check(j+1, i))     j++;
-
-            if(check(j, i) && check2(j, i))
-            {
-                sm = min(sm, i-j+1);
-                val[i-j+1] += 1;
-            }
-        }
-
-        if(sm == N+1)
-        {
-            cout<<-1<<"\n";
-            continue;
-        }
-
-        cout<<sm<<" "<<val[sm]<<"\n";
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(nullptr);
+    std::cout.tie(nullptr);
+    int T;
+    std::cin >> T;
+    assert(T >= 1 && T <= 1e5);
+    totalN = 0;
+    while (T--) {
+        ind();
+        solve();
+        outd();
     }
-
-    assert(totalN<=1e6);
-    return EXIT_SUCCESS;
+    assert(totalN <= 1e6);
+    return 0;
 }
 
 #ifdef TEST
@@ -125,7 +116,7 @@ int main() {
     main1();
     std::cout << std::endl;
     ::printf("Time taken: %.10fs\n",
-           (double)(::clock() - tStart) / CLOCKS_PER_SEC);
+             (double)(::clock() - tStart) / CLOCKS_PER_SEC);
     ::fclose(stdin);
     ::fclose(stdout);
     return EXIT_SUCCESS;
