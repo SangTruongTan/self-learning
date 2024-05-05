@@ -13,7 +13,8 @@
 #include <ctime>
 #include <iostream>
 #include <map>
-#include <bits/stdc++.h>
+#include <cassert>
+// #include <bits/stdc++.h>
 
 
 #define TEST
@@ -113,7 +114,9 @@ int main() {
     }
 
     assert(totalN<=1e6);
+    return EXIT_SUCCESS;
 }
+
 #ifdef TEST
 int main() {
     ::freopen("input.txt", "r", stdin);
