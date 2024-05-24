@@ -1,0 +1,12 @@
+YES
+YES
+YES
+NO
+YES
+YES
+YES
+YES
+YES
+YES
+
+Time taken: 0.0000000000s
