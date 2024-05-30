@@ -57,6 +57,22 @@ struct SegmentTree {
         }
         std::cout << std::endl;
     }
+
+    void update(int pos, int newVal) { update(1, pos, newVal, 0, size - 1); }
+
+    void update(int vertex, int pos, int newVal, int tl, int tr) {
+        if (tl == tr) {
+            tree[vertex] = newVal;
+        } else {
+            int tm{(tl + tr) / 2};
+            if (pos <= tm) {
+                update(vertex * 2, pos, newVal, tl, tm);
+            } else {
+                update(vertex * 2 + 1, pos, newVal, tm + 1, tr);
+            }
+            tree[vertex] = tree[vertex * 2] + tree[vertex * 2 + 1];
+        }
+    }
 };
 
 int main() {
@@ -64,5 +80,9 @@ int main() {
     SegmentTree obj(arr);
     obj.showTree();
     std::cout << obj.sum(2, 4) << std::endl;
+    std::cout << "I'm going to update the element indexed 3 to 10 🈸🈸🈸"
+              << std::endl;
+    obj.update(3, 10);
+    obj.showTree();
     return EXIT_SUCCESS;
 }
