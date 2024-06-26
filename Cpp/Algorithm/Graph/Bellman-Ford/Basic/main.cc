@@ -1,3 +1,15 @@
+/**
+ * @file main.cpp
+ * @author Sang Tan Truong (sang.truong@outlook.com.vn)
+ * @brief Bellman-Ford Basic Implementation
+ * @link
+ * https://cp-algorithms.com/graph/bellman_ford.html
+ * @version 0.1
+ * @date 2024-06-25
+ *
+ * @copyright Copyright (c) 2024
+ *
+ */
 #include <iostream>
 #include <utility>
 #include <vector>
