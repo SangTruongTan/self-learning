@@ -1,28 +1,19 @@
-/**
- * @file main.cpp
- * @author Sang Tan Truong (sang.truong@outlook.com.vn)
- * @brief Assignment Problem - Hungarian Algorithm
- * @link
- * https://www.hackerearth.com/practice/algorithms/graphs/minimum-cost-maximum-flow/tutorial/
- * @version 0.1
- * @date 2024-07-01
- *
- * @copyright Copyright (c) 2024
- *
- */
-#include <cassert>
-#include <ctime>
-#include <iostream>
+//
+//  main.cpp
+//  Algorithm
+//
+//  Created by Sang Tan Truong on 28/5/24.
+//
 
-#include <limits>
+#include <iostream>
 #include <vector>
+#include <limits>
 
 using namespace std;
 
 const int INF = numeric_limits<int>::max();
 
-void HungarianAlgorithm(const vector<vector<int>>& cost,
-                        vector<int>& assignment) {
+void HungarianAlgorithm(const vector<vector<int>>& cost, vector<int>& assignment) {
     int n = static_cast<int>(cost.size());
     vector<int> u(n, 0), v(n, 0), p(n, 0), way(n, 0);
 
@@ -72,59 +63,33 @@ void HungarianAlgorithm(const vector<vector<int>>& cost,
     }
 }
 
-void ind() {}
-
-void outd() {}
-
-void solve() {
-    int N;
-    cin >> N;
-    assert(N >= 1 && N <= 10);
-    vector<vector<int>> costMatrix(N + 1, vector<int>(N + 1, 0));
-    for (int i = 1; i <= N; i++) {
-        for (int j = 1; j <= N; j++) {
-            cin >> costMatrix[i][j];
+int main() {
+//    vector<vector<int>> cost = {
+//        {4, 1, 3, 2},
+//        {2, 0, 5, 3},
+//        {3, 2, 2, 3},
+//        {1, 4, 4, 2}
+//    };
+    vector<vector<int>> cost = {
+        {1500, 4000, 4500},
+        {2000, 6000, 3500},
+        {2000, 4000, 2500}
+    };
+    int n = static_cast<int>(cost.size());
+    vector<vector<int>> costMatrix(n + 1, vector<int>(n + 1, 0));
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            costMatrix[i + 1][j + 1] = cost[i][j];
         }
     }
 
     vector<int> assignment;
     HungarianAlgorithm(costMatrix, assignment);
 
-    int totalCost{0};
+    cout << "Optimal assignment:" << endl;
     for (int i = 0; i < assignment.size(); ++i) {
-        totalCost += costMatrix[i + 1][assignment[i] + 1];
+        cout << "Worker " << i + 1 << " assigned to job " << assignment[i] + 1 << endl;
     }
-    cout << totalCost << endl;
-}
 
-#ifdef TEST
-int main1() {
-#else
-int main() {
-#endif
-    std::ios_base::sync_with_stdio(false);
-    std::cin.tie(nullptr);
-    std::cout.tie(nullptr);
-    int T{1};
-    while (T--) {
-        ind();
-        solve();
-        outd();
-    }
     return 0;
 }
-
-#ifdef TEST
-int main() {
-    ::freopen("input.txt", "r", stdin);
-    ::freopen("output.txt", "w", stdout);
-    ::clock_t tStart = ::clock();
-    main1();
-    std::cout << std::endl;
-    ::printf("Time taken: %.10fs\n",
-             (double)(::clock() - tStart) / CLOCKS_PER_SEC);
-    ::fclose(stdin);
-    ::fclose(stdout);
-    return EXIT_SUCCESS;
-}
-#endif
