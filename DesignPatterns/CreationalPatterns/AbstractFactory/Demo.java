@@ -1,9 +1,9 @@
-package AbstractFactory;
+package DesignPatterns.CreationalPatterns.AbstractFactory;
 
-import AbstractFactory.app.Application;
-import AbstractFactory.factories.GUIFactory;
-import AbstractFactory.factories.MacOSFactory;
-import AbstractFactory.factories.WindowsFactory;
+import DesignPatterns.CreationalPatterns.AbstractFactory.app.Application;
+import DesignPatterns.CreationalPatterns.AbstractFactory.factories.GUIFactory;
+import DesignPatterns.CreationalPatterns.AbstractFactory.factories.MacOSFactory;
+import DesignPatterns.CreationalPatterns.AbstractFactory.factories.WindowsFactory;
 
 /**
  * Demo class. Everything comes together here.

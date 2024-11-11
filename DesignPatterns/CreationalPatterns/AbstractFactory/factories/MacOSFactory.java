@@ -1,9 +1,9 @@
-package AbstractFactory.factories;
+package DesignPatterns.CreationalPatterns.AbstractFactory.factories;
 
-import AbstractFactory.buttons.Button;
-import AbstractFactory.buttons.MacOSButton;
-import AbstractFactory.checkboxes.Checkbox;
-import AbstractFactory.checkboxes.MacOSCheckbox;
+import DesignPatterns.CreationalPatterns.AbstractFactory.buttons.Button;
+import DesignPatterns.CreationalPatterns.AbstractFactory.buttons.MacOSButton;
+import DesignPatterns.CreationalPatterns.AbstractFactory.checkboxes.Checkbox;
+import DesignPatterns.CreationalPatterns.AbstractFactory.checkboxes.MacOSCheckbox;
 
 /**
  * Each concrete factory extends basic factory and responsible for creating

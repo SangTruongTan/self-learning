@@ -1,4 +1,4 @@
-package AbstractFactory.checkboxes;
+package DesignPatterns.CreationalPatterns.AbstractFactory.checkboxes;
 
 /**
  * All products families have the same varieties (MacOS/Windows).

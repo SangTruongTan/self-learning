@@ -1,4 +1,4 @@
-package AbstractFactory.buttons;
+package DesignPatterns.CreationalPatterns.AbstractFactory.buttons;
 
 /**
  * All products families have the same varieties (MacOS/Windows).

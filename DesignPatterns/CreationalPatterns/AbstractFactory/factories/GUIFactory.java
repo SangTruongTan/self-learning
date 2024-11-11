@@ -1,7 +1,7 @@
-package AbstractFactory.factories;
+package DesignPatterns.CreationalPatterns.AbstractFactory.factories;
 
-import AbstractFactory.buttons.Button;
-import AbstractFactory.checkboxes.Checkbox;
+import DesignPatterns.CreationalPatterns.AbstractFactory.buttons.Button;
+import DesignPatterns.CreationalPatterns.AbstractFactory.checkboxes.Checkbox;
 
 /**
  * Abstract factory knows about all (abstract) product types.

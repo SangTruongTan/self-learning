@@ -1,8 +1,8 @@
-package AbstractFactory.app;
+package DesignPatterns.CreationalPatterns.AbstractFactory.app;
 
-import AbstractFactory.buttons.Button;
-import AbstractFactory.checkboxes.Checkbox;
-import AbstractFactory.factories.GUIFactory;
+import DesignPatterns.CreationalPatterns.AbstractFactory.buttons.Button;
+import DesignPatterns.CreationalPatterns.AbstractFactory.checkboxes.Checkbox;
+import DesignPatterns.CreationalPatterns.AbstractFactory.factories.GUIFactory;
 
 /**
  * Factory users don't care which concrete factory they use since they work with

@@ -1,4 +1,4 @@
-package AbstractFactory.buttons;
+package DesignPatterns.CreationalPatterns.AbstractFactory.buttons;
 
 /**
  * Abstract Factory assumes that you have several families of products,
