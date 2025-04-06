@@ -1,0 +1,7 @@
+arguments.sh
+displaying_output.sh
+files.txt
+input.txt
+output.txt
+read_file.sh
+read.sh
